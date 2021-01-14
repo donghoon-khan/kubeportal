@@ -1,88 +1,129 @@
 package main
 
 import (
-	"context"
-	"crypto/rand"
-	"encoding/base64"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
-	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/dghubble/gologin/v2"
+	"github.com/dghubble/gologin/v2/google"
+	"github.com/dghubble/sessions"
 	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
+	googleOAuth2 "golang.org/x/oauth2/google"
 )
 
-var googleOauthConfig = oauth2.Config{
-	RedirectURL:  "http://localhost:3000/auth/google/callback",
-	ClientID:     "486448652557-vpb1117efkn2ca2fan2ud20r3lgp5mto.apps.googleusercontent.com",
-	ClientSecret: "I20bP76xC0HSq7TCcK03pVik",
-	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
-	Endpoint:     google.Endpoint,
+const (
+	sessionName     = "example-google-app"
+	sessionSecret   = "example cookie signing secret"
+	sessionUserKey  = "googleID"
+	sessionUsername = "googleName"
+)
+
+// sessionStore encodes and decodes session data stored in signed cookies
+var sessionStore = sessions.NewCookieStore([]byte(sessionSecret), nil)
+
+// Config configures the main ServeMux.
+type Config struct {
+	ClientID     string
+	ClientSecret string
+	RedirectURL  string
+	Endpoint     oauth2.Endpoint
+	Scopes       []string
 }
 
-func googleLoginHandler(w http.ResponseWriter, r *http.Request) {
-	state := generateStateOauthCookie(w)
-	url := googleOauthConfig.AuthCodeURL(state)
-	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
+// New returns a new ServeMux with app routes.
+func New(config *Config) *http.ServeMux {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", profileHandler)
+	mux.HandleFunc("/logout", logoutHandler)
+	// 1. Register Login and Callback handlers
+	oauth2Config := &oauth2.Config{
+		ClientID:     config.ClientID,
+		ClientSecret: config.ClientSecret,
+		RedirectURL:  config.RedirectURL,
+		Endpoint:     config.Endpoint,
+		Scopes:       config.Scopes,
+	}
+	// state param cookies require HTTPS by default; disable for localhost development
+	stateConfig := gologin.DebugOnlyCookieConfig
+	mux.Handle("/google/login", google.StateHandler(stateConfig, google.LoginHandler(oauth2Config, nil)))
+	mux.Handle("/auth/google/callback", google.StateHandler(stateConfig, google.CallbackHandler(oauth2Config, issueSession(), nil)))
+	return mux
 }
 
-func generateStateOauthCookie(w http.ResponseWriter) string {
-	expiration := time.Now().Add(1 * 1 * time.Hour)
-
-	b := make([]byte, 16)
-	rand.Read(b)
-	state := base64.URLEncoding.EncodeToString(b)
-	cookie := &http.Cookie{Name: "oauthstate", Value: state, Expires: expiration}
-	http.SetCookie(w, cookie)
-	return state
+// issueSession issues a cookie session after successful Google login
+func issueSession() http.Handler {
+	fn := func(w http.ResponseWriter, req *http.Request) {
+		ctx := req.Context()
+		googleUser, err := google.UserFromContext(ctx)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		// 2. Implement a success handler to issue some form of session
+		session := sessionStore.New(sessionName)
+		session.Values[sessionUserKey] = googleUser.Id
+		session.Values[sessionUsername] = googleUser.Name
+		session.Save(w)
+		http.Redirect(w, req, "/profile", http.StatusFound)
+	}
+	return http.HandlerFunc(fn)
 }
 
-func googleAuthCallback(w http.ResponseWriter, r *http.Request) {
-	oauthstate, _ := r.Cookie("oauthstate")
-
-	if r.FormValue("state") != oauthstate.Value {
-		log.Printf("invalid google oauth state cookie:%s state:%s\n", oauthstate.Value, r.FormValue("state"))
-		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+// profileHandler shows a personal profile or a login button (unauthenticated).
+func profileHandler(w http.ResponseWriter, req *http.Request) {
+	session, err := sessionStore.Get(req, sessionName)
+	if err != nil {
+		// welcome with login button
+		page, _ := ioutil.ReadFile("home.html")
+		fmt.Fprintf(w, string(page))
 		return
 	}
-
-	data, err := getGoogleUserInfo(r.FormValue("code"))
-	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-		return
-	}
-
-	fmt.Fprint(w, string(data))
+	// authenticated profile
+	fmt.Fprintf(w, `<p>You are logged in %s!</p><form action="/logout" method="post"><input type="submit" value="Logout"></form>`, session.Values[sessionUsername])
 }
 
-func getGoogleUserInfo(code string) ([]byte, error) {
-	token, err := googleOauthConfig.Exchange(context.Background(), code)
-	if err != nil {
-		return nil, fmt.Errorf("Failed to Exchange %s\n", err.Error())
+// logoutHandler destroys the session on POSTs and redirects to home.
+func logoutHandler(w http.ResponseWriter, req *http.Request) {
+	if req.Method == "POST" {
+		sessionStore.Destroy(w, sessionName)
 	}
-
-	resp, err := http.Get("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + token.AccessToken)
-	if err != nil {
-		return nil, fmt.Errorf("Failed to Get UserInfo %s\n", err.Error())
-	}
-
-	return ioutil.ReadAll(resp.Body)
+	http.Redirect(w, req, "/", http.StatusFound)
 }
 
+// main creates and starts a Server listening.
 func main() {
+	const address = "localhost:3000"
+	// read credentials from environment variables if available
+	config := &Config{
+		ClientID:     "486448652557-vpb1117efkn2ca2fan2ud20r3lgp5mto.apps.googleusercontent.com",
+		ClientSecret: "I20bP76xC0HSq7TCcK03pVik",
+		RedirectURL:  "http://localhost:3000/auth/google/callback",
+		Endpoint:     googleOAuth2.Endpoint,
+		Scopes:       []string{"profile", "email"},
+	}
+	// allow consumer credential flags to override config fields
+	clientID := flag.String("client-id", "", "Google Client ID")
+	clientSecret := flag.String("client-secret", "", "Google Client Secret")
+	flag.Parse()
+	if *clientID != "" {
+		config.ClientID = *clientID
+	}
+	if *clientSecret != "" {
+		config.ClientSecret = *clientSecret
+	}
+	if config.ClientID == "" {
+		log.Fatal("Missing Google Client ID")
+	}
+	if config.ClientSecret == "" {
+		log.Fatal("Missing Google Client Secret")
+	}
 
-	log.SetOutput(os.Stdout)
-
-	router := mux.NewRouter()
-
-	router.Handle("/", http.FileServer(http.Dir("../frontend/")))
-	router.HandleFunc("/auth/google/login", googleLoginHandler)
-	router.HandleFunc("/auth/google/callback", googleAuthCallback)
-
-	http.ListenAndServe(":3000", router)
+	log.Printf("Starting Server listening on %s\n", address)
+	err := http.ListenAndServe(address, New(config))
+	if err != nil {
+		log.Fatal("ListenAndServe: ", err)
+	}
 }
