@@ -2,128 +2,45 @@ package main
 
 import (
 	"flag"
-	"fmt"
-	"io/ioutil"
 	"log"
-	"net/http"
+	"os"
 
-	"github.com/dghubble/gologin/v2"
-	"github.com/dghubble/gologin/v2/google"
-	"github.com/dghubble/sessions"
-	"golang.org/x/oauth2"
-	googleOAuth2 "golang.org/x/oauth2/google"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/args"
+	"github.com/spf13/pflag"
 )
 
-const (
-	sessionName     = "example-google-app"
-	sessionSecret   = "example cookie signing secret"
-	sessionUserKey  = "googleID"
-	sessionUsername = "googleName"
+var (
+	argPort          = pflag.Int("port", 3000, "The port to listen to for incoming HTTP requests.")
+	argApiserverHost = pflag.String("apiserver-host", "", "The address of the Kubernetes Apiserver "+
+		"to connect to in the format of protocol://address:port, e.g., "+
+		"http://localhost:8080. If not specified, the assumption is that the binary runs inside a "+
+		"Kubernetes cluster and local discovery is attempted.")
+	argKubeConfigFile = pflag.String("kubeconfig", "", "Path to kubeconfig file with authorization and master location information.")
+	argAPILogLevel    = pflag.String("api-log-level", "INFO", "Level of API request logging. Should be one of 'INFO|NONE|DEBUG'. Default: 'INFO'.")
 )
 
-// sessionStore encodes and decodes session data stored in signed cookies
-var sessionStore = sessions.NewCookieStore([]byte(sessionSecret), nil)
-
-// Config configures the main ServeMux.
-type Config struct {
-	ClientID     string
-	ClientSecret string
-	RedirectURL  string
-	Endpoint     oauth2.Endpoint
-	Scopes       []string
-}
-
-// New returns a new ServeMux with app routes.
-func New(config *Config) *http.ServeMux {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", profileHandler)
-	mux.HandleFunc("/logout", logoutHandler)
-	// 1. Register Login and Callback handlers
-	oauth2Config := &oauth2.Config{
-		ClientID:     config.ClientID,
-		ClientSecret: config.ClientSecret,
-		RedirectURL:  config.RedirectURL,
-		Endpoint:     config.Endpoint,
-		Scopes:       config.Scopes,
-	}
-	// state param cookies require HTTPS by default; disable for localhost development
-	stateConfig := gologin.DebugOnlyCookieConfig
-	mux.Handle("/google/login", google.StateHandler(stateConfig, google.LoginHandler(oauth2Config, nil)))
-	mux.Handle("/auth/google/callback", google.StateHandler(stateConfig, google.CallbackHandler(oauth2Config, issueSession(), nil)))
-	return mux
-}
-
-// issueSession issues a cookie session after successful Google login
-func issueSession() http.Handler {
-	fn := func(w http.ResponseWriter, req *http.Request) {
-		ctx := req.Context()
-		googleUser, err := google.UserFromContext(ctx)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		// 2. Implement a success handler to issue some form of session
-		session := sessionStore.New(sessionName)
-		session.Values[sessionUserKey] = googleUser.Id
-		session.Values[sessionUsername] = googleUser.Name
-		session.Save(w)
-		http.Redirect(w, req, "/profile", http.StatusFound)
-	}
-	return http.HandlerFunc(fn)
-}
-
-// profileHandler shows a personal profile or a login button (unauthenticated).
-func profileHandler(w http.ResponseWriter, req *http.Request) {
-	session, err := sessionStore.Get(req, sessionName)
-	if err != nil {
-		// welcome with login button
-		page, _ := ioutil.ReadFile("home.html")
-		fmt.Fprintf(w, string(page))
-		return
-	}
-	// authenticated profile
-	fmt.Fprintf(w, `<p>You are logged in %s!</p><form action="/logout" method="post"><input type="submit" value="Logout"></form>`, session.Values[sessionUsername])
-}
-
-// logoutHandler destroys the session on POSTs and redirects to home.
-func logoutHandler(w http.ResponseWriter, req *http.Request) {
-	if req.Method == "POST" {
-		sessionStore.Destroy(w, sessionName)
-	}
-	http.Redirect(w, req, "/", http.StatusFound)
-}
-
-// main creates and starts a Server listening.
 func main() {
-	const address = "localhost:3000"
-	// read credentials from environment variables if available
-	config := &Config{
-		ClientID:     "486448652557-vpb1117efkn2ca2fan2ud20r3lgp5mto.apps.googleusercontent.com",
-		ClientSecret: "I20bP76xC0HSq7TCcK03pVik",
-		RedirectURL:  "http://localhost:3000/auth/google/callback",
-		Endpoint:     googleOAuth2.Endpoint,
-		Scopes:       []string{"profile", "email"},
-	}
-	// allow consumer credential flags to override config fields
-	clientID := flag.String("client-id", "", "Google Client ID")
-	clientSecret := flag.String("client-secret", "", "Google Client Secret")
-	flag.Parse()
-	if *clientID != "" {
-		config.ClientID = *clientID
-	}
-	if *clientSecret != "" {
-		config.ClientSecret = *clientSecret
-	}
-	if config.ClientID == "" {
-		log.Fatal("Missing Google Client ID")
-	}
-	if config.ClientSecret == "" {
-		log.Fatal("Missing Google Client Secret")
-	}
+	log.SetOutput(os.Stdout)
 
-	log.Printf("Starting Server listening on %s\n", address)
-	err := http.ListenAndServe(address, New(config))
-	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
+	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
+	pflag.Parse()
+	flag.CommandLine.Parse(make([]string, 0))
+
+	initArgHolder()
+
+	log.Printf("Service Start")
+	if args.Holder.GetApiServerHost() != "" {
+		log.Printf("Using apiserver-host location: %s", args.Holder.GetApiServerHost())
 	}
+	if args.Holder.GetKubeConfigFile() != "" {
+		log.Printf("Using kubeconfig file: %s", args.Holder.GetKubeConfigFile())
+	}
+}
+
+func initArgHolder() {
+	builder := args.GetHolderBuilder()
+	builder.SetPort(*argPort)
+	builder.SetApiServerHost(*argApiserverHost)
+	builder.SetKubeConfigFile(*argKubeConfigFile)
+	builder.SetApiLogLevel(*argAPILogLevel)
 }
