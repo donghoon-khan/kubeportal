@@ -3,9 +3,13 @@ module github.com/donghoon-khan/kubeportal
 go 1.15
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/emicklei/go-restful v2.15.0+incompatible
+	github.com/gin-gonic/gin v1.6.3
 	github.com/imdario/mergo v0.3.11 // indirect
+	github.com/kubernetes/dashboard v1.10.1
 	github.com/spf13/pflag v1.0.5
+	github.com/twinj/uuid v1.0.0
 	golang.org/x/oauth2 v0.0.0-20210113205817-d3ed898aa8a3
 	k8s.io/api v0.20.2
 	k8s.io/apimachinery v0.20.2
