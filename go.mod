@@ -9,7 +9,7 @@ require (
 	golang.org/x/oauth2 v0.0.0-20210113205817-d3ed898aa8a3
 	k8s.io/api v0.20.2
 	k8s.io/apimachinery v0.20.2
-	k8s.io/client-go v0.0.0-20210114010100-25e8b5f54c27
+	k8s.io/client-go v0.20.0
 	k8s.io/klog v1.0.0 // indirect
 	k8s.io/utils v0.0.0-20210111153108-fddb29f9d009 // indirect
 )
