@@ -27,4 +27,6 @@ func CreateHTTPAPIHandler(cManager clientapi.ClientManager) http.Handler {
 		Consumes(restful.MIME_JSON).
 		Produces(restful.MIME_JSON)
 	wsContainer.Add(apiV1Ws)
+
+	return wsContainer, nil
 }
