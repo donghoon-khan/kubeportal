@@ -93,7 +93,7 @@ func HandleInternalError(response *restful.Response, err error) {
 	response.WriteErrorString(statusCode, err.Error()+"\n")
 }
 
-func HandleHTTPError(err error) int {
+func HandleHttpError(err error) int {
 	if err == nil {
 		return http.StatusInternalServerError
 	}
