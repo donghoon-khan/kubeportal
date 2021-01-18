@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/emicklei/go-restful"
@@ -29,4 +30,11 @@ func CreateHTTPAPIHandler(cManager clientapi.ClientManager) http.Handler {
 	wsContainer.Add(apiV1Ws)
 
 	return wsContainer, nil
+}
+
+func (apiHandler *APIHandler) handleDeploy(request *restful.Request, response restful.Response) {
+	k8sClient, err := apiHandler.cManager.Client(request)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+	}
 }
