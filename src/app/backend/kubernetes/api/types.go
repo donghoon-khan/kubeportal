@@ -3,6 +3,8 @@ package api
 import (
 	"github.com/emicklei/go-restful"
 	v1 "k8s.io/api/authorization/v1"
+	apiextensionsclientset "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
+
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
@@ -10,9 +12,21 @@ import (
 	"k8s.io/client-go/tools/clientcmd/api"
 )
 
+const (
+	CsrfTokenSecretName = "kube-portal-csrf"
+	CsrfTokenSecretData = "csrf"
+)
+
 type KubernetesManager interface {
 	Kubernetes(req *restful.Request) (kubernetes.Interface, error)
 	InsecureKubernetes() kubernetes.Interface
+
+	APIExtensionsKubernetes(req *restful.Request) (apiextensionsclientset.Interface, error)
+	InsecureAPIExtensionsKubernetes() apiextensionsclientset.Interface
+
+	//PluginKubernetes(req *restful.Request) (pluginclientset.Interface, error)
+	//InsecurePluginKubernetes() pluginclientset.Interface
+
 	CanI(req *restful.Request, saar *v1.SelfSubjectAccessReview) bool
 	Config(req *restful.Request) (*rest.Config, error)
 	ClientCmdConfig(req *restful.Request) (clientcmd.ClientConfig, error)
@@ -31,4 +45,8 @@ type ResourceVerber interface {
 
 type CanIResponse struct {
 	Allowed bool `json:"allowed"`
+}
+
+type CsrfTokenManager interface {
+	Token() string
 }
