@@ -2,14 +2,10 @@ package api
 
 import (
 	"github.com/emicklei/go-restful"
-	v1 "k8s.io/api/authorization/v1"
 	apiextensionsclientset "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/rest"
-	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/client-go/tools/clientcmd/api"
 )
 
 const (
@@ -27,12 +23,12 @@ type KubernetesManager interface {
 	//PluginKubernetes(req *restful.Request) (pluginclientset.Interface, error)
 	//InsecurePluginKubernetes() pluginclientset.Interface
 
-	CanI(req *restful.Request, saar *v1.SelfSubjectAccessReview) bool
-	Config(req *restful.Request) (*rest.Config, error)
-	ClientCmdConfig(req *restful.Request) (clientcmd.ClientConfig, error)
-	CSRFKey() string
-	HasAccess(authInfo api.AuthInfo) error
-	VerberClient(req *restful.Request) (ResourceVerber, error)
+	//CanI(req *restful.Request, saar *v1.SelfSubjectAccessReview) bool
+	//Config(req *restful.Request) (*rest.Config, error)
+	//ClientCmdConfig(req *restful.Request) (clientcmd.ClientConfig, error)
+	//CSRFKey() string
+	//HasAccess(authInfo api.AuthInfo) error
+	//VerberClient(req *restful.Request) (ResourceVerber, error)
 	//SetTokenManager(manager authApi.TokenManager)
 }
 
