@@ -30,7 +30,7 @@ func (self AuthHandler) Install(ws *restful.WebService) {
 // @Accept  json
 // @Produce  json
 // @Router /login [post]
-// @Param LoginSpec body authApi.LoginSpec true "It contains all the information required to authenticate user."
+// @Param LoginSpec body authApi.LoginSpec true "Information required to authenticate user"
 // @Success 200 {object} authApi.AuthResponse
 func (self AuthHandler) handleLogin(request *restful.Request, resposne *restful.Response) {
 	log.Println("Handle Login")
