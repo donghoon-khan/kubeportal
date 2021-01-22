@@ -53,7 +53,7 @@ func main() {
 	r := chi.NewRouter()
 
 	r.Get("/swagger/*", httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:9090/swagger/doc.json"), //The url pointing to API definition"
+		httpSwagger.URL("http://localhost:9090/swagger/doc.json"),
 	))
 
 	r.Handle("/api/*", apiHandler)
