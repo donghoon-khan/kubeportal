@@ -14,6 +14,11 @@ type AuthHandler struct {
 
 func (self AuthHandler) Install(ws *restful.WebService) {
 	ws.Route(
+		ws.POST("/login").
+			To(self.handleLogin).
+			Reads(authApi.LoginSpec{}).
+			Writes(authApi.AuthResponse{}))
+	ws.Route(
 		ws.GET("/login/skippable").
 			To(self.handleLoginSkippable).
 			Writes(authApi.LoginSkippableResponse{}))
