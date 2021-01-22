@@ -7,16 +7,23 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/swaggo/http-swagger"
-	_ "github.com/swaggo/http-swagger/example/go-chi/docs"
 
 	"github.com/donghoon-khan/kubeportal/src/app/backend/args"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/auth"
+
+	_ "github.com/donghoon-khan/kubeportal/src/app/backend/docs"
+
 	authApi "github.com/donghoon-khan/kubeportal/src/app/backend/auth/api"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/handler"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/kubernetes"
 	k8sApi "github.com/donghoon-khan/kubeportal/src/app/backend/kubernetes/api"
 )
 
+// @title Kubernetes-portal API
+// @version 0.0.1
+// @description This is a Kubernetes-portal api server
+// @host localhost:9090
+// @BasePath /api/v1
 func main() {
 	log.SetOutput(os.Stdout)
 	initArgHolder()
@@ -51,30 +58,6 @@ func main() {
 
 	r.Handle("/api/*", apiHandler)
 
-	//http.Handle("/api/", apiHandler)
-	//http.Handle("/", r)
-
-	/*r := mux.NewRouter()
-	r.Handle("/", apiHandler)
-	http.Handle("/", r)*/
-
-	//r := mux.NewRouter()
-	//r.Handle("/api/", apiHandler)
-	//mux.Handle("/api/", apiHandler)
-
-	/*r := mux.NewRouter()
-	r.Handle("/api/", apiHandler)
-
-	http.Handle("/", r)*/
-
-	/*r.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:9090/swagger/doc.json"), //The url pointing to API definition
-		httpSwagger.DeepLinking(true),
-		httpSwagger.DocExpansion("none"),
-		httpSwagger.DomID("#swagger-ui"),
-	))*/
-
-	//go func() { log.Fatal(http.ListenAndServe(":9090", nil)) }()
 	go func() { log.Fatal(http.ListenAndServe(":9090", r)) }()
 	select {}
 }

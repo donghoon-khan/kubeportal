@@ -24,6 +24,14 @@ func (self AuthHandler) Install(ws *restful.WebService) {
 			Writes(authApi.LoginSkippableResponse{}))
 }
 
+// handleLogin godoc
+// @Tags Authentication
+// @Summary Get JWEToken
+// @Accept  json
+// @Produce  json
+// @Router /login [post]
+// @Param LoginSpec body authApi.LoginSpec true "It contains all the information required to authenticate user."
+// @Success 200 {object} authApi.AuthResponse
 func (self AuthHandler) handleLogin(request *restful.Request, resposne *restful.Response) {
 	log.Println("Handle Login")
 }

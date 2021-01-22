@@ -75,8 +75,8 @@ type LoginSpec struct {
 }
 
 type AuthResponse struct {
-	JWEToken string  `json:"jweToken"`
-	Errors   []error `json:"errors"`
+	JWEToken string   `json:"jweToken"`
+	Errors   []string `json:"errors"`
 }
 
 type TokenRefreshSpec struct {

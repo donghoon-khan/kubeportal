@@ -23,7 +23,74 @@ var doc = `{
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
-    "paths": {}
+    "paths": {
+        "/login": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Get JWEToken",
+                "parameters": [
+                    {
+                        "description": "It contains all the information required to authenticate user.",
+                        "name": "LoginSpec",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.LoginSpec"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.AuthResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "api.AuthResponse": {
+            "type": "object",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "jweToken": {
+                    "type": "string"
+                }
+            }
+        },
+        "api.LoginSpec": {
+            "type": "object",
+            "properties": {
+                "kubeconfig": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        }
+    }
 }`
 
 type swaggerInfo struct {
@@ -37,12 +104,12 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "",
-	Host:        "",
-	BasePath:    "",
+	Version:     "0.0.1",
+	Host:        "localhost:9090",
+	BasePath:    "/api/v1",
 	Schemes:     []string{},
-	Title:       "",
-	Description: "",
+	Title:       "Kubernetes-portal API",
+	Description: "This is a Kubernetes-portal api server",
 }
 
 type s struct{}
