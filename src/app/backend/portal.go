@@ -4,99 +4,67 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
-	"github.com/twinj/uuid"
-)
-
-type User struct {
-	ID       uint64 `json:"id"`
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
-//A sample use
-var user = User{
-	ID:       1,
-	Username: "username",
-	Password: "password",
-}
-
-type TokenDetails struct {
-	AccessToken  string
-	RefreshToken string
-	AccessUuid   string
-	RefreshUuid  string
-	AtExpires    int64
-	RtExpires    int64
-}
-
-var (
-	router = gin.Default()
+	"github.com/donghoon-khan/kubeportal/src/app/backend/args"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/auth"
+	authApi "github.com/donghoon-khan/kubeportal/src/app/backend/auth/api"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/handler"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/kubernetes"
+	k8sApi "github.com/donghoon-khan/kubeportal/src/app/backend/kubernetes/api"
 )
 
 func main() {
-	router.POST("/login", Login)
-	log.Fatal(router.Run(":3000"))
+	log.SetOutput(os.Stdout)
+	initArgHolder()
+
+	if args.Holder.GetApiServerHost() != "" {
+		log.Printf("Using apiserver-host: %s", args.Holder.GetApiServerHost())
+	}
+	if args.Holder.GetKubeConfigFile() != "" {
+		log.Printf("Using kubeconfig file: %s", args.Holder.GetKubeConfigFile())
+	}
+	if args.Holder.GetNamespace() != "" {
+		log.Printf("Using namespace: %s", args.Holder.GetNamespace())
+	}
+	k8sManager := kubernetes.NewKubernetesManager(args.Holder.GetKubeConfigFile(), args.Holder.GetApiServerHost())
+	versionInfo, err := k8sManager.InsecureKubernetes().Discovery().ServerVersion()
+	if err != nil {
+		handleFatalInitError(err)
+	}
+	log.Printf("Successful initial request to the apiserver, version: %s", versionInfo.String())
+
+	authManager := initAuthManager(k8sManager)
+	apiHandler, err := handler.CreateHttpApiHandler(k8sManager, authManager)
+	if err != nil {
+		handleFatalInitError(err)
+	}
+
+	http.Handle("/api/", apiHandler)
+
+	go func() { log.Fatal(http.ListenAndServe(":9090", nil)) }()
+	select {}
 }
 
-func Login(c *gin.Context) {
-	var u User
-	if err := c.ShouldBindJSON(&u); err != nil {
-		c.JSON(http.StatusUnprocessableEntity, "Invalid json provided")
-		return
-	}
-	//compare the user from the request, with the one we defined:
-	if user.Username != u.Username || user.Password != u.Password {
-		c.JSON(http.StatusUnauthorized, "Please provide valid login details")
-		return
-	}
-	ts, err := CreateToken(user.ID)
-	if err != nil {
-		c.JSON(http.StatusUnprocessableEntity, err.Error())
-		return
-	}
+func initAuthManager(k8sManager k8sApi.KubernetesManager) authApi.AuthManager {
 
-	tokens := map[string]string{
-		"access_token":  ts.AccessToken,
-		"refresh_token": ts.RefreshToken,
-	}
-	c.JSON(http.StatusOK, tokens)
+	return auth.NewAuthManager(k8sManager,
+		authApi.AuthenticationModes{authApi.Token: true, authApi.Basic: true},
+		true)
+
 }
 
-func CreateToken(userid uint64) (*TokenDetails, error) {
-	td := &TokenDetails{}
-	td.AtExpires = time.Now().Add(time.Minute * 15).Unix()
-	td.AccessUuid = uuid.NewV4().String()
+func initArgHolder() {
+	builder := args.GetHolderBuilder()
+	builder.SetApiServerHost("https://127.0.0.1:16443")
+	builder.SetApiLogLevel("INFO")
+	builder.SetKubeConfigFile("/var/snap/microk8s/current/credentials/client.config")
+	builder.SetNamespace("default")
+	builder.SetPort(9090)
+}
 
-	td.RtExpires = time.Now().Add(time.Hour * 24 * 7).Unix()
-	td.RefreshUuid = uuid.NewV4().String()
-
-	var err error
-	//Creating Access Token
-	os.Setenv("ACCESS_SECRET", "jdnfksdmfksd") //this should be in an env file
-	atClaims := jwt.MapClaims{}
-	atClaims["authorized"] = true
-	atClaims["access_uuid"] = td.AccessUuid
-	atClaims["user_id"] = userid
-	atClaims["exp"] = td.AtExpires
-	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
-	td.AccessToken, err = at.SignedString([]byte(os.Getenv("ACCESS_SECRET")))
-	if err != nil {
-		return nil, err
-	}
-	//Creating Refresh Token
-	os.Setenv("REFRESH_SECRET", "mcmvmkmsdnfsdmfdsjf") //this should be in an env file
-	rtClaims := jwt.MapClaims{}
-	rtClaims["refresh_uuid"] = td.RefreshUuid
-	rtClaims["user_id"] = userid
-	rtClaims["exp"] = td.RtExpires
-	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, rtClaims)
-	td.RefreshToken, err = rt.SignedString([]byte(os.Getenv("REFRESH_SECRET")))
-	if err != nil {
-		return nil, err
-	}
-	return td, nil
+func handleFatalInitError(err error) {
+	log.Fatalf("Error while initializing connection to Kubernetes apiserver. "+
+		"This most likely means that the cluster is misconfigured (e.g., it has "+
+		"invalid apiserver certificates or service account's configuration) or the "+
+		"--apiserver-host param points to a server that does not exist. Reason: %s\n", err)
 }

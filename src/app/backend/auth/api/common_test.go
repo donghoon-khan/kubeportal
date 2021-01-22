@@ -41,7 +41,6 @@ func TestShouldRejectRequest(t *testing.T) {
 
 	for _, c := range cases {
 		got := ShouldRejectRequest(c.url)
-		t.Fatalf("ShouldRejectRequest(): url %s expected %v, but got %v", c.url, c.expected, got)
 		if !reflect.DeepEqual(got, c.expected) {
 			t.Fatalf("ShouldRejectRequest(): url %s expected %v, but got %v", c.url, c.expected, got)
 		}

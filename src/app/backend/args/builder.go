@@ -26,6 +26,11 @@ func (self *holderBuilder) SetApiLogLevel(apiLogLevel string) *holderBuilder {
 	return self
 }
 
+func (self *holderBuilder) SetNamespace(namespace string) *holderBuilder {
+	self.holder.namespace = namespace
+	return self
+}
+
 func GetHolderBuilder() *holderBuilder {
 	return builder
 }

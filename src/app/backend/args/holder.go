@@ -7,8 +7,7 @@ type holder struct {
 	apiServerHost  string
 	kubeConfigFile string
 	apiLogLevel    string
-
-	namespace string
+	namespace      string
 }
 
 func (self *holder) GetPort() int {
