@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/go-chi/chi"
-	"github.com/swaggo/http-swagger"
+	httpSwagger "github.com/swaggo/http-swagger"
 
 	"github.com/donghoon-khan/kubeportal/src/app/backend/args"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/auth"
@@ -72,9 +72,10 @@ func initAuthManager(k8sManager k8sApi.KubernetesManager) authApi.AuthManager {
 
 func initArgHolder() {
 	builder := args.GetHolderBuilder()
-	builder.SetApiServerHost("https://127.0.0.1:16443")
+	builder.SetApiServerHost("http://127.0.0.1:8001")
 	builder.SetApiLogLevel("INFO")
-	builder.SetKubeConfigFile("/var/snap/microk8s/current/credentials/client.config")
+	builder.SetKubeConfigFile("/Users/kangdonghoon/.kube/config")
+	//builder.SetKubeConfigFile("/var/snap/microk8s/current/credentials/client.config")
 	builder.SetNamespace("default")
 	builder.SetPort(9090)
 }

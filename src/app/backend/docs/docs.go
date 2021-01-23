@@ -38,7 +38,7 @@ var doc = `{
                 "summary": "Get JWEToken",
                 "parameters": [
                     {
-                        "description": "It contains all the information required to authenticate user.",
+                        "description": "Information required to authenticate user",
                         "name": "LoginSpec",
                         "in": "body",
                         "required": true,
@@ -52,6 +52,28 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/api.AuthResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/login/skippable": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "AuthenticationSkippable tells if the Skip button should be enabled or not",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.LoginSkippableResponse"
                         }
                     }
                 }
@@ -70,6 +92,14 @@ var doc = `{
                 },
                 "jweToken": {
                     "type": "string"
+                }
+            }
+        },
+        "api.LoginSkippableResponse": {
+            "type": "object",
+            "properties": {
+                "skippable": {
+                    "type": "boolean"
                 }
             }
         },

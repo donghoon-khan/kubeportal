@@ -29,13 +29,20 @@ func (self AuthHandler) Install(ws *restful.WebService) {
 // @Summary Get JWEToken
 // @Accept  json
 // @Produce  json
-// @Router /login [post]
+// @Router /login [POST]
 // @Param LoginSpec body authApi.LoginSpec true "Information required to authenticate user"
 // @Success 200 {object} authApi.AuthResponse
 func (self AuthHandler) handleLogin(request *restful.Request, resposne *restful.Response) {
 	log.Println("Handle Login")
 }
 
+// handleLoginSkippable godoc
+// @Tags Authentication
+// @Summary AuthenticationSkippable tells if the Skip button should be enabled or not
+// @Accept  json
+// @Produce  json
+// @Router /login/skippable [GET]
+// @Success 200 {object} authApi.LoginSkippableResponse
 func (self *AuthHandler) handleLoginSkippable(request *restful.Request, response *restful.Response) {
 	response.WriteHeaderAndEntity(http.StatusOK, authApi.LoginSkippableResponse{Skippable: self.manager.AuthenticationSkippable()})
 }

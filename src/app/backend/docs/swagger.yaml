@@ -9,6 +9,11 @@ definitions:
       jweToken:
         type: string
     type: object
+  api.LoginSkippableResponse:
+    properties:
+      skippable:
+        type: boolean
+    type: object
   api.LoginSpec:
     properties:
       kubeconfig:
@@ -32,7 +37,7 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: It contains all the information required to authenticate user.
+      - description: Information required to authenticate user
         in: body
         name: LoginSpec
         required: true
@@ -46,6 +51,21 @@ paths:
           schema:
             $ref: '#/definitions/api.AuthResponse'
       summary: Get JWEToken
+      tags:
+      - Authentication
+  /login/skippable:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.LoginSkippableResponse'
+      summary: AuthenticationSkippable tells if the Skip button should be enabled
+        or not
       tags:
       - Authentication
 swagger: "2.0"
