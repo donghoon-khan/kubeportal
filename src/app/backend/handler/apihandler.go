@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/donghoon-khan/kubeportal/src/app/backend/auth"
@@ -21,7 +20,7 @@ type APIHandler struct {
 
 func CreateHttpApiHandler(kManager k8sApi.KubernetesManager,
 	authManager authApi.AuthManager) (http.Handler, error) {
-	apiHandler := APIHandler{kManager: kManager}
+	//apiHandler := APIHandler{kManager: kManager}
 	wsContainer := restful.NewContainer()
 	wsContainer.EnableContentEncoding(true)
 
@@ -32,25 +31,21 @@ func CreateHttpApiHandler(kManager k8sApi.KubernetesManager,
 		Produces(restful.MIME_JSON)
 	wsContainer.Add(apiV1Ws)
 
-	apiV1Ws.Route(
-		apiV1Ws.GET("/test").
-			To(apiHandler.handleTest))
-
 	authHandler := auth.NewAuthHandler(authManager)
 	authHandler.Install(apiV1Ws)
 
 	/*apiV1Ws.Route(
+		apiV1Ws.GET("/namespace").
+			To(apiHandler.handleGetNamespaces).
+			Writes(namespace.NamespaceList{}))
+
+	apiV1Ws.Route(
 	apiV1Ws.POST("/appdeployment").
 		To(apiHandler.handleDeploy).
 		Reads(deployment.AppDepl	oymentSpec{}).
 		Writes(deployment.AppDeploymentSpec{}))*/
 
 	return wsContainer, nil
-}
-
-func (apiHandler *APIHandler) handleTest(request *restful.Request, response *restful.Response) {
-	log.Println("handle TEST")
-	return
 }
 
 func (apiHandler *APIHandler) handleDeploy(request *restful.Request, response *restful.Response) {
@@ -72,4 +67,14 @@ func (apiHandler *APIHandler) handleDeploy(request *restful.Request, response *r
 	}*/
 
 	//response.WriteHeaderAndEntity(http.StatusCreated, appDeploymentSpec)
+}
+
+func (apiHandler *APIHandler) handleGetNamespaces(request *restful.Request, response *restful.Response) {
+	/*k8sClient, err := apiHandler.kManager.Kubernetes(request)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+
+	dataSelect := parser.ParseDataSelectPathParameter(request)*/
 }

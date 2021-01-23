@@ -8,7 +8,7 @@ require (
 	github.com/go-chi/chi v4.0.2+incompatible
 	github.com/go-openapi/spec v0.20.1 // indirect
 	github.com/go-openapi/swag v0.19.13 // indirect
-	github.com/russross/blackfriday/v2 v2.1.0 // indirect
+	github.com/kubernetes/dashboard v1.10.1
 	github.com/swaggo/http-swagger v1.0.0
 	github.com/swaggo/swag v1.7.0
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
