@@ -18,6 +18,13 @@ func (iHandler IntegrationHandler) Install(ws *restful.WebService) {
 			Writes(api.IntegrationState{}))
 }
 
+// handleGetState godoc
+// @Tags integration
+// @Summary Return integration state
+// @Accept  json
+// @Produce  json
+// @Router /integration/{name}/state [GET]
+// @Success 200 {object} api.IntegrationState
 func (iHandler IntegrationHandler) handleGetState(request *restful.Request, response *restful.Response) {
 	iName := request.PathParameter("name")
 	state, err := iHandler.iManager.GetState(api.IntegrationID(iName))

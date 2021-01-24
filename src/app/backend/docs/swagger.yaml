@@ -9,6 +9,15 @@ definitions:
       jweToken:
         type: string
     type: object
+  api.IntegrationState:
+    properties:
+      connected:
+        type: boolean
+      error:
+        type: string
+      lastChecked:
+        type: string
+    type: object
   api.LoginSkippableResponse:
     properties:
       skippable:
@@ -32,6 +41,20 @@ info:
   title: Kubernetes-portal API
   version: 0.0.1
 paths:
+  /integration/{name}/state:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.IntegrationState'
+      summary: Return integration state
+      tags:
+      - integration
   /login:
     post:
       consumes:
@@ -50,7 +73,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/api.AuthResponse'
-      summary: Get JWEToken
+      summary: Return JWEToken
       tags:
       - Authentication
   /login/skippable:
@@ -64,8 +87,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/api.LoginSkippableResponse'
-      summary: AuthenticationSkippable tells if the Skip button should be enabled
-        or not
+      summary: Return the authentication skip should be enabled or not
       tags:
       - Authentication
 swagger: "2.0"

@@ -24,6 +24,28 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/integration/{name}/state": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "integration"
+                ],
+                "summary": "Return integration state",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.IntegrationState"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "consumes": [
@@ -35,7 +57,7 @@ var doc = `{
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "Get JWEToken",
+                "summary": "Return JWEToken",
                 "parameters": [
                     {
                         "description": "Information required to authenticate user",
@@ -68,7 +90,7 @@ var doc = `{
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "AuthenticationSkippable tells if the Skip button should be enabled or not",
+                "summary": "Return the authentication skip should be enabled or not",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -91,6 +113,20 @@ var doc = `{
                     }
                 },
                 "jweToken": {
+                    "type": "string"
+                }
+            }
+        },
+        "api.IntegrationState": {
+            "type": "object",
+            "properties": {
+                "connected": {
+                    "type": "boolean"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "lastChecked": {
                     "type": "string"
                 }
             }
