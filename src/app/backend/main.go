@@ -6,12 +6,10 @@ import (
 	"os"
 
 	"github.com/go-chi/chi"
-	"github.com/swaggo/http-swagger"
+	"github.com/go-openapi/runtime/middleware"
 
 	"github.com/donghoon-khan/kubeportal/src/app/backend/args"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/auth"
-
-	_ "github.com/donghoon-khan/kubeportal/src/app/backend/docs"
 
 	authApi "github.com/donghoon-khan/kubeportal/src/app/backend/auth/api"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/handler"
@@ -52,14 +50,25 @@ func main() {
 
 	r := chi.NewRouter()
 
-	r.Get("/swagger/*", httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:9090/swagger/doc.json"),
-	))
-
+	opts := middleware.RedocOpts{SpecURL: "/swagger.yaml"}
+	sh := middleware.Redoc(opts, nil)
+	r.Handle("/docs", sh)
+	r.Handle("/swagger.yaml", http.FileServer(http.Dir("./swagger/")))
+	//r.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
+	/*r.Get("/swagger/*", httpSwagger.Handler(
+		httpSwagger.URL("http://localhost:9090/swagger/doc.json"), //The url pointing to API definition"
+	))*/
 	r.Handle("/api/*", apiHandler)
 
 	go func() { log.Fatal(http.ListenAndServe(":9090", r)) }()
 	select {}
+}
+
+func aamain() {
+	//http.Handle("/", http.FileServer(http.Dir("./public")))
+	//http.Handle("/static", http.FileServer(http.Dir("wwwroot")))
+	//http.ListenAndServe(":5000", nil)
+	http.ListenAndServe(":9090", http.FileServer(http.Dir("./swagger")))
 }
 
 func initAuthManager(k8sManager k8sApi.KubernetesManager) authApi.AuthManager {
@@ -72,9 +81,10 @@ func initAuthManager(k8sManager k8sApi.KubernetesManager) authApi.AuthManager {
 
 func initArgHolder() {
 	builder := args.GetHolderBuilder()
-	builder.SetApiServerHost("https://127.0.0.1:16443")
+	builder.SetApiServerHost("http://127.0.0.1:8001")
 	builder.SetApiLogLevel("INFO")
-	builder.SetKubeConfigFile("/var/snap/microk8s/current/credentials/client.config")
+	builder.SetKubeConfigFile("/Users/kangdonghoon/.kube/config")
+	//builder.SetKubeConfigFile("/var/snap/microk8s/current/credentials/client.config")
 	builder.SetNamespace("default")
 	builder.SetPort(9090)
 }

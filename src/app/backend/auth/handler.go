@@ -12,32 +12,45 @@ type AuthHandler struct {
 	manager authApi.AuthManager
 }
 
-func (self AuthHandler) Install(ws *restful.WebService) {
+func (authHandler AuthHandler) Install(ws *restful.WebService) {
 	ws.Route(
 		ws.POST("/login").
-			To(self.handleLogin).
+			To(authHandler.handleLogin).
 			Reads(authApi.LoginSpec{}).
 			Writes(authApi.AuthResponse{}))
 	ws.Route(
 		ws.GET("/login/skippable").
-			To(self.handleLoginSkippable).
+			To(authHandler.handleLoginSkippable).
 			Writes(authApi.LoginSkippableResponse{}))
 }
 
 // handleLogin godoc
 // @Tags Authentication
-// @Summary Get JWEToken
+// @Summary Return JWEToken
 // @Accept  json
 // @Produce  json
+<<<<<<< HEAD
 // @Router /login [post]
 // @Param LoginSpec body authApi.LoginSpec true "The information required to authenticate user"
+=======
+// @Router /login [POST]
+// @Param LoginSpec body authApi.LoginSpec true "Information required to authenticate user"
+>>>>>>> dev/k8s
 // @Success 200 {object} authApi.AuthResponse
-func (self AuthHandler) handleLogin(request *restful.Request, resposne *restful.Response) {
+func (authHandler AuthHandler) handleLogin(request *restful.Request, resposne *restful.Response) {
 	log.Println("Handle Login")
 }
 
-func (self *AuthHandler) handleLoginSkippable(request *restful.Request, response *restful.Response) {
-	response.WriteHeaderAndEntity(http.StatusOK, authApi.LoginSkippableResponse{Skippable: self.manager.AuthenticationSkippable()})
+// handleLoginSkippable godoc
+// @Tags Authentication
+// @Summary Return the authentication skip should be enabled or not
+// @Accept  json
+// @Produce  json
+// @Router /login/skippable [GET]
+// @Success 200 {object} authApi.LoginSkippableResponse
+func (authHandler *AuthHandler) handleLoginSkippable(request *restful.Request, response *restful.Response) {
+	response.WriteHeaderAndEntity(http.StatusOK,
+		authApi.LoginSkippableResponse{Skippable: authHandler.manager.AuthenticationSkippable()})
 }
 
 func NewAuthHandler(manager authApi.AuthManager) AuthHandler {
