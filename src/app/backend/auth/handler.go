@@ -29,13 +29,8 @@ func (authHandler AuthHandler) Install(ws *restful.WebService) {
 // @Summary Return JWEToken
 // @Accept  json
 // @Produce  json
-<<<<<<< HEAD
-// @Router /login [post]
-// @Param LoginSpec body authApi.LoginSpec true "The information required to authenticate user"
-=======
 // @Router /login [POST]
 // @Param LoginSpec body authApi.LoginSpec true "Information required to authenticate user"
->>>>>>> dev/k8s
 // @Success 200 {object} authApi.AuthResponse
 func (authHandler AuthHandler) handleLogin(request *restful.Request, resposne *restful.Response) {
 	log.Println("Handle Login")

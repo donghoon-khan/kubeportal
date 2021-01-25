@@ -53,7 +53,7 @@ func main() {
 	opts := middleware.RedocOpts{SpecURL: "/swagger.yaml"}
 	sh := middleware.Redoc(opts, nil)
 	r.Handle("/docs", sh)
-	r.Handle("/swagger.yaml", http.FileServer(http.Dir("./swagger/")))
+	r.Handle("/swagger.yaml", http.FileServer(http.Dir("./docs/")))
 	r.Handle("/api/*", apiHandler)
 
 	go func() { log.Fatal(http.ListenAndServe(":9090", r)) }()
