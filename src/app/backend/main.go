@@ -6,12 +6,10 @@ import (
 	"os"
 
 	"github.com/go-chi/chi"
-	httpSwagger "github.com/swaggo/http-swagger"
+	"github.com/go-openapi/runtime/middleware"
 
 	"github.com/donghoon-khan/kubeportal/src/app/backend/args"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/auth"
-
-	_ "github.com/donghoon-khan/kubeportal/src/app/backend/docs"
 
 	authApi "github.com/donghoon-khan/kubeportal/src/app/backend/auth/api"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/handler"
@@ -52,14 +50,25 @@ func main() {
 
 	r := chi.NewRouter()
 
-	r.Get("/swagger/*", httpSwagger.Handler(
+	opts := middleware.RedocOpts{SpecURL: "/swagger.yaml"}
+	sh := middleware.Redoc(opts, nil)
+	r.Handle("/docs", sh)
+	r.Handle("/swagger.yaml", http.FileServer(http.Dir("./swagger/")))
+	//r.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
+	/*r.Get("/swagger/*", httpSwagger.Handler(
 		httpSwagger.URL("http://localhost:9090/swagger/doc.json"), //The url pointing to API definition"
-	))
-
+	))*/
 	r.Handle("/api/*", apiHandler)
 
 	go func() { log.Fatal(http.ListenAndServe(":9090", r)) }()
 	select {}
+}
+
+func aamain() {
+	//http.Handle("/", http.FileServer(http.Dir("./public")))
+	//http.Handle("/static", http.FileServer(http.Dir("wwwroot")))
+	//http.ListenAndServe(":5000", nil)
+	http.ListenAndServe(":9090", http.FileServer(http.Dir("./swagger")))
 }
 
 func initAuthManager(k8sManager k8sApi.KubernetesManager) authApi.AuthManager {
