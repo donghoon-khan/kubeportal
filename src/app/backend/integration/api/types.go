@@ -17,5 +17,5 @@ type Integration interface {
 type IntegrationState struct {
 	Connected   bool    `json:"connected`
 	LastChecked v1.Time `json:"lastChecked"`
-	Error       error   `json:"error"`
+	Error       error   `json:"error" swaggertype:"string"`
 }
