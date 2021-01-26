@@ -34,12 +34,12 @@ func CreateHttpApiHandler(kManager k8sApi.KubernetesManager,
 	authHandler := auth.NewAuthHandler(authManager)
 	authHandler.Install(apiV1Ws)
 
-	/*apiV1Ws.Route(
-		apiV1Ws.GET("/namespace").
-			To(apiHandler.handleGetNamespaces).
-			Writes(namespace.NamespaceList{}))
+	//apiV1Ws.Route(
+	//apiV1Ws.GET("/namespace").
+	//To(apiHandler.handleGetNamespaces).
+	//Writes(namespace.NamespaceList{}))
 
-	apiV1Ws.Route(
+	/*apiV1Ws.Route(
 	apiV1Ws.POST("/appdeployment").
 		To(apiHandler.handleDeploy).
 		Reads(deployment.AppDepl	oymentSpec{}).
