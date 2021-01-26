@@ -65,7 +65,7 @@ type ListMeta struct {
 	TotalItems int `json:"totalItems"`
 }
 
-func NewK8sObjectMeta(k8SObjectMeta metaV1.ObjectMeta) ObjectMeta {
+func NewObjectMeta(k8SObjectMeta metaV1.ObjectMeta) ObjectMeta {
 	return ObjectMeta{
 		Name:              k8SObjectMeta.Name,
 		Namespace:         k8SObjectMeta.Namespace,

@@ -5,6 +5,6 @@ type ResourceStatus struct {
 	Pending     int `json:"pending"`
 	Failed      int `json:"failed"`
 	Succeeded   int `json:"succeeded"`
-	Unknows     int `json:"unknown`
+	Unknown     int `json:"unknown`
 	Terminating int `json:"terminating"`
 }
