@@ -10,15 +10,9 @@ func TestIntsCompare(t *testing.T) {
 	cases := []struct {
 		a, b, expected int
 	}{
-		{
-			5, 1, 1,
-		},
-		{
-			5, 5, 0,
-		},
-		{
-			1, 3, -1,
-		},
+		{5, 1, 1},
+		{5, 5, 0},
+		{1, 3, -1},
 	}
 	for _, c := range cases {
 		actual := intsCompare(c.a, c.b)
@@ -33,15 +27,9 @@ func TestInts64Compare(t *testing.T) {
 		a, b     int64
 		expected int
 	}{
-		{
-			5, 1, 1,
-		},
-		{
-			5, 5, 0,
-		},
-		{
-			1, 3, -1,
-		},
+		{5, 1, 1},
+		{5, 5, 0},
+		{1, 3, -1},
 	}
 	for _, c := range cases {
 		actual := ints64Compare(c.a, c.b)
@@ -131,13 +119,13 @@ func TestStdComparableRFC3339Timestamp(t *testing.T) {
 		expected bool
 	}{
 		{
-			StdComparableRFC3339Timestamp("2011-08-30T13:22:53.108Z"),
-			StdComparableRFC3339Timestamp("2011-08-30T13:22:53.108Z"),
+			StdComparableRFC3339Timestamp("2021-01-30T13:22:53.108Z"),
+			StdComparableRFC3339Timestamp("2021-01-30T13:22:53.108Z"),
 			true,
 		},
 		{
-			StdComparableRFC3339Timestamp("2011-08-30T13:22:53.108Z"),
-			StdComparableRFC3339Timestamp("2018-08-30T13:22:53.108Z"),
+			StdComparableRFC3339Timestamp("2021-01-30T13:22:53.108Z"),
+			StdComparableRFC3339Timestamp("2020-01-30T13:22:53.108Z"),
 			false,
 		},
 	}
