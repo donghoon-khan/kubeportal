@@ -9,13 +9,10 @@ import (
 	"testing"
 
 	"github.com/donghoon-khan/kubeportal/src/app/backend/args"
-	"github.com/donghoon-khan/kubeportal/src/app/backend/auth"
-	authApi "github.com/donghoon-khan/kubeportal/src/app/backend/auth/api"
-	"github.com/donghoon-khan/kubeportal/src/app/backend/kubernetes"
 	"github.com/emicklei/go-restful"
 )
 
-func TestCreateHttpApiHandler(t *testing.T) {
+/*func TestCreateHttpApiHandler(t *testing.T) {
 
 	kManager := kubernetes.NewKubernetesManager("", "http://localhost:8080")
 	aManager := auth.NewAuthManager(kManager, authApi.AuthenticationModes{}, true)
@@ -25,15 +22,15 @@ func TestCreateHttpApiHandler(t *testing.T) {
 		t.Fatal("CreateHttpApiHandler() cannot create HTTP API handler")
 	}
 
-	/*cManager := client.NewClientManager("", "http://127.0.0.1:8080")
+	cManager := client.NewClientManager("", "http://127.0.0.1:8080")
 	if cManager == nil {
 		t.Fatal("error")
-	}*/
-	//_, err := handler.CreateHttpApiHandler(cManager)
-	/*if err != nil {
+	}
+	_, err := handler.CreateHttpApiHandler(cManager)
+	if err != nil {
 		t.Fatal("CreateHttpApiHandler() cannot create HTTP API handler")
-	}*/
-}
+	}
+}*/
 
 func TestMapUrlToResource(t *testing.T) {
 	cases := []struct {

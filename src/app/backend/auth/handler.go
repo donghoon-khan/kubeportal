@@ -26,7 +26,8 @@ func (authHandler AuthHandler) Install(ws *restful.WebService) {
 
 // handleLogin godoc
 // @Tags Authentication
-// @Summary Return JWEToken
+// @Summary Login
+// @Description Returns a JWEToken by login spec
 // @Accept  json
 // @Produce  json
 // @Router /login [POST]
@@ -38,7 +39,8 @@ func (authHandler AuthHandler) handleLogin(request *restful.Request, resposne *r
 
 // handleLoginSkippable godoc
 // @Tags Authentication
-// @Summary Return the authentication skip should be enabled or not
+// @Summary Login skippable
+// @Description Returns a authentication skip should be enabled or not
 // @Accept  json
 // @Produce  json
 // @Router /login/skippable [GET]

@@ -10,6 +10,7 @@ import (
 
 	"github.com/donghoon-khan/kubeportal/src/app/backend/args"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/auth"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/integration"
 
 	authApi "github.com/donghoon-khan/kubeportal/src/app/backend/auth/api"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/handler"
@@ -43,7 +44,9 @@ func main() {
 	log.Printf("Successful initial request to the apiserver, version: %s", versionInfo.String())
 
 	authManager := initAuthManager(k8sManager)
-	apiHandler, err := handler.CreateHttpApiHandler(k8sManager, authManager)
+	iManager := integration.NewIntegrationManager(k8sManager)
+
+	apiHandler, err := handler.CreateHttpApiHandler(iManager, k8sManager, authManager)
 	if err != nil {
 		handleFatalInitError(err)
 	}

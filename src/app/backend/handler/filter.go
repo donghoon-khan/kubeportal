@@ -12,6 +12,7 @@ import (
 	"github.com/emicklei/go-restful"
 
 	"github.com/donghoon-khan/kubeportal/src/app/backend/args"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
 	k8sapi "github.com/donghoon-khan/kubeportal/src/app/backend/kubernetes/api"
 )
 
@@ -24,8 +25,14 @@ const (
 func InstallFilters(ws *restful.WebService, manager k8sapi.KubernetesManager) {
 	/*ws.Filter(requestAndResponseLogger)
 	ws.Filter(metricsFilter)
-	ws.Filter(validateXSRFFilter(manager.CSRFKey()))
-	ws.Filter(restrictedResourcesFilter)*/
+	ws.Filter(validateXSRFFilter(manager.CSRFKey()))*/
+	//ws.Filter(restrictedResourcesFilter)
+}
+
+func restrictedResourcesFilter(request *restful.Request, response *restful.Response, chain *restful.FilterChain) {
+
+	err := errors.NewUnauthorized(errors.MsgDashboardExclusiveResourceError)
+	response.WriteHeaderAndEntity(int(err.ErrStatus.Code), err.Error())
 }
 
 func requestAndResponseLogger(request *restful.Request, response *restful.Response,
