@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/donghoon-khan/kubeportal/src/app/backend/auth"
 	authApi "github.com/donghoon-khan/kubeportal/src/app/backend/auth/api"
@@ -11,6 +12,8 @@ import (
 	k8sApi "github.com/donghoon-khan/kubeportal/src/app/backend/kubernetes/api"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/clusterrole"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/clusterrolebinding"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/common"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/configmap"
 	"github.com/emicklei/go-restful"
 )
 
@@ -53,7 +56,7 @@ func CreateHttpApiHandler(
 			To(apiHandler.handleGetClusterRoleList).
 			Writes(clusterrole.ClusterRoleList{}))
 	apiV1Ws.Route(
-		apiV1Ws.GET("/clusterrole/{name}").
+		apiV1Ws.GET("/clusterrole/{clusterrole}").
 			To(apiHandler.handleGetClusterRoleDetail).
 			Writes(clusterrole.ClusterRoleDetail{}))
 
@@ -63,9 +66,23 @@ func CreateHttpApiHandler(
 			To(apiHandler.handleGetClusterRoleBindingList).
 			Writes(clusterrolebinding.ClusterRoleBindingList{}))
 	apiV1Ws.Route(
-		apiV1Ws.GET("/clusterrolebinding/{name}").
+		apiV1Ws.GET("/clusterrolebinding/{clusterrolebinding}").
 			To(apiHandler.handleGetClusterRoleBindingDetail).
 			Writes(clusterrolebinding.ClusterRoleBindingDetail{}))
+
+	/* ConfigMap */
+	apiV1Ws.Route(
+		apiV1Ws.GET("/configmap").
+			To(apiHandler.handleGetConfigMapListFromCluster).
+			Writes(configmap.ConfigMapList{}))
+	apiV1Ws.Route(
+		apiV1Ws.GET("/configmap/{namespace}").
+			To(apiHandler.handleGetConfigMapListFromNamespace).
+			Writes(configmap.ConfigMapList{}))
+	apiV1Ws.Route(
+		apiV1Ws.GET("/configmap/{namespace}/{configmap}").
+			To(apiHandler.handleGetConfigMapDetail).
+			Writes(configmap.ConfigMapDetail{}))
 
 	return wsContainer, nil
 }
@@ -101,8 +118,8 @@ func (apiHandler *APIHandler) handleGetClusterRoleList(request *restful.Request,
 // @Description Returns the Detail of ClusterRole from kubernetes cluster
 // @Accept  json
 // @Produce  json
-// @Router /clusterrole/{name} [GET]
-// @Param name path string true "Name of ClusterRole"
+// @Router /clusterrole/{clusterrole} [GET]
+// @Param clusterrole path string true "Name of ClusterRole"
 // @Success 200 {object} clusterrole.ClusterRoleDetail
 // @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetClusterRoleDetail(request *restful.Request, response *restful.Response) {
@@ -111,7 +128,7 @@ func (apiHandler *APIHandler) handleGetClusterRoleDetail(request *restful.Reques
 		errors.HandleInternalError(response, err)
 	}
 
-	name := request.PathParameter("name")
+	name := request.PathParameter("clusterrole")
 	result, err := clusterrole.GetClusterRoleDetail(k8sClient, name)
 	if err != nil {
 		errors.HandleInternalError(response, err)
@@ -151,8 +168,8 @@ func (apiHandler *APIHandler) handleGetClusterRoleBindingList(request *restful.R
 // @Description Returns the Detail of ClusterRoleBinding from kubernetes cluster
 // @Accept  json
 // @Produce  json
-// @Router /clusterrolebinding/{name} [GET]
-// @Param name path string true "Name of ClusterRoleBinding"
+// @Router /clusterrolebinding/{clusterrolebinding} [GET]
+// @Param clusterrolebinding path string true "Name of ClusterRoleBinding"
 // @Success 200 {object} clusterrolebinding.ClusterRoleBindingDetail
 // @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetClusterRoleBindingDetail(request *restful.Request, response *restful.Response) {
@@ -162,11 +179,104 @@ func (apiHandler *APIHandler) handleGetClusterRoleBindingDetail(request *restful
 		return
 	}
 
-	name := request.PathParameter("name")
+	name := request.PathParameter("clusterrolebinding")
 	result, err := clusterrolebinding.GetClusterRoleBindingDetail(k8sClient, name)
 	if err != nil {
 		errors.HandleInternalError(response, err)
 		return
 	}
 	response.WriteHeaderAndEntity(http.StatusOK, result)
+}
+
+// handleGetConfigMapListFromCluster godoc
+// @Tags Kubernetes
+// @Summary List of ConfigMap from cluster
+// @Description Returns the list of ConfigMap from kubernetes cluster
+// @Accept  json
+// @Produce  json
+// @Router /configmap [GET]
+// @Success 200 {object} configmap.ConfigMapList
+// @Failure 401 {string} string "Unauthorized"
+func (apiHandler *APIHandler) handleGetConfigMapListFromCluster(request *restful.Request, response *restful.Response) {
+	k8sClient, err := apiHandler.kManager.Kubernetes(request)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+
+	dataSelect := parser.ParseDataSelectPathParameter(request)
+	result, err := configmap.GetConfigMapList(k8sClient, common.NewNamespaceQuery(nil), dataSelect)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+	response.WriteHeaderAndEntity(http.StatusOK, result)
+}
+
+// handleGetConfigMapListFromNamespace godoc
+// @Tags Kubernetes
+// @Summary List of ConfigMap from namespace
+// @Description Returns the list of ConfigMap from from namespace
+// @Accept  json
+// @Produce  json
+// @Router /configmap/{namespace} [GET]
+// @Param namespace path string true "Namespace"
+// @Success 200 {object} configmap.ConfigMapList
+// @Failure 401 {string} string "Unauthorized"
+func (apiHandler *APIHandler) handleGetConfigMapListFromNamespace(request *restful.Request, response *restful.Response) {
+	k8sClient, err := apiHandler.kManager.Kubernetes(request)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+
+	namespace := parseNamespacePathParameter(request)
+	dataSelect := parser.ParseDataSelectPathParameter(request)
+	result, err := configmap.GetConfigMapList(k8sClient, namespace, dataSelect)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+	response.WriteHeaderAndEntity(http.StatusOK, result)
+}
+
+// handleGetConfiMapDetail godoc
+// @Tags Kubernetes
+// @Summary Detail of ConfigMap
+// @Description Returns the Detail of ConfigMap from namespace
+// @Accept  json
+// @Produce  json
+// @Router /configmap/{namespace}/{configmap} [GET]
+// @Param namespace path string true "Namespace"
+// @Param configmap path string true "Name of ConfigMap"
+// @Success 200 {object} configmap.ConfigMapDetail
+// @Failure 401 {string} string "Unauthorized"
+func (apiHandler *APIHandler) handleGetConfigMapDetail(request *restful.Request, response *restful.Response) {
+	k8sClient, err := apiHandler.kManager.Kubernetes(request)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+
+	namespace := request.PathParameter("namespace")
+	name := request.PathParameter("configmap")
+	result, err := configmap.GetConfigMapDetail(k8sClient, namespace, name)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+	response.WriteHeaderAndEntity(http.StatusOK, result)
+}
+
+func parseNamespacePathParameter(request *restful.Request) *common.NamespaceQuery {
+	namespace := request.PathParameter("namespace")
+	namespaces := strings.Split(namespace, ",")
+	var nonEmptyNamespaces []string
+	for _, n := range namespaces {
+		n = strings.Trim(n, " ")
+		if len(n) > 0 {
+			nonEmptyNamespaces = append(nonEmptyNamespaces, n)
+		}
+	}
+	return common.NewNamespaceQuery(nonEmptyNamespaces)
 }

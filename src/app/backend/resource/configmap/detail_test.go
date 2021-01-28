@@ -1,0 +1,37 @@
+package configmap
+
+import (
+	"reflect"
+	"testing"
+
+	"github.com/donghoon-khan/kubeportal/src/app/backend/api"
+	v1 "k8s.io/api/core/v1"
+	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+func TestGetConfigMapDetail(t *testing.T) {
+	cases := []struct {
+		configMaps *v1.ConfigMap
+		expected   *ConfigMapDetail
+	}{
+		{
+			&v1.ConfigMap{
+				Data: map[string]string{"app": "my-name"}, ObjectMeta: metaV1.ObjectMeta{Name: "foo"},
+			},
+			&ConfigMapDetail{
+				ConfigMap: ConfigMap{
+					TypeMeta:   api.TypeMeta{Kind: "configmap"},
+					ObjectMeta: api.ObjectMeta{Name: "foo"},
+				},
+				Data: map[string]string{"app": "my-name"},
+			},
+		},
+	}
+	for _, c := range cases {
+		actual := getConfigMapDetail(c.configMaps)
+		if !reflect.DeepEqual(actual, c.expected) {
+			t.Errorf("getConfigMapDetail(%#v) == \n%#v\nexpected \n%#v\n",
+				c.configMaps, actual, c.expected)
+		}
+	}
+}
