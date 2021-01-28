@@ -10,6 +10,7 @@ import (
 	"github.com/donghoon-khan/kubeportal/src/app/backend/integration"
 	k8sApi "github.com/donghoon-khan/kubeportal/src/app/backend/kubernetes/api"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/clusterrole"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/clusterrolebinding"
 	"github.com/emicklei/go-restful"
 )
 
@@ -46,6 +47,7 @@ func CreateHttpApiHandler(
 	authHandler := auth.NewAuthHandler(authManager)
 	authHandler.Install(apiV1Ws)
 
+	/* ClusterRole */
 	apiV1Ws.Route(
 		apiV1Ws.GET("/clusterrole").
 			To(apiHandler.handleGetClusterRoleList).
@@ -55,16 +57,15 @@ func CreateHttpApiHandler(
 			To(apiHandler.handleGetClusterRoleDetail).
 			Writes(clusterrole.ClusterRoleDetail{}))
 
-	//apiV1Ws.Route(
-	//apiV1Ws.GET("/namespace").
-	//To(apiHandler.handleGetNamespaces).
-	//Writes(namespace.NamespaceList{}))
-
-	/*apiV1Ws.Route(
-	apiV1Ws.POST("/appdeployment").
-		To(apiHandler.handleDeploy).
-		Reads(deployment.AppDepl	oymentSpec{}).
-		Writes(deployment.AppDeploymentSpec{}))*/
+	/* ClusterRoleBinding */
+	apiV1Ws.Route(
+		apiV1Ws.GET("/clusterrolebinding").
+			To(apiHandler.handleGetClusterRoleBindingList).
+			Writes(clusterrolebinding.ClusterRoleBindingList{}))
+	apiV1Ws.Route(
+		apiV1Ws.GET("/clusterrolebinding/{name}").
+			To(apiHandler.handleGetClusterRoleBindingDetail).
+			Writes(clusterrolebinding.ClusterRoleBindingDetail{}))
 
 	return wsContainer, nil
 }
@@ -101,6 +102,7 @@ func (apiHandler *APIHandler) handleGetClusterRoleList(request *restful.Request,
 // @Accept  json
 // @Produce  json
 // @Router /clusterrole/{name} [GET]
+// @Param name path string true "Name of ClusterRole"
 // @Success 200 {object} clusterrole.ClusterRoleDetail
 // @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetClusterRoleDetail(request *restful.Request, response *restful.Response) {
@@ -118,33 +120,53 @@ func (apiHandler *APIHandler) handleGetClusterRoleDetail(request *restful.Reques
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-func (apiHandler *APIHandler) handleDeploy(request *restful.Request, response *restful.Response) {
-	/*k8sClient, err := apiHandler.kManager.Kubernetes(request)
+// handleGetClusterRoleBindingList godoc
+// @Tags Kubernetes
+// @Summary List of ClusterRoleBinding
+// @Description Returns the list of ClusterRoleBinding from kubernetes cluster
+// @Accept  json
+// @Produce  json
+// @Router /clusterrolebinding [GET]
+// @Success 200 {object} clusterrolebinding.ClusterRoleBindingList
+// @Failure 401 {string} string "Unauthorized"
+func (apiHandler *APIHandler) handleGetClusterRoleBindingList(request *restful.Request, response *restful.Response) {
+	k8sClient, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
-		errors.HandleInternalError(response, err)
-		return
-	}*/
-
-	/*appDeploymentSpec := new(deployment.AppDeploymentSpec)
-	if err := request.ReadEntity(appDeploymentSpec); err != nil {
 		errors.HandleInternalError(response, err)
 		return
 	}
 
-	if err := deployment.DeployApp(appDeploymentSpec, k8sClient); err != nil {
+	dataSelect := parser.ParseDataSelectPathParameter(request)
+	result, err := clusterrolebinding.GetClusterRoleBindingList(k8sClient, dataSelect)
+	if err != nil {
 		errors.HandleInternalError(response, err)
 		return
-	}*/
-
-	//response.WriteHeaderAndEntity(http.StatusCreated, appDeploymentSpec)
+	}
+	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-func (apiHandler *APIHandler) handleGetNamespaces(request *restful.Request, response *restful.Response) {
-	/*k8sClient, err := apiHandler.kManager.Kubernetes(request)
+// handleGetClusterRoleBindingDetail godoc
+// @Tags Kubernetes
+// @Summary Detail of ClusterRoleBinding
+// @Description Returns the Detail of ClusterRoleBinding from kubernetes cluster
+// @Accept  json
+// @Produce  json
+// @Router /clusterrolebinding/{name} [GET]
+// @Param name path string true "Name of ClusterRoleBinding"
+// @Success 200 {object} clusterrolebinding.ClusterRoleBindingDetail
+// @Failure 401 {string} string "Unauthorized"
+func (apiHandler *APIHandler) handleGetClusterRoleBindingDetail(request *restful.Request, response *restful.Response) {
+	k8sClient, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
 		errors.HandleInternalError(response, err)
 		return
 	}
 
-	dataSelect := parser.ParseDataSelectPathParameter(request)*/
+	name := request.PathParameter("name")
+	result, err := clusterrolebinding.GetClusterRoleBindingDetail(k8sClient, name)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
