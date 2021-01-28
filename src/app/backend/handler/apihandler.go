@@ -337,8 +337,8 @@ func (apiHandler *APIHandler) handleGetPersistentVolumeClaimList(request *restfu
 
 // handleGetPersistentVolumeClaimDetail godoc
 // @Tags Kubernetes
-// @Summary Get detail of PersistentVolumeClaim from namespace
-// @Description Returns a detail of PersistentVolumeClaim from kubernetes namespace
+// @Summary Get detail of PersistentVolumeClaim
+// @Description Returns a detail of PersistentVolumeClaim
 // @Accept  json
 // @Produce  json
 // @Router /persistenvolumeclaim/{namespace}/{persistentvolumeclaim} [GET]
