@@ -158,12 +158,10 @@ func (dataSelector *DataSelector) Paginate() *DataSelector {
 	pQuery := dataSelector.DataSelectQuery.PaginationQuery
 	dataList := dataSelector.GenericDataList
 	startIndex, endIndex := pQuery.GetPaginationSettings(len(dataList))
-
-	// Return all items if provided settings do not meet requirements
 	if !pQuery.IsValidPagination() {
 		return dataSelector
 	}
-	// Return no items if requested page does not exist
+
 	if !pQuery.IsPageAvailable(len(dataSelector.GenericDataList), startIndex) {
 		dataSelector.GenericDataList = []DataCell{}
 		return dataSelector
@@ -190,4 +188,43 @@ func GenericDataSelectWithFilter(dataList []DataCell, dsQuery *DataSelectQuery) 
 	filteredTotal := len(filtered.GenericDataList)
 	processed := filtered.Sort().Paginate()
 	return processed.GenericDataList, filteredTotal
+}
+
+func GenericDataSelectWithMetrics(dataList []DataCell, dsQuery *DataSelectQuery,
+	cachedResources *metricApi.CachedResources, metricClient metricApi.MetricClient) (
+	[]DataCell, metricApi.MetricPromises) {
+	SelectableData := DataSelector{
+		GenericDataList: dataList,
+		DataSelectQuery: dsQuery,
+		CachedResources: cachedResources,
+	}
+	processed := SelectableData.Sort().GetCumulativeMetrics(metricClient).Paginate()
+	return processed.GenericDataList, processed.CumulativeMetricsPromises
+}
+
+func GenericDataSelectWithFilterAndMetrics(dataList []DataCell, dsQuery *DataSelectQuery,
+	cachedResources *metricApi.CachedResources, metricClient metricApi.MetricClient) (
+	[]DataCell, metricApi.MetricPromises, int) {
+	SelectableData := DataSelector{
+		GenericDataList: dataList,
+		DataSelectQuery: dsQuery,
+		CachedResources: cachedResources,
+	}
+
+	filtered := SelectableData.Filter()
+	filteredTotal := len(filtered.GenericDataList)
+	processed := filtered.Sort().GetCumulativeMetrics(metricClient).Paginate()
+	return processed.GenericDataList, processed.CumulativeMetricsPromises, filteredTotal
+}
+
+func PodListMetrics(dataList []DataCell, dsQuery *DataSelectQuery,
+	metricClient metricApi.MetricClient) metricApi.MetricPromises {
+	selectableData := DataSelector{
+		GenericDataList: dataList,
+		DataSelectQuery: dsQuery,
+		CachedResources: metricApi.NoResourceCache,
+	}
+
+	processed := selectableData.GetMetrics(metricClient)
+	return processed.MetricsPromises
 }

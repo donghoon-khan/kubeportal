@@ -8,6 +8,7 @@ require (
 	github.com/go-chi/chi v4.0.2+incompatible
 	github.com/go-openapi/runtime v0.19.26
 	github.com/go-openapi/spec v0.20.2 // indirect
+	github.com/kubernetes/dashboard v1.10.1
 	github.com/swaggo/swag v1.7.0
 	golang.org/x/crypto v0.0.0-20201124201722-c8d3bf9c5392 // indirect
 	golang.org/x/oauth2 v0.0.0-20201109201403-9fd604954f58
