@@ -2,7 +2,7 @@ APPNAME := kube-portal
 BUILD_DIST := dist
 BACKEND := src/app/backend
 
-.PHONY: clean docs $(BACKEND)
+.PHONY: clean docs all $(BACKEND)
 
 check_swagger:
 	which swag || GO11MODULE=off go get -u github.com/swaggo/swag/cmd/swag
@@ -16,8 +16,10 @@ mod:
 test:
 	go test ./...
 
-build: mod docs test
+build:
 	go build -o $(BUILD_DIST)/$(APPNAME) $(BACKEND)/*.go
+
+all: mod test docs build
 
 clean:
 	rm -rf $(BUILD_DIST)

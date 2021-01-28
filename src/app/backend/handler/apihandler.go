@@ -89,8 +89,8 @@ func CreateHttpApiHandler(
 
 // handleGetClusterRoleList godoc
 // @Tags Kubernetes
-// @Summary List of ClusterRole
-// @Description Returns the list of ClusterRole from kubernetes cluster
+// @Summary Get list of ClusterRole
+// @Description Returns a list of ClusterRole from kubernetes cluster
 // @Accept  json
 // @Produce  json
 // @Router /clusterrole [GET]
@@ -114,8 +114,8 @@ func (apiHandler *APIHandler) handleGetClusterRoleList(request *restful.Request,
 
 // handleGetClusterRoleDetail godoc
 // @Tags Kubernetes
-// @Summary Detail of ClusterRole
-// @Description Returns the Detail of ClusterRole from kubernetes cluster
+// @Summary Get detail of ClusterRole
+// @Description Returns a detail of ClusterRole from kubernetes cluster
 // @Accept  json
 // @Produce  json
 // @Router /clusterrole/{clusterrole} [GET]
@@ -139,8 +139,8 @@ func (apiHandler *APIHandler) handleGetClusterRoleDetail(request *restful.Reques
 
 // handleGetClusterRoleBindingList godoc
 // @Tags Kubernetes
-// @Summary List of ClusterRoleBinding
-// @Description Returns the list of ClusterRoleBinding from kubernetes cluster
+// @Summary Get list of ClusterRoleBinding
+// @Description Returns a list of ClusterRoleBinding from kubernetes cluster
 // @Accept  json
 // @Produce  json
 // @Router /clusterrolebinding [GET]
@@ -164,8 +164,8 @@ func (apiHandler *APIHandler) handleGetClusterRoleBindingList(request *restful.R
 
 // handleGetClusterRoleBindingDetail godoc
 // @Tags Kubernetes
-// @Summary Detail of ClusterRoleBinding
-// @Description Returns the Detail of ClusterRoleBinding from kubernetes cluster
+// @Summary Get detail of ClusterRoleBinding
+// @Description Returns a detail of ClusterRoleBinding from kubernetes cluster
 // @Accept  json
 // @Produce  json
 // @Router /clusterrolebinding/{clusterrolebinding} [GET]
@@ -190,8 +190,8 @@ func (apiHandler *APIHandler) handleGetClusterRoleBindingDetail(request *restful
 
 // handleGetConfigMapListFromCluster godoc
 // @Tags Kubernetes
-// @Summary List of ConfigMap from cluster
-// @Description Returns the list of ConfigMap from kubernetes cluster
+// @Summary Get list of ConfigMap from cluster
+// @Description Returns a list of ConfigMap from kubernetes cluster
 // @Accept  json
 // @Produce  json
 // @Router /configmap [GET]
@@ -215,8 +215,8 @@ func (apiHandler *APIHandler) handleGetConfigMapListFromCluster(request *restful
 
 // handleGetConfigMapListFromNamespace godoc
 // @Tags Kubernetes
-// @Summary List of ConfigMap from namespace
-// @Description Returns the list of ConfigMap from from namespace
+// @Summary Get list of ConfigMap from Namespace
+// @Description Returns a list of ConfigMap from Namespace
 // @Accept  json
 // @Produce  json
 // @Router /configmap/{namespace} [GET]
@@ -242,8 +242,8 @@ func (apiHandler *APIHandler) handleGetConfigMapListFromNamespace(request *restf
 
 // handleGetConfiMapDetail godoc
 // @Tags Kubernetes
-// @Summary Detail of ConfigMap
-// @Description Returns the Detail of ConfigMap from namespace
+// @Summary Get detail of ConfigMap
+// @Description Returns a detail of ConfigMap from Namespace
 // @Accept  json
 // @Produce  json
 // @Router /configmap/{namespace}/{configmap} [GET]
