@@ -1,6 +1,5 @@
 package pod
 
-/*
 import (
 	"log"
 
@@ -21,7 +20,7 @@ type PodList struct {
 	CumulativeMetrics []metricApi.Metric    `json:"cumulativeMetrics"`
 	Status            common.ResourceStatus `json:"status"`
 	Pods              []Pod                 `json:"pods"`
-	Errors            []error               `json:"errors"`
+	Errors            []error               `json:"errors" swaggertype:"array,string"`
 }
 
 type PodStatus struct {
@@ -131,4 +130,3 @@ func toPod(pod *v1.Pod, metrics *MetricsByPod, warnings []common.Event) Pod {
 
 	return podDetail
 }
-*/

@@ -8,7 +8,7 @@ import (
 type EventList struct {
 	ListMeta api.ListMeta `json:"listMeta"`
 	Events   []Event      `json:"events"`
-	Errors   []error      `json:"errors"`
+	Errors   []error      `json:"errors" swaggertype:"array,string"`
 }
 
 type Event struct {

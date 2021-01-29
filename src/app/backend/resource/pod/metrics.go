@@ -1,6 +1,5 @@
 package pod
 
-/*
 import (
 	"log"
 
@@ -75,4 +74,3 @@ func getPodUIDFromMetric(metric metricApi.Metric) (types.UID, error) {
 
 	return uidList[0], nil
 }
-*/
