@@ -120,6 +120,14 @@ func CreateHttpApiHandler(
 		apiV1Ws.GET("/pod/{namespace}/{pod}/container").
 			To(apiHandler.handleGetPodContainerList).
 			Writes(pod.PodDetail{}))
+	apiV1Ws.Route(
+		apiV1Ws.GET("/pod/{namespace}/{pod}/event").
+			To(apiHandler.handleGetPodEventList).
+			Writes(common.EventList{}))
+	apiV1Ws.Route(
+		apiV1Ws.GET("/pod/{namespace}/{pod}/persistentvolumeclaim").
+			To(apiHandler.handleGetPodPersistentVolumeClaimList).
+			Writes(persistentvolumeclaim.PersistentVolumeClaimList{}))
 
 	return wsContainer, nil
 }
@@ -394,8 +402,8 @@ func (apiHandler *APIHandler) handleGetPodDetail(request *restful.Request, respo
 
 // handleGetPodContainerList godoc
 // @Tags Kubernetes
-// @Summary Get detail of container
-// @Description Returns a detail of container
+// @Summary Get containers related to a pod
+// @Description Returns a list of container related to a pod in namespace
 // @Accept  json
 // @Produce  json
 // @Router /pod/{namespace}/{pod}/container [GET]
@@ -413,6 +421,65 @@ func (apiHandler *APIHandler) handleGetPodContainerList(request *restful.Request
 	namespace := request.PathParameter("namespace")
 	podName := request.PathParameter("pod")
 	result, err := container.GetPodContainers(k8s, namespace, podName)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+	response.WriteHeaderAndEntity(http.StatusOK, result)
+}
+
+// handleGetPodEventList godoc
+// @Tags Kubernetes
+// @Summary Get events related to a pod
+// @Description Returns list of event related to a pod in namespace
+// @Accept  json
+// @Produce  json
+// @Router /pod/{namespace}/{pod}/event [GET]
+// @Param namespace path string true "Namespace"
+// @Param pod path string true "Name of Pod"
+// @Success 200 {object} common.EventList
+// @Failure 401 {string} string "Unauthorized"
+func (apiHandler *APIHandler) handleGetPodEventList(request *restful.Request, response *restful.Response) {
+	k8s, err := apiHandler.kManager.Kubernetes(request)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+
+	namespace := request.PathParameter("namespace")
+	podName := request.PathParameter("pod")
+	dataSelect := parser.ParseDataSelectPathParameter(request)
+	dataSelect.MetricQuery = dataselect.StandardMetrics
+	result, err := pod.GetEventsForPod(k8s, dataSelect, namespace, podName)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+	response.WriteHeaderAndEntity(http.StatusOK, result)
+}
+
+// handleGetPodPersistentVolumeClaimList godoc
+// @Tags Kubernetes
+// @Summary Get PersistentVolumeClaim related to a pod
+// @Description Returns list of PersistentVolumeClaim related to a pod in namespace
+// @Accept  json
+// @Produce  json
+// @Router /pod/{namespace}/{pod}/persistentvolumeclaim [GET]
+// @Param namespace path string true "Namespace"
+// @Param pod path string true "Name of Pod"
+// @Success 200 {object} persistentvolumeclaim.PersistentVolumeClaimList
+// @Failure 401 {string} string "Unauthorized"
+func (apiHandler *APIHandler) handleGetPodPersistentVolumeClaimList(request *restful.Request, response *restful.Response) {
+	k8s, err := apiHandler.kManager.Kubernetes(request)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+
+	namespace := request.PathParameter("namespace")
+	podName := request.PathParameter("pod")
+	dataSelect := parser.ParseDataSelectPathParameter(request)
+	result, err := persistentvolumeclaim.GetPodPersistentVolumeClaims(k8s, namespace, podName, dataSelect)
 	if err != nil {
 		errors.HandleInternalError(response, err)
 		return
