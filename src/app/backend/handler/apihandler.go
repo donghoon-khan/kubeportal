@@ -16,6 +16,7 @@ import (
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/clusterrolebinding"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/common"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/configmap"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/container"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/dataselect"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/persistentvolumeclaim"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/pod"
@@ -117,7 +118,7 @@ func CreateHttpApiHandler(
 			Writes(pod.PodDetail{}))
 	apiV1Ws.Route(
 		apiV1Ws.GET("/pod/{namespace}/{pod}/container").
-			To(apiHandler.handleGetPodContainers).
+			To(apiHandler.handleGetPodContainerList).
 			Writes(pod.PodDetail{}))
 
 	return wsContainer, nil
@@ -391,7 +392,7 @@ func (apiHandler *APIHandler) handleGetPodDetail(request *restful.Request, respo
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-// handleGetPodContainers godoc
+// handleGetPodContainerList godoc
 // @Tags Kubernetes
 // @Summary Get detail of container
 // @Description Returns a detail of container
@@ -402,8 +403,21 @@ func (apiHandler *APIHandler) handleGetPodDetail(request *restful.Request, respo
 // @Param pod path string true "Name of Pod"
 // @Success 200 {object} pod.PodDetail
 // @Failure 401 {string} string "Unauthorized"
-func (apiHandler *APIHandler) handleGetPodContainers(request *restful.Request, response *restful.Response) {
+func (apiHandler *APIHandler) handleGetPodContainerList(request *restful.Request, response *restful.Response) {
+	k8s, err := apiHandler.kManager.Kubernetes(request)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
 
+	namespace := request.PathParameter("namespace")
+	podName := request.PathParameter("pod")
+	result, err := container.GetPodContainers(k8s, namespace, podName)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
 func parseNamespacePathParameter(request *restful.Request) *common.NamespaceQuery {
