@@ -42,7 +42,7 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 }
 
 // handleGetPodList godoc
-// @Tags Kubernetes
+// @Tags Pod
 // @Summary Get list of pod
 // @Description Returns a list of pod from Kubernetes cluster or Namespace
 // @Accept  json
@@ -70,7 +70,7 @@ func (apiHandler *APIHandler) handleGetPodList(request *restful.Request, respons
 }
 
 // handleGetPodDetail godoc
-// @Tags Kubernetes
+// @Tags Pod
 // @Summary Get detail of Pod
 // @Description Returns a detail of Pod
 // @Accept  json
@@ -98,7 +98,7 @@ func (apiHandler *APIHandler) handleGetPodDetail(request *restful.Request, respo
 }
 
 // handleGetPodContainerList godoc
-// @Tags Kubernetes
+// @Tags Pod
 // @Summary Get containers related to a pod
 // @Description Returns a list of container related to a pod in namespace
 // @Accept  json
@@ -126,7 +126,7 @@ func (apiHandler *APIHandler) handleGetPodContainerList(request *restful.Request
 }
 
 // handleGetPodEventList godoc
-// @Tags Kubernetes
+// @Tags Pod
 // @Summary Get events related to a pod
 // @Description Returns list of event related to a pod in namespace
 // @Accept  json
@@ -156,7 +156,7 @@ func (apiHandler *APIHandler) handleGetPodEventList(request *restful.Request, re
 }
 
 // handleGetPodPersistentVolumeClaimList godoc
-// @Tags Kubernetes
+// @Tags Pod
 // @Summary Get PersistentVolumeClaim related to a pod
 // @Description Returns list of PersistentVolumeClaim related to a pod in namespace
 // @Accept  json

@@ -51,6 +51,7 @@ func CreateHttpApiHandler(
 	apiHandler.installConfigMap(apiV1Ws)
 	apiHandler.installSecret(apiV1Ws)
 	apiHandler.installPod(apiV1Ws)
+	apiHandler.installNode(apiV1Ws)
 
 	return wsContainer, nil
 }

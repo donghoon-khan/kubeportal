@@ -26,7 +26,7 @@ func (apiHandler *APIHandler) installSecret(ws *restful.WebService) {
 }
 
 // handleGetSecretList godoc
-// @Tags Kubernetes
+// @Tags Secret
 // @Summary Get list of Secret
 // @Description Returns a list of Secret from Kubernetes cluster or Namespace
 // @Accept  json
@@ -53,7 +53,7 @@ func (apiHandler *APIHandler) handleGetSecretList(request *restful.Request, resp
 }
 
 // handleGetSecretDetail godoc
-// @Tags Kubernetes
+// @Tags Secret
 // @Summary Get detail of Secret
 // @Description Returns a detail of Secret
 // @Accept  json

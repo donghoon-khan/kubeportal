@@ -22,7 +22,7 @@ func (apiHandler *APIHandler) installClusterRoleBinding(ws *restful.WebService) 
 }
 
 // handleGetClusterRoleBindingList godoc
-// @Tags Kubernetes
+// @Tags ClusterRoleBinding
 // @Summary Get list of ClusterRoleBinding
 // @Description Returns a list of ClusterRoleBinding
 // @Accept  json
@@ -47,7 +47,7 @@ func (apiHandler *APIHandler) handleGetClusterRoleBindingList(request *restful.R
 }
 
 // handleGetClusterRoleBindingDetail godoc
-// @Tags Kubernetes
+// @Tags ClusterRoleBinding
 // @Summary Get detail of ClusterRoleBinding
 // @Description Returns a detail of ClusterRoleBinding
 // @Accept  json

@@ -26,7 +26,7 @@ func (apiHandler *APIHandler) installPersistentVolumeClaim(ws *restful.WebServic
 }
 
 // handleGetPersistentVolumeClaimList godoc
-// @Tags Kubernetes
+// @Tags PersistentVolumeClaim
 // @Summary Get list of PersistentVolumeClaim
 // @Description Returns a list of PersistentVolumeClaim from Kubernetes cluster or Namespace
 // @Accept  json
@@ -53,7 +53,7 @@ func (apiHandler *APIHandler) handleGetPersistentVolumeClaimList(request *restfu
 }
 
 // handleGetPersistentVolumeClaimDetail godoc
-// @Tags Kubernetes
+// @Tags PersistentVolumeClaim
 // @Summary Get detail of PersistentVolumeClaim
 // @Description Returns a detail of PersistentVolumeClaim
 // @Accept  json

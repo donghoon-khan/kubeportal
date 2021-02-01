@@ -26,7 +26,7 @@ func (apiHandler *APIHandler) installConfigMap(ws *restful.WebService) {
 }
 
 // handleGetConfigMapList godoc
-// @Tags Kubernetes
+// @Tags ConfigMap
 // @Summary Get list of ConfigMap
 // @Description Returns a list of ConfigMap from Kubernetes cluster or Namespace
 // @Accept  json
@@ -53,7 +53,7 @@ func (apiHandler *APIHandler) handleGetConfigMapList(request *restful.Request, r
 }
 
 // handleGetConfiMapDetail godoc
-// @Tags Kubernetes
+// @Tags ConfigMap
 // @Summary Get detail of ConfigMap
 // @Description Returns a detail of ConfigMap
 // @Accept  json

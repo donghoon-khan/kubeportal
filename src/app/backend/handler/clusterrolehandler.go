@@ -22,7 +22,7 @@ func (apiHandler *APIHandler) installClusterRole(ws *restful.WebService) {
 }
 
 // handleGetClusterRoleList godoc
-// @Tags Kubernetes
+// @Tags ClusterRole
 // @Summary Get list of ClusterRole
 // @Description Returns a list of ClusterRole
 // @Accept  json
@@ -47,7 +47,7 @@ func (apiHandler *APIHandler) handleGetClusterRoleList(request *restful.Request,
 }
 
 // handleGetClusterRoleDetail godoc
-// @Tags Kubernetes
+// @Tags ClusterRole
 // @Summary Get detail of ClusterRole
 // @Description Returns a detail of ClusterRole
 // @Accept  json
