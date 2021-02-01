@@ -27,12 +27,12 @@ func (apiHandler *APIHandler) installSecret(ws *restful.WebService) {
 
 // handleGetSecretList godoc
 // @Tags Secret
-// @Summary Get list of Secret
-// @Description Returns a list of Secret from Kubernetes cluster or Namespace
+// @Summary Get list of secret
+// @Description Returns a list of secret from Kubernetes cluster or namespace
 // @Accept  json
 // @Produce  json
 // @Router /secret/{namespace} [GET]
-// @Param namespace path string false "Namespace"
+// @Param namespace path string false "Name of namespace"
 // @Success 200 {object} secret.SecretList
 // @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetSecretList(request *restful.Request, response *restful.Response) {
@@ -54,13 +54,13 @@ func (apiHandler *APIHandler) handleGetSecretList(request *restful.Request, resp
 
 // handleGetSecretDetail godoc
 // @Tags Secret
-// @Summary Get detail of Secret
-// @Description Returns a detail of Secret
+// @Summary Get detail of secret
+// @Description Returns a detail of secret
 // @Accept  json
 // @Produce  json
 // @Router /secret/{namespace}/{secret} [GET]
-// @Param namespace path string true "Namespace"
-// @Param secret path string true "Name of Secret"
+// @Param namespace path string true "Name of namespace"
+// @Param secret path string true "Name of secret"
 // @Success 200 {object} secret.SecretDetail
 // @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetSecretDetail(request *restful.Request, response *restful.Response) {

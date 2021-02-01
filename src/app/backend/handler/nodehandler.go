@@ -66,7 +66,7 @@ func (apiHandler *APIHandler) handleGetNodeList(request *restful.Request, respon
 // @Accept  json
 // @Produce  json
 // @Router /node/{node} [GET]
-// @Param node path string true "Name of Node"
+// @Param node path string true "Name of node"
 // @Success 200 {object} node.NodeDetail
 // @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetNodeDetail(request *restful.Request, response *restful.Response) {
@@ -94,7 +94,7 @@ func (apiHandler *APIHandler) handleGetNodeDetail(request *restful.Request, resp
 // @Accept  json
 // @Produce  json
 // @Router /node/{node}/event [GET]
-// @Param node path string true "Name of Node"
+// @Param node path string true "Name of node"
 // @Success 200 {object} common.EventList
 // @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetNodeEventList(request *restful.Request, response *restful.Response) {
@@ -122,7 +122,7 @@ func (apiHandler *APIHandler) handleGetNodeEventList(request *restful.Request, r
 // @Accept  json
 // @Produce  json
 // @Router /node/{node}/pod [GET]
-// @Param node path string true "Name of Node"
+// @Param node path string true "Name of node"
 // @Success 200 {object} pod.PodList
 // @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetNodePods(request *restful.Request, response *restful.Response) {

@@ -23,8 +23,8 @@ func (apiHandler *APIHandler) installClusterRoleBinding(ws *restful.WebService) 
 
 // handleGetClusterRoleBindingList godoc
 // @Tags ClusterRoleBinding
-// @Summary Get list of ClusterRoleBinding
-// @Description Returns a list of ClusterRoleBinding
+// @Summary Get list of clusterrolebinding
+// @Description Returns a list of clusterrolebinding
 // @Accept  json
 // @Produce  json
 // @Router /clusterrolebinding [GET]
@@ -48,12 +48,12 @@ func (apiHandler *APIHandler) handleGetClusterRoleBindingList(request *restful.R
 
 // handleGetClusterRoleBindingDetail godoc
 // @Tags ClusterRoleBinding
-// @Summary Get detail of ClusterRoleBinding
-// @Description Returns a detail of ClusterRoleBinding
+// @Summary Get detail of clusterrolebinding
+// @Description Returns a detail of clusterrolebinding
 // @Accept  json
 // @Produce  json
 // @Router /clusterrolebinding/{clusterrolebinding} [GET]
-// @Param clusterrolebinding path string true "Name of ClusterRoleBinding"
+// @Param clusterrolebinding path string true "Name of clusterrolebinding"
 // @Success 200 {object} clusterrolebinding.ClusterRoleBindingDetail
 // @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetClusterRoleBindingDetail(request *restful.Request, response *restful.Response) {

@@ -27,12 +27,12 @@ func (apiHandler *APIHandler) installPersistentVolumeClaim(ws *restful.WebServic
 
 // handleGetPersistentVolumeClaimList godoc
 // @Tags PersistentVolumeClaim
-// @Summary Get list of PersistentVolumeClaim
-// @Description Returns a list of PersistentVolumeClaim from Kubernetes cluster or Namespace
+// @Summary Get list of persistentvolumeclaim
+// @Description Returns a list of persistentvolumeclaim from Kubernetes cluster or namespace
 // @Accept  json
 // @Produce  json
 // @Router /persistenvolumeclaim/{namespace} [GET]
-// @Param namespace path string false "Namespace"
+// @Param namespace path string false "Name of namespace"
 // @Success 200 {object} persistentvolumeclaim.PersistentVolumeClaimList
 // @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetPersistentVolumeClaimList(request *restful.Request, response *restful.Response) {
@@ -54,13 +54,13 @@ func (apiHandler *APIHandler) handleGetPersistentVolumeClaimList(request *restfu
 
 // handleGetPersistentVolumeClaimDetail godoc
 // @Tags PersistentVolumeClaim
-// @Summary Get detail of PersistentVolumeClaim
-// @Description Returns a detail of PersistentVolumeClaim
+// @Summary Get detail of persistentvolumeclaim
+// @Description Returns a detail of persistentvolumeclaim
 // @Accept  json
 // @Produce  json
 // @Router /persistenvolumeclaim/{namespace}/{persistentvolumeclaim} [GET]
-// @Param namespace path string true "Namespace"
-// @Param persistentvolumeclaim path string true "Name of PersistentVolumeClaim"
+// @Param namespace path string true "Name of namespace"
+// @Param persistentvolumeclaim path string true "Name of persistentvolumeclaim"
 // @Success 200 {object} persistentvolumeclaim.PersistentVolumeClaimDetail
 // @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetPersistentVolumeClaimDetail(request *restful.Request, response *restful.Response) {

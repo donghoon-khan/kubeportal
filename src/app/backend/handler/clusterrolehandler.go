@@ -23,8 +23,8 @@ func (apiHandler *APIHandler) installClusterRole(ws *restful.WebService) {
 
 // handleGetClusterRoleList godoc
 // @Tags ClusterRole
-// @Summary Get list of ClusterRole
-// @Description Returns a list of ClusterRole
+// @Summary Get list of clusterrole
+// @Description Returns a list of clusterrole
 // @Accept  json
 // @Produce  json
 // @Router /clusterrole [GET]
@@ -48,12 +48,12 @@ func (apiHandler *APIHandler) handleGetClusterRoleList(request *restful.Request,
 
 // handleGetClusterRoleDetail godoc
 // @Tags ClusterRole
-// @Summary Get detail of ClusterRole
-// @Description Returns a detail of ClusterRole
+// @Summary Get detail of clusterrole
+// @Description Returns a detail of clusterrole
 // @Accept  json
 // @Produce  json
 // @Router /clusterrole/{clusterrole} [GET]
-// @Param clusterrole path string true "Name of ClusterRole"
+// @Param clusterrole path string true "Name of clusterrole"
 // @Success 200 {object} clusterrole.ClusterRoleDetail
 // @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetClusterRoleDetail(request *restful.Request, response *restful.Response) {
