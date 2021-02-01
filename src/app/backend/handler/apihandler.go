@@ -20,6 +20,7 @@ import (
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/dataselect"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/persistentvolumeclaim"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/pod"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/secret"
 )
 
 const (
@@ -88,6 +89,20 @@ func CreateHttpApiHandler(
 		apiV1Ws.GET("/configmap/{namespace}/{configmap}").
 			To(apiHandler.handleGetConfigMapDetail).
 			Writes(configmap.ConfigMapDetail{}))
+
+	/* Secret */
+	apiV1Ws.Route(
+		apiV1Ws.GET("/secret").
+			To(apiHandler.handleGetSecretList).
+			Writes(secret.SecretList{}))
+	apiV1Ws.Route(
+		apiV1Ws.GET("/secret/{namespace}").
+			To(apiHandler.handleGetSecretList).
+			Writes(secret.SecretList{}))
+	apiV1Ws.Route(
+		apiV1Ws.GET("/secret/{namespace}/{secret}").
+			To(apiHandler.handleGetSecretDetail).
+			Writes(secret.SecretDetail{}))
 
 	/* PersistentVolumeClaim */
 	apiV1Ws.Route(
@@ -281,6 +296,61 @@ func (apiHandler *APIHandler) handleGetConfigMapDetail(request *restful.Request,
 	namespace := request.PathParameter("namespace")
 	configmapName := request.PathParameter("configmap")
 	result, err := configmap.GetConfigMapDetail(k8s, namespace, configmapName)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+	response.WriteHeaderAndEntity(http.StatusOK, result)
+}
+
+// handleGetSecretList godoc
+// @Tags Kubernetes
+// @Summary Get list of Secret
+// @Description Returns a list of Secret from Kubernetes cluster or Namespace
+// @Accept  json
+// @Produce  json
+// @Router /secret/{namespace} [GET]
+// @Param namespace path string false "Namespace"
+// @Success 200 {object} secret.SecretList
+// @Failure 401 {string} string "Unauthorized"
+func (apiHandler *APIHandler) handleGetSecretList(request *restful.Request, response *restful.Response) {
+	k8s, err := apiHandler.kManager.Kubernetes(request)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+
+	dataSelect := parser.ParseDataSelectPathParameter(request)
+	namespace := parseNamespacePathParameter(request)
+	result, err := secret.GetSecretList(k8s, namespace, dataSelect)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+	response.WriteHeaderAndEntity(http.StatusOK, result)
+}
+
+// handleGetSecretDetail godoc
+// @Tags Kubernetes
+// @Summary Get detail of Secret
+// @Description Returns a detail of Secret
+// @Accept  json
+// @Produce  json
+// @Router /secret/{namespace}/{secret} [GET]
+// @Param namespace path string true "Namespace"
+// @Param secret path string true "Name of Secret"
+// @Success 200 {object} secret.SecretDetail
+// @Failure 401 {string} string "Unauthorized"
+func (apiHandler *APIHandler) handleGetSecretDetail(request *restful.Request, response *restful.Response) {
+	k8s, err := apiHandler.kManager.Kubernetes(request)
+	if err != nil {
+		errors.HandleInternalError(response, err)
+		return
+	}
+
+	namespace := request.PathParameter("namespace")
+	secretName := request.PathParameter("secret")
+	result, err := secret.GetSecretDetail(k8s, namespace, secretName)
 	if err != nil {
 		errors.HandleInternalError(response, err)
 		return
