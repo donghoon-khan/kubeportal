@@ -5,6 +5,7 @@ go 1.15
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/emicklei/go-restful v2.9.5+incompatible
+	github.com/emicklei/go-restful/v3 v3.4.0
 	github.com/go-chi/chi v4.0.2+incompatible
 	github.com/go-openapi/runtime v0.19.26
 	github.com/go-openapi/spec v0.20.2 // indirect
