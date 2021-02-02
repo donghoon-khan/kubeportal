@@ -28,6 +28,10 @@ func (apiHandler *APIHandler) installClusterRoleBinding(ws *restful.WebService) 
 // @Accept  json
 // @Produce  json
 // @Router /clusterrolebinding [GET]
+// @Param itemsPerPage query int false "The number of items per page can be configured adding a query parameter named itemsPerPage"
+// @Param page query int false "The number of page"
+// @Param sortBy query string false "be used to sort the result list in ascending or descending {name, creationTimestamp, namespace, status, type} e.g. sortBy=asc,name or sortBy=dsc,namespace"
+// @Param filterBy query string false "be used to get filterd result list {name, creationTimestamp, namespace, status, type} out e.g. filterdBy=name,kube or filterBy=namespace,kube-system"
 // @Success 200 {object} clusterrolebinding.ClusterRoleBindingList
 // @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetClusterRoleBindingList(request *restful.Request, response *restful.Response) {
