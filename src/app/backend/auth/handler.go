@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	authApi "github.com/donghoon-khan/kubeportal/src/app/backend/auth/api"
-	"github.com/emicklei/go-restful"
+	"github.com/emicklei/go-restful/v3"
 )
 
 type AuthHandler struct {

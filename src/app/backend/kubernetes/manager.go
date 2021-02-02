@@ -1,7 +1,7 @@
 package kubernetes
 
 import (
-	"github.com/emicklei/go-restful"
+	"github.com/emicklei/go-restful/v3"
 	apiextensionsclientset "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"

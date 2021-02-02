@@ -3,7 +3,7 @@ package integration
 import (
 	"testing"
 
-	"github.com/emicklei/go-restful"
+	restful "github.com/emicklei/go-restful/v3"
 )
 
 func TestIntegrationHandler_Install(t *testing.T) {

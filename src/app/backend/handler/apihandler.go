@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/emicklei/go-restful"
+	"github.com/emicklei/go-restful/v3"
 
 	"github.com/donghoon-khan/kubeportal/src/app/backend/auth"
 	authApi "github.com/donghoon-khan/kubeportal/src/app/backend/auth/api"

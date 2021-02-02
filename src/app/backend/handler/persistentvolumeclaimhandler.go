@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/emicklei/go-restful"
+	"github.com/emicklei/go-restful/v3"
 
 	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/handler/parser"

@@ -80,9 +80,9 @@ func NewSortQuery(sortByListRaw []string) *SortQuery {
 	for i := 0; i+1 < len(sortByListRaw); i += 2 {
 		var ascending bool
 		orderOption := sortByListRaw[i]
-		if orderOption == "a" {
+		if orderOption == "asc" {
 			ascending = true
-		} else if orderOption == "d" {
+		} else if orderOption == "dsc" {
 			ascending = false
 		} else {
 			return NoSort

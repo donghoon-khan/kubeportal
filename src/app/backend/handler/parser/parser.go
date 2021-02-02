@@ -6,7 +6,7 @@ import (
 
 	metricApi "github.com/donghoon-khan/kubeportal/src/app/backend/integration/metric/api"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/dataselect"
-	"github.com/emicklei/go-restful"
+	"github.com/emicklei/go-restful/v3"
 )
 
 func parsePaginationPathParameter(request *restful.Request) *dataselect.PaginationQuery {

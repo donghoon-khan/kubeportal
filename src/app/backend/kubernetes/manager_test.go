@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/donghoon-khan/kubeportal/src/app/backend/kubernetes"
-	"github.com/emicklei/go-restful"
+	"github.com/emicklei/go-restful/v3"
 )
 
 func TestNewKubernetesManager(t *testing.T) {

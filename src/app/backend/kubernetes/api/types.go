@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/emicklei/go-restful"
+	"github.com/emicklei/go-restful/v3"
 	apiextensionsclientset "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 
 	"k8s.io/apimachinery/pkg/runtime"

@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/donghoon-khan/kubeportal/src/app/backend/integration/api"
-	"github.com/emicklei/go-restful"
+	restful "github.com/emicklei/go-restful/v3"
 )
 
 type IntegrationHandler struct {
