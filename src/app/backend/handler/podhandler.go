@@ -41,16 +41,6 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 			Writes(persistentvolumeclaim.PersistentVolumeClaimList{}))
 }
 
-// handleGetPodList godoc
-// @Tags Pod
-// @Summary Get list of pod
-// @Description Returns a list of pod from Kubernetes cluster or namespace
-// @Accept  json
-// @Produce  json
-// @Router /pod/{namespace} [GET]
-// @Param namespace path string false "Name of namespace"
-// @Success 200 {object} pod.PodList
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetPodList(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
@@ -69,17 +59,6 @@ func (apiHandler *APIHandler) handleGetPodList(request *restful.Request, respons
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-// handleGetPodDetail godoc
-// @Tags Pod
-// @Summary Get detail of pod
-// @Description Returns a detail of pod
-// @Accept  json
-// @Produce  json
-// @Router /pod/{namespace}/{pod} [GET]
-// @Param namespace path string true "Name of namespace"
-// @Param pod path string true "Name of pod"
-// @Success 200 {object} pod.PodDetail
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetPodDetail(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
@@ -97,17 +76,6 @@ func (apiHandler *APIHandler) handleGetPodDetail(request *restful.Request, respo
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-// handleGetPodContainerList godoc
-// @Tags Pod
-// @Summary Get containers related to a pod
-// @Description Returns a list of container related to a pod in namespace
-// @Accept  json
-// @Produce  json
-// @Router /pod/{namespace}/{pod}/container [GET]
-// @Param namespace path string true "Name of namespace"
-// @Param pod path string true "Name of pod"
-// @Success 200 {object} pod.PodDetail
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetPodContainerList(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
@@ -125,17 +93,6 @@ func (apiHandler *APIHandler) handleGetPodContainerList(request *restful.Request
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-// handleGetPodEventList godoc
-// @Tags Pod
-// @Summary Get events related to a pod
-// @Description Returns list of event related to a pod in namespace
-// @Accept  json
-// @Produce  json
-// @Router /pod/{namespace}/{pod}/event [GET]
-// @Param namespace path string true "Name of namespace"
-// @Param pod path string true "Name of pod"
-// @Success 200 {object} common.EventList
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetPodEventList(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
@@ -155,17 +112,6 @@ func (apiHandler *APIHandler) handleGetPodEventList(request *restful.Request, re
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-// handleGetPodPersistentVolumeClaimList godoc
-// @Tags Pod
-// @Summary Get list of persistentvolumeclaim related to a pod
-// @Description Returns list of PersistentVolumeClaim related to a pod in namespace
-// @Accept  json
-// @Produce  json
-// @Router /pod/{namespace}/{pod}/persistentvolumeclaim [GET]
-// @Param namespace path string true "Name of namespace"
-// @Param pod path string true "Name of pod"
-// @Success 200 {object} persistentvolumeclaim.PersistentVolumeClaimList
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetPodPersistentVolumeClaimList(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {

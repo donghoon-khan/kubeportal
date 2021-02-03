@@ -21,15 +21,6 @@ func (apiHandler *APIHandler) installClusterRole(ws *restful.WebService) {
 			Writes(clusterrole.ClusterRoleDetail{}))
 }
 
-// handleGetClusterRoleList godoc
-// @Tags ClusterRole
-// @Summary Get list of clusterrole
-// @Description Returns a list of clusterrole
-// @Accept  json
-// @Produce  json
-// @Router /clusterrole [GET]
-// @Success 200 {object} clusterrole.ClusterRoleList
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetClusterRoleList(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
@@ -46,16 +37,6 @@ func (apiHandler *APIHandler) handleGetClusterRoleList(request *restful.Request,
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-// handleGetClusterRoleDetail godoc
-// @Tags ClusterRole
-// @Summary Get detail of clusterrole
-// @Description Returns a detail of clusterrole
-// @Accept  json
-// @Produce  json
-// @Router /clusterrole/{clusterrole} [GET]
-// @Param clusterrole path string true "Name of clusterrole"
-// @Success 200 {object} clusterrole.ClusterRoleDetail
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetClusterRoleDetail(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {

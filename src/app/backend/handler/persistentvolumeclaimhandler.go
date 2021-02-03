@@ -25,16 +25,6 @@ func (apiHandler *APIHandler) installPersistentVolumeClaim(ws *restful.WebServic
 			Writes(persistentvolumeclaim.PersistentVolumeClaimDetail{}))
 }
 
-// handleGetPersistentVolumeClaimList godoc
-// @Tags PersistentVolumeClaim
-// @Summary Get list of persistentvolumeclaim
-// @Description Returns a list of persistentvolumeclaim from Kubernetes cluster or namespace
-// @Accept  json
-// @Produce  json
-// @Router /persistenvolumeclaim/{namespace} [GET]
-// @Param namespace path string false "Name of namespace"
-// @Success 200 {object} persistentvolumeclaim.PersistentVolumeClaimList
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetPersistentVolumeClaimList(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
@@ -52,17 +42,6 @@ func (apiHandler *APIHandler) handleGetPersistentVolumeClaimList(request *restfu
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-// handleGetPersistentVolumeClaimDetail godoc
-// @Tags PersistentVolumeClaim
-// @Summary Get detail of persistentvolumeclaim
-// @Description Returns a detail of persistentvolumeclaim
-// @Accept  json
-// @Produce  json
-// @Router /persistenvolumeclaim/{namespace}/{persistentvolumeclaim} [GET]
-// @Param namespace path string true "Name of namespace"
-// @Param persistentvolumeclaim path string true "Name of persistentvolumeclaim"
-// @Success 200 {object} persistentvolumeclaim.PersistentVolumeClaimDetail
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetPersistentVolumeClaimDetail(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {

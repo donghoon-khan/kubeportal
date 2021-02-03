@@ -4,16 +4,8 @@ BUILD_DIST := $(ROOTDIR)/dist
 BACKEND := $(ROOTDIR)/src/app/backend
 FRONTEND := $(ROOTDIR)/src/app/frontend
 
-.PHONY: clean docs all $(BACKEND)
-
 check_dist:
 	mkdir -p $(BUILD_DIST)
-
-check_swagger:
-	which swag || GO11MODULE=off go get -u github.com/swaggo/swag/cmd/swag
-
-docs: check_swagger check_dist
-	GO11MODULE=off swag init --dir $(BACKEND) --output $(BUILD_DIST)/docs --parseDependency
 
 mod:
 	go mod tidy
@@ -30,7 +22,7 @@ build/frontend: check_dist
 
 build: build/backend build/frontend
 
-all: mod test docs build
+all: mod test build
 
 clean:
 	rm -rf $(BUILD_DIST)

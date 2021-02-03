@@ -33,15 +33,6 @@ func (apiHandler *APIHandler) installNode(ws *restful.WebService) {
 			Writes(pod.PodList{}))
 }
 
-// handleGetNodeList godoc
-// @Tags Node
-// @Summary Get list of node
-// @Description Returns a list of node
-// @Accept  json
-// @Produce  json
-// @Router /node [GET]
-// @Success 200 {object} node.NodeList
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetNodeList(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
@@ -59,16 +50,6 @@ func (apiHandler *APIHandler) handleGetNodeList(request *restful.Request, respon
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-// handleGetNodeDetail godoc
-// @Tags Node
-// @Summary Get detail of node
-// @Description Returns a detail of node
-// @Accept  json
-// @Produce  json
-// @Router /node/{node} [GET]
-// @Param node path string true "Name of node"
-// @Success 200 {object} node.NodeDetail
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetNodeDetail(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
@@ -87,16 +68,6 @@ func (apiHandler *APIHandler) handleGetNodeDetail(request *restful.Request, resp
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-// handleGetNodeEventList godoc
-// @Tags Node
-// @Summary Get events related to a node
-// @Description Returns list of event related to node
-// @Accept  json
-// @Produce  json
-// @Router /node/{node}/event [GET]
-// @Param node path string true "Name of node"
-// @Success 200 {object} common.EventList
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetNodeEventList(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
@@ -115,16 +86,6 @@ func (apiHandler *APIHandler) handleGetNodeEventList(request *restful.Request, r
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-// handleGetNodePods godoc
-// @Tags Node
-// @Summary Get pods related to a node
-// @Description Returns list of pod related to node
-// @Accept  json
-// @Produce  json
-// @Router /node/{node}/pod [GET]
-// @Param node path string true "Name of node"
-// @Success 200 {object} pod.PodList
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetNodePods(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {

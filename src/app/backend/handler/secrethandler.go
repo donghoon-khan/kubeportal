@@ -25,16 +25,6 @@ func (apiHandler *APIHandler) installSecret(ws *restful.WebService) {
 			Writes(secret.SecretDetail{}))
 }
 
-// handleGetSecretList godoc
-// @Tags Secret
-// @Summary Get list of secret
-// @Description Returns a list of secret from Kubernetes cluster or namespace
-// @Accept  json
-// @Produce  json
-// @Router /secret/{namespace} [GET]
-// @Param namespace path string false "Name of namespace"
-// @Success 200 {object} secret.SecretList
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetSecretList(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
@@ -52,17 +42,6 @@ func (apiHandler *APIHandler) handleGetSecretList(request *restful.Request, resp
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-// handleGetSecretDetail godoc
-// @Tags Secret
-// @Summary Get detail of secret
-// @Description Returns a detail of secret
-// @Accept  json
-// @Produce  json
-// @Router /secret/{namespace}/{secret} [GET]
-// @Param namespace path string true "Name of namespace"
-// @Param secret path string true "Name of secret"
-// @Success 200 {object} secret.SecretDetail
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetSecretDetail(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {

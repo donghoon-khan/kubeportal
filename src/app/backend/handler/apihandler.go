@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"net/http"
 	"strings"
 
 	"github.com/emicklei/go-restful/v3"
@@ -26,32 +25,63 @@ type APIHandler struct {
 func CreateHttpApiHandler(
 	iManager integration.IntegrationManager,
 	kManager k8sApi.KubernetesManager,
-	authManager authApi.AuthManager) (http.Handler, error) {
+	authManager authApi.AuthManager) (*restful.Container, error) {
 
 	apiHandler := APIHandler{iManager: iManager, kManager: kManager}
 	wsContainer := restful.NewContainer()
 	wsContainer.EnableContentEncoding(true)
 
-	apiV1Ws := new(restful.WebService)
-	InstallFilters(apiV1Ws, kManager)
+	k8sWs := new(restful.WebService)
+	InstallFilters(k8sWs, kManager)
 
-	apiV1Ws.Path("/api/v1").
+	k8sWs.Path("/api/v1/kubernetes").
 		Consumes(restful.MIME_JSON).
-		Produces(restful.MIME_JSON)
-	wsContainer.Add(apiV1Ws)
+		Produces(restful.MIME_JSON).
+		Param(
+			k8sWs.QueryParameter("itemPerPage",
+				"The number of items per page can be configured adding a query parameter named itemsPerPage"+
+					" `e.g. itemPerPage=10`").
+				DataType("int")).
+		Param(k8sWs.HeaderParameter("token", "token")).
+		Param(
+			k8sWs.QueryParameter("page", "The number of page `e.g. page=1`").DataType("int")).
+		Param(
+			k8sWs.QueryParameter("sortBy",
+				"be used to sort the result list {ascending or descending},"+
+					"{name or creationTimestamp or namespace or status or type}"+
+					" `e.g. sortBy=asc,name`").
+				DataType("Collection of string(csv)")).
+		Param(
+			k8sWs.QueryParameter("filterBy",
+				"be used to get filterd result list "+
+					"{name or creationTimestamp or namespace or statusor type}"+
+					" `e.g. filterBy=namespace,kube-system`").
+				DataType("Collection of string(csv)"))
+
+	apiHandler.installClusterRole(k8sWs)
+	apiHandler.installClusterRoleBinding(k8sWs)
+	apiHandler.installConfigMap(k8sWs)
+	apiHandler.installSecret(k8sWs)
+	apiHandler.installPod(k8sWs)
+	apiHandler.installNode(k8sWs)
+	wsContainer.Add(k8sWs)
 
 	integrationHandler := integration.NewIntegrationHandler(iManager)
-	integrationHandler.Install(apiV1Ws)
+	integrationWs := new(restful.WebService)
+	integrationWs.Path("/api/v1/integration").
+		Consumes(restful.MIME_JSON).
+		Produces(restful.MIME_JSON)
+
+	integrationHandler.Install(integrationWs)
+	wsContainer.Add(integrationWs)
 
 	authHandler := auth.NewAuthHandler(authManager)
-	authHandler.Install(apiV1Ws)
-
-	apiHandler.installClusterRole(apiV1Ws)
-	apiHandler.installClusterRoleBinding(apiV1Ws)
-	apiHandler.installConfigMap(apiV1Ws)
-	apiHandler.installSecret(apiV1Ws)
-	apiHandler.installPod(apiV1Ws)
-	apiHandler.installNode(apiV1Ws)
+	authWs := new(restful.WebService)
+	authWs.Path("/api/v1/authentication").
+		Consumes(restful.MIME_JSON).
+		Produces(restful.MIME_JSON)
+	authHandler.Install(authWs)
+	wsContainer.Add(authWs)
 
 	return wsContainer, nil
 }

@@ -5,9 +5,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/go-chi/chi"
-	"github.com/go-openapi/runtime/middleware"
-
 	"github.com/donghoon-khan/kubeportal/src/app/backend/args"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/auth"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/integration"
@@ -18,11 +15,6 @@ import (
 	k8sApi "github.com/donghoon-khan/kubeportal/src/app/backend/kubernetes/api"
 )
 
-// @title Kubernetes-portal API
-// @version 0.0.1
-// @description This is a Kubernetes-portal api server
-// @host localhost:9090
-// @BasePath /api/v1
 func main() {
 	log.SetOutput(os.Stdout)
 	initArgHolder()
@@ -51,15 +43,10 @@ func main() {
 		handleFatalInitError(err)
 	}
 
-	r := chi.NewRouter()
+	http.Handle("/api/", apiHandler)
+	http.Handle("/docs", handler.CreateApiDocsHTTPHandler(apiHandler, "/apidocs.json", nil))
 
-	opts := middleware.RedocOpts{SpecURL: "/swagger.yaml"}
-	sh := middleware.Redoc(opts, nil)
-	r.Handle("/docs", sh)
-	r.Handle("/swagger.yaml", http.FileServer(http.Dir("./docs/")))
-	r.Handle("/api/*", apiHandler)
-
-	go func() { log.Fatal(http.ListenAndServe(":9090", r)) }()
+	go func() { log.Fatal(http.ListenAndServe(":9090", nil)) }()
 	select {}
 }
 

@@ -25,16 +25,6 @@ func (apiHandler *APIHandler) installConfigMap(ws *restful.WebService) {
 			Writes(configmap.ConfigMapDetail{}))
 }
 
-// handleGetConfigMapList godoc
-// @Tags ConfigMap
-// @Summary Get list of configmap
-// @Description Returns a list of configmap from Kubernetes cluster or Namespace
-// @Accept  json
-// @Produce  json
-// @Router /configmap/{namespace} [GET]
-// @Param namespace path string false "Name of namespace"
-// @Success 200 {object} configmap.ConfigMapList
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetConfigMapList(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
@@ -52,17 +42,6 @@ func (apiHandler *APIHandler) handleGetConfigMapList(request *restful.Request, r
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-// handleGetConfiMapDetail godoc
-// @Tags ConfigMap
-// @Summary Get detail of configmap
-// @Description Returns a detail of ConfigMap
-// @Accept  json
-// @Produce  json
-// @Router /configmap/{namespace}/{configmap} [GET]
-// @Param namespace path string true "Name of namespace"
-// @Param configmap path string true "Name of configMap"
-// @Success 200 {object} configmap.ConfigMapDetail
-// @Failure 401 {string} string "Unauthorized"
 func (apiHandler *APIHandler) handleGetConfigMapDetail(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
