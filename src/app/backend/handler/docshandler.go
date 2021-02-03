@@ -89,7 +89,7 @@ func enrichSwaggerObject(swo *spec.Swagger) {
 		{
 			TagProps: spec.TagProps{
 				Name: "Secret",
-				Description: "Secret holds secret data of a certain type. The total bytes of the values in the Data field must be less than MaxSecretSize bytes.				" +
+				Description: "Secret holds secret data of a certain type. The total bytes of the values in the Data field must be less than MaxSecretSize bytes." +
 					"<br/>Ref: https://kubernetes.io/docs/concepts/configuration/secret/",
 			},
 		}}
