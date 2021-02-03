@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 
+	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	"github.com/emicklei/go-restful/v3"
 
 	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
@@ -10,20 +11,28 @@ import (
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/clusterrolebinding"
 )
 
-type asd string
+var clusterRoleBindingDocsTag = []string{"ClusterRoleBinding"}
 
 func (apiHandler *APIHandler) installClusterRoleBinding(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/clusterrolebinding").
 			To(apiHandler.handleGetClusterRoleBindingList).
 			Writes(clusterrolebinding.ClusterRoleBindingList{}).
-			Doc("Get list of clusterrolebinding").
+			Doc("List objects of kind ClusterRoleBinding").
+			Notes("Returns a list of ClusterRoleBinding").
+			Metadata(restfulspec.KeyOpenAPITags, clusterRoleBindingDocsTag).
 			Returns(200, "OK", clusterrolebinding.ClusterRoleBindingList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
 	ws.Route(
-		ws.GET("/clusterrolebinding/{clusterrolebinding}").
+		ws.GET("/clusterrolebinding/{name}").
 			To(apiHandler.handleGetClusterRoleBindingDetail).
-			Writes(clusterrolebinding.ClusterRoleBindingDetail{}))
+			Writes(clusterrolebinding.ClusterRoleBindingDetail{}).
+			Doc("Read the specified ClusterRoleBinding").
+			Notes("Returns the specified ClusterRoleBinding").
+			Metadata(restfulspec.KeyOpenAPITags, clusterRoleBindingDocsTag).
+			Param(ws.PathParameter("name", "Name of ClusterRoleBinding").DataType("string").Required(true)).
+			Returns(200, "OK", clusterrolebinding.ClusterRoleBindingDetail{}).
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
 }
 
 func (apiHandler *APIHandler) handleGetClusterRoleBindingList(request *restful.Request, response *restful.Response) {

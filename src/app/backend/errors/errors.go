@@ -10,7 +10,7 @@ import (
 )
 
 type StatusErrorResponse struct {
-	Message string `json:"message"`
+	Message string `json:"message,omitempty"`
 }
 
 var _ error = &errors.StatusError{}
