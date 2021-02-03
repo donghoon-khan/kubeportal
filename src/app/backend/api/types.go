@@ -53,7 +53,7 @@ type ObjectMeta struct {
 	Labels            map[string]string `json:"labels,omitempty"`
 	Annotations       map[string]string `json:"annotations,omitempty"`
 	CreationTimestamp metaV1.Time       `json:"creationTimestamp,omitempty"`
-	UID               types.UID         `json:"uid,omitempty" swaggertype:"string"`
+	UID               types.UID         `json:"uid,omitempty"`
 }
 
 type TypeMeta struct {

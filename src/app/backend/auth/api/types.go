@@ -76,7 +76,7 @@ type LoginSpec struct {
 
 type AuthResponse struct {
 	JWEToken string  `json:"jweToken"`
-	Errors   []error `json:"errors" swaggertype:"array,string"`
+	Errors   []error `json:"errors"`
 }
 
 type TokenRefreshSpec struct {
