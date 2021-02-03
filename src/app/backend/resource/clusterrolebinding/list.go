@@ -15,7 +15,7 @@ import (
 type ClusterRoleBindingList struct {
 	ListMeta api.ListMeta         `json:"listMeta"`
 	Items    []ClusterRoleBinding `json:"items"`
-	Errors   []error              `json:"errors" swaggertype:"array,string"`
+	Errors   []error              `json:"errors"`
 }
 
 type ClusterRoleBinding struct {

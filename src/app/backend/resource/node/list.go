@@ -18,7 +18,7 @@ type NodeList struct {
 	Nodes             []Node             `json:"nodes"`
 	CumulativeMetrics []metricApi.Metric `json:"cumulativeMetrics"`
 
-	Errors []error `json:"errors" swaggertype:"array,string"`
+	Errors []error `json:"errors"`
 }
 
 type Node struct {

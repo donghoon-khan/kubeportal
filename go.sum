@@ -109,8 +109,6 @@ github.com/emicklei/go-restful v0.0.0-20170410110728-ff4f55a20633 h1:H2pdYOb3KQ1
 github.com/emicklei/go-restful v0.0.0-20170410110728-ff4f55a20633/go.mod h1:otzb+WCGbkyDHkqmQmT5YD2WR4BBwUdeQoFo8l/7tVs=
 github.com/emicklei/go-restful v2.9.5+incompatible h1:spTtZBk5DYEvbxMVutUuTyh1Ao2r4iyvLdACqsl/Ljk=
 github.com/emicklei/go-restful v2.9.5+incompatible/go.mod h1:otzb+WCGbkyDHkqmQmT5YD2WR4BBwUdeQoFo8l/7tVs=
-github.com/emicklei/go-restful v2.9.6+incompatible h1:tfrHha8zJ01ywiOEC1miGY8st1/igzWB8OmvPgoYX7w=
-github.com/emicklei/go-restful v2.9.6+incompatible/go.mod h1:otzb+WCGbkyDHkqmQmT5YD2WR4BBwUdeQoFo8l/7tVs=
 github.com/emicklei/go-restful-openapi/v2 v2.2.1 h1:9xG+IjR5kUNBNJzksOmV92DzgrBJLKCLD7uY9i5XtYI=
 github.com/emicklei/go-restful-openapi/v2 v2.2.1/go.mod h1:bs67E3SEVgSmB3qDuRLqpS0NcpheqtsCCMhW2/jml1E=
 github.com/emicklei/go-restful/v3 v3.0.0-rc2/go.mod h1:6n3XBCmQQb25CM2LCACGz8ukIrRry+4bhvbpWn3mrbc=
@@ -371,8 +369,6 @@ github.com/kr/text v0.1.0 h1:45sCR5RtlFHMR4UwH9sdQ5TC8v0qDQCHnXt+kaKSTVE=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
 github.com/kr/text v0.2.0 h1:5Nx0Ya0ZqY2ygV366QzturHI13Jq95ApcVaJBhpS+AY=
 github.com/kr/text v0.2.0/go.mod h1:eLer722TekiGuMkidMxC/pM04lWEeraHUUmBw8l2grE=
-github.com/kubernetes/dashboard v1.10.1 h1:RsBRF5S8DBH7lqGDJ8LjNiRt0C6PIvVeBrmuqmi/i3c=
-github.com/kubernetes/dashboard v1.10.1/go.mod h1:SLnjPMuDgwsEIPHCsd3eeMLm3mOvZijuujWxS9yT8xE=
 github.com/magiconair/properties v1.8.1/go.mod h1:PppfXfuXeibc/6YijjN8zIbojt8czPbwD3XqdrwzmxQ=
 github.com/mailru/easyjson v0.0.0-20180823135443-60711f1a8329/go.mod h1:C1wdFJiN94OJF2b5HbByQZoLdCWB1Yqtg26g4irojpc=
 github.com/mailru/easyjson v0.0.0-20190312143242-1de009706dbe/go.mod h1:C1wdFJiN94OJF2b5HbByQZoLdCWB1Yqtg26g4irojpc=

@@ -2,9 +2,11 @@ package job
 
 import (
 	batch "k8s.io/api/batch/v1"
+	v1 "k8s.io/api/core/v1"
 
 	"github.com/donghoon-khan/kubeportal/src/app/backend/api"
 	metricApi "github.com/donghoon-khan/kubeportal/src/app/backend/integration/metric/api"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/common"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/dataselect"
 )
 
@@ -32,7 +34,7 @@ func (jobCell JobCell) GetResourceSelector() *metricApi.ResourceSelector {
 	}
 }
 
-func ToCell(std []batch.Job) []dataselect.DataCell {
+func ToCells(std []batch.Job) []dataselect.DataCell {
 	cells := make([]dataselect.DataCell, len(std))
 	for i := range std {
 		cells[i] = JobCell(std[i])
@@ -48,7 +50,7 @@ func FromCells(cells []dataselect.DataCell) []batch.Job {
 	return std
 }
 
-/*func getStatus(list *batch.JobList, pods []v1.Pod) common.ResourceStatus {
+func getStatus(list *batch.JobList, pods []v1.Pod) common.ResourceStatus {
 	info := common.ResourceStatus{}
 	if list == nil {
 		return info
@@ -72,4 +74,3 @@ func FromCells(cells []dataselect.DataCell) []batch.Job {
 
 	return info
 }
-*/

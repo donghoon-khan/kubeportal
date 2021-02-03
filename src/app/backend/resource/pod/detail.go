@@ -40,7 +40,7 @@ type PodDetail struct {
 	EventList                 common.EventList                                `json:"eventList"`
 	PersistentvolumeclaimList persistentvolumeclaim.PersistentVolumeClaimList `json:"persistentVolumeClaimList"`
 
-	Errors []error `json:"errors" swaggertype:"array,string"`
+	Errors []error `json:"errors"`
 }
 
 type Container struct {

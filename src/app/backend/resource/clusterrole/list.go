@@ -14,7 +14,7 @@ import (
 type ClusterRoleList struct {
 	ListMeta api.ListMeta  `json:"listMeta"`
 	Items    []ClusterRole `json:"items"`
-	Errors   []error       `json:"errors" swaggertype:"array,string"`
+	Errors   []error       `json:"errors"`
 }
 
 type ClusterRole struct {

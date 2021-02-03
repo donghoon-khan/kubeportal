@@ -2,6 +2,7 @@ package job
 
 import (
 	"context"
+	"log"
 
 	batch "k8s.io/api/batch/v1"
 	v1 "k8s.io/api/core/v1"
@@ -10,17 +11,17 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/kubernetes"
 
+	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
 	metricApi "github.com/donghoon-khan/kubeportal/src/app/backend/integration/metric/api"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/common"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/dataselect"
-	"github.com/kubernetes/dashboard/src/app/backend/resource/pod"
-	//"github.com/kubernetes/dashboard/src/app/backend/resource/pod"
-	//"github.com/donghoon-khan/kubeportal/src/app/backend/resource/pod"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/event"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/pod"
 )
 
 func GetJobPods(kubernetes kubernetes.Interface, metricClient metricApi.MetricClient,
 	dsQuery *dataselect.DataSelectQuery, namespace string, jobName string) (*pod.PodList, error) {
-	/*log.Printf("Getting replication controller %s pods in namespace %s", jobName, namespace)
+	log.Printf("Getting replication controller %s pods in namespace %s", jobName, namespace)
 
 	pods, err := getRawJobPods(kubernetes, jobName, namespace)
 	if err != nil {
@@ -34,8 +35,7 @@ func GetJobPods(kubernetes kubernetes.Interface, metricClient metricApi.MetricCl
 	}
 
 	podList := pod.ToPodList(pods, events, nonCriticalErrors, dsQuery, metricClient)
-	return &podList, nil*/
-	return nil, nil
+	return &podList, nil
 }
 
 func getRawJobPods(kubernetes kubernetes.Interface, petSetName, namespace string) ([]v1.Pod, error) {

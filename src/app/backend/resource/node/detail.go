@@ -49,7 +49,7 @@ type NodeDetail struct {
 	Metrics         []metricApi.Metric `json:"metrics"`
 	Taints          []v1.Taint         `json:"taints,omitempty"`
 	Addresses       []v1.NodeAddress   `json:"addresses,omitempty"`
-	Errors          []error            `json:"errors" swaggertype:"array,string"`
+	Errors          []error            `json:"errors"`
 }
 
 func GetNodeDetail(kubernetes kubernetes.Interface, metricClient metricApi.MetricClient, name string,

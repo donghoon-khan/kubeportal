@@ -16,7 +16,7 @@ import (
 type ConfigMapList struct {
 	ListMeta api.ListMeta `json:"listMeta"`
 	Items    []ConfigMap  `json:"items"`
-	Errors   []error      `json:"errors" swaggertype:"array,string"`
+	Errors   []error      `json:"errors"`
 }
 
 type ConfigMap struct {

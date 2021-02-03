@@ -9,19 +9,20 @@ import (
 	"k8s.io/apimachinery/pkg/util/rand"
 	"k8s.io/client-go/kubernetes"
 
+	"github.com/donghoon-khan/kubeportal/src/app/backend/api"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
 	metricApi "github.com/donghoon-khan/kubeportal/src/app/backend/integration/metric/api"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/common"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/dataselect"
-	"github.com/kubernetes/dashboard/src/app/backend/resource/job"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/job"
 )
 
 var emptyJobList = &job.JobList{
-	/*Jobs:   make([]job.Job, 0),
+	Jobs:   make([]job.Job, 0),
 	Errors: make([]error, 0),
 	ListMeta: api.ListMeta{
 		TotalItems: 0,
-	},*/
+	},
 }
 
 func GetCronJobJobs(client kubernetes.Interface, metricClient metricApi.MetricClient,
@@ -62,8 +63,7 @@ func GetCronJobJobs(client kubernetes.Interface, metricClient metricApi.MetricCl
 	jobs.Items = filterJobsByOwnerUID(cronJob.UID, jobs.Items)
 	jobs.Items = filterJobsByState(active, jobs.Items)
 
-	//return job.ToJobList(jobs.Items, pods.Items, events.Items, nonCriticalErrors, dsQuery, metricClient), nil
-	return job.ToJobList(jobs.Items, pods.Items, events.Items, nonCriticalErrors, nil, nil), nil
+	return job.ToJobList(jobs.Items, pods.Items, events.Items, nonCriticalErrors, dsQuery, metricClient), nil
 }
 
 func TriggerCronJob(client kubernetes.Interface,

@@ -20,7 +20,7 @@ type PodList struct {
 	CumulativeMetrics []metricApi.Metric    `json:"cumulativeMetrics"`
 	Status            common.ResourceStatus `json:"status"`
 	Pods              []Pod                 `json:"pods"`
-	Errors            []error               `json:"errors" swaggertype:"array,string"`
+	Errors            []error               `json:"errors"`
 }
 
 type PodStatus struct {

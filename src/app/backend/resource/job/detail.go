@@ -1,6 +1,17 @@
 package job
 
-/*type JobDetail struct {
+import (
+	"context"
+
+	batch "k8s.io/api/batch/v1"
+	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
+
+	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/common"
+)
+
+type JobDetail struct {
 	Job         `json:",inline"`
 	Completions *int32  `json:"completions"`
 	Errors      []error `json:"errors"`
@@ -12,7 +23,7 @@ func GetJobDetail(kubernetes kubernetes.Interface, namespace, name string) (*Job
 		return nil, err
 	}
 
-	podInfo, err := getJobPodInfo(client, jobData)
+	podInfo, err := getJobPodInfo(kubernetes, jobData)
 	nonCriticalErrors, criticalError := errors.HandleError(err)
 	if criticalError != nil {
 		return nil, criticalError
@@ -29,4 +40,3 @@ func toJobDetail(job *batch.Job, podInfo common.PodInfo, nonCriticalErrors []err
 		Errors:      nonCriticalErrors,
 	}
 }
-*/

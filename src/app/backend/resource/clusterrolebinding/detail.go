@@ -12,7 +12,7 @@ type ClusterRoleBindingDetail struct {
 	ClusterRoleBinding `json:",inline"`
 	Subjects           []rbac.Subject `json:"subjects,omitempty" protobuf:"bytes,2,rep,name=subjects"`
 	RoleRef            rbac.RoleRef   `json:"roleRef" protobuf:"bytes,3,opt,name=roleRef"`
-	Errors             []error        `json:"errors" swaggertype:"array,string"`
+	Errors             []error        `json:"errors"`
 }
 
 func GetClusterRoleBindingDetail(kubernetes k8sClient.Interface, name string) (*ClusterRoleBindingDetail, error) {

@@ -6,10 +6,10 @@ import (
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
 
+	"github.com/donghoon-khan/kubeportal/src/app/backend/api"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
 	metricApi "github.com/donghoon-khan/kubeportal/src/app/backend/integration/metric/api"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/dataselect"
-	"github.com/kubernetes/dashboard/src/app/backend/api"
 )
 
 type MetricsByPod struct {

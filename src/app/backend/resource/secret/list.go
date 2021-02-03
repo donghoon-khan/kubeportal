@@ -52,7 +52,7 @@ type Secret struct {
 type SecretList struct {
 	api.ListMeta `json:"listMeta"`
 	Secrets      []Secret `json:"secrets"`
-	Errors       []error  `json:"errors" swaggertype:"array,string"`
+	Errors       []error  `json:"errors"`
 }
 
 func GetSecretList(kubernetes kubernetes.Interface, namespace *common.NamespaceQuery,

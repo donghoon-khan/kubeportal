@@ -11,7 +11,7 @@ import (
 type ClusterRoleDetail struct {
 	ClusterRole `json:",inline"`
 	Rules       []rbac.PolicyRule `json:"rules"`
-	Errors      []error           `json:"errors" swaggertype:"array,string"`
+	Errors      []error           `json:"errors"`
 }
 
 func GetClusterRoleDetail(client k8sClient.Interface, name string) (*ClusterRoleDetail, error) {

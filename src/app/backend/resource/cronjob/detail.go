@@ -12,7 +12,7 @@ type CronJobDetail struct {
 	CronJob                 `json:",inline"`
 	ConcurrencyPolicy       string  `json:"concurrencyPolicy"`
 	StartingDeadLineSeconds *int64  `json:"startingDeadlineSeconds"`
-	Errors                  []error `json:"errors" swaggertype:"array,string"`
+	Errors                  []error `json:"errors"`
 }
 
 func GetCronJobDetail(client k8sClient.Interface, namespace, name string) (*CronJobDetail, error) {

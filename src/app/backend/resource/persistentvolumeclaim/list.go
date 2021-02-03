@@ -15,7 +15,7 @@ import (
 type PersistentVolumeClaimList struct {
 	ListMeta api.ListMeta            `json:"listMeta"`
 	Items    []PersistentVolumeClaim `json:"items"`
-	Errors   []error                 `json:"errors" swaggertype:"array,string"`
+	Errors   []error                 `json:"errors"`
 }
 
 type PersistentVolumeClaim struct {
