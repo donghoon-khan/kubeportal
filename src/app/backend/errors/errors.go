@@ -9,6 +9,10 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
+type StatusErrorResponse struct {
+	Message string `json:"message"`
+}
+
 var _ error = &errors.StatusError{}
 
 func NewUnauthorized(reason string) *errors.StatusError {

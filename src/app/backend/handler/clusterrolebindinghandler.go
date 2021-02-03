@@ -10,13 +10,16 @@ import (
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/clusterrolebinding"
 )
 
+type asd string
+
 func (apiHandler *APIHandler) installClusterRoleBinding(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/clusterrolebinding").
 			To(apiHandler.handleGetClusterRoleBindingList).
 			Writes(clusterrolebinding.ClusterRoleBindingList{}).
 			Doc("Get list of clusterrolebinding").
-			Returns(200, "OK", clusterrolebinding.ClusterRoleBindingList{}))
+			Returns(200, "OK", clusterrolebinding.ClusterRoleBindingList{}).
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
 	ws.Route(
 		ws.GET("/clusterrolebinding/{clusterrolebinding}").
 			To(apiHandler.handleGetClusterRoleBindingDetail).

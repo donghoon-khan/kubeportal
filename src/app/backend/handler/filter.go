@@ -32,7 +32,8 @@ func InstallFilters(ws *restful.WebService, manager k8sapi.KubernetesManager) {
 func restrictedResourcesFilter(request *restful.Request, response *restful.Response, chain *restful.FilterChain) {
 
 	err := errors.NewUnauthorized(errors.MsgDashboardExclusiveResourceError)
-	response.WriteHeaderAndEntity(int(err.ErrStatus.Code), err.Error())
+	response.WriteHeaderAndEntity(int(err.ErrStatus.Code),
+		errors.StatusErrorResponse{Message: err.Error()})
 }
 
 func requestAndResponseLogger(request *restful.Request, response *restful.Response,
