@@ -51,7 +51,7 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 			Metadata(restfulspec.KeyOpenAPITags, []string{podDocsTag}))
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}/event").
-			To(apiHandler.handleGetPodEventList).
+			To(apiHandler.handleGetPodEvents).
 			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
 			Param(ws.PathParameter("name", "Name of Pod").Required(true)).
 			Returns(200, "OK", common.EventList{}).
@@ -60,7 +60,7 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 			Metadata(restfulspec.KeyOpenAPITags, []string{podDocsTag}))
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}/persistentvolumeclaim").
-			To(apiHandler.handleGetPodPersistentVolumeClaimList).
+			To(apiHandler.handleGetPodPersistentVolumeClaims).
 			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
 			Param(ws.PathParameter("name", "Name of Pod").Required(true)).
 			Returns(200, "OK", persistentvolumeclaim.PersistentVolumeClaimList{}).
@@ -138,7 +138,7 @@ func (apiHandler *APIHandler) handleGetPodContainerList(request *restful.Request
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-func (apiHandler *APIHandler) handleGetPodEventList(request *restful.Request, response *restful.Response) {
+func (apiHandler *APIHandler) handleGetPodEvents(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
 		errors.HandleInternalError(response, err)
@@ -157,7 +157,7 @@ func (apiHandler *APIHandler) handleGetPodEventList(request *restful.Request, re
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-func (apiHandler *APIHandler) handleGetPodPersistentVolumeClaimList(request *restful.Request, response *restful.Response) {
+func (apiHandler *APIHandler) handleGetPodPersistentVolumeClaims(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
 		errors.HandleInternalError(response, err)

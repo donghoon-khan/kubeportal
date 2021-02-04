@@ -41,7 +41,7 @@ func (apiHandler *APIHandler) installService(ws *restful.WebService) {
 			Metadata(restfulspec.KeyOpenAPITags, []string{serviceDocsTag}))
 	ws.Route(
 		ws.GET("/service/{namespace}/{name}/event").
-			To(apiHandler.handleGetPodEventList).
+			To(apiHandler.handleGetServiceEvents).
 			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
 			Param(ws.PathParameter("name", "Name of Service").Required(true)).
 			Returns(200, "OK", common.EventList{}).
@@ -109,7 +109,7 @@ func (apiHandler *APIHandler) handleGetServiceDetail(request *restful.Request, r
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-func (apiHandler *APIHandler) handleGetServiceEvent(request *restful.Request, response *restful.Response) {
+func (apiHandler *APIHandler) handleGetServiceEvents(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
 		errors.HandleInternalError(response, err)

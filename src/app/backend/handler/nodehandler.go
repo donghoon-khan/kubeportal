@@ -33,7 +33,7 @@ func (apiHandler *APIHandler) installNode(ws *restful.WebService) {
 			Metadata(restfulspec.KeyOpenAPITags, []string{nodeDocsTag}))
 	ws.Route(
 		ws.GET("/node/{name}/event").
-			To(apiHandler.handleGetNodeEventList).
+			To(apiHandler.handleGetNodeEvents).
 			Param(ws.PathParameter("name", "Name of Node").Required(true)).
 			Returns(200, "OK", common.EventList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
@@ -84,7 +84,7 @@ func (apiHandler *APIHandler) handleGetNodeDetail(request *restful.Request, resp
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-func (apiHandler *APIHandler) handleGetNodeEventList(request *restful.Request, response *restful.Response) {
+func (apiHandler *APIHandler) handleGetNodeEvents(request *restful.Request, response *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(request)
 	if err != nil {
 		errors.HandleInternalError(response, err)

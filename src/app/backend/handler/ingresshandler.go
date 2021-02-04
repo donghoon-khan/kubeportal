@@ -22,7 +22,7 @@ func (apiHandler *APIHandler) installIngress(ws *restful.WebService) {
 			Metadata(restfulspec.KeyOpenAPITags, []string{ingressDocsTag}))
 	ws.Route(
 		ws.GET("/ingress/{namespace}").
-			To(apiHandler.handleGetIngressListNs).
+			To(apiHandler.handleGetIngressListNamespace).
 			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
 			Returns(200, "OK", ingress.IngressList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
@@ -55,7 +55,7 @@ func (apiHandler *APIHandler) handleGetIngressList(req *restful.Request, res *re
 	res.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-func (apiHandler *APIHandler) handleGetIngressListNs(req *restful.Request, res *restful.Response) {
+func (apiHandler *APIHandler) handleGetIngressListNamespace(req *restful.Request, res *restful.Response) {
 	k8s, err := apiHandler.kManager.Kubernetes(req)
 	if err != nil {
 		errors.HandleInternalError(res, err)
