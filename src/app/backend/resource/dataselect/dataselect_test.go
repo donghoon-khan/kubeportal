@@ -81,17 +81,17 @@ func TestSort(t *testing.T) {
 		},
 		{
 			"ascending sort by 1 property - all items sorted by this property",
-			NewSortQuery([]string{"a", "creationTimestamp"}),
+			NewSortQuery([]string{"asc", "creationTimestamp"}),
 			[]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
 		},
 		{
 			"descending sort by 1 property - all items sorted by this property",
-			NewSortQuery([]string{"d", "creationTimestamp"}),
+			NewSortQuery([]string{"dsc", "creationTimestamp"}),
 			[]int{10, 9, 8, 7, 6, 5, 4, 3, 2, 1},
 		},
 		{
 			"sort by 2 properties - items should first be sorted by first property and later by second",
-			NewSortQuery([]string{"a", "name", "d", "creationTimestamp"}),
+			NewSortQuery([]string{"asc", "name", "dsc", "creationTimestamp"}),
 			[]int{10, 3, 2, 1, 5, 4, 6, 7, 8, 9},
 		},
 		{
@@ -104,15 +104,14 @@ func TestSort(t *testing.T) {
 			NewSortQuery(nil),
 			[]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
 		},
-		// Invalid arguments to the NewSortQuery
 		{
 			"sort by few properties where at least one property name is invalid - no sort",
-			NewSortQuery([]string{"a", "INVALID_PROPERTY", "d", "creationTimestamp"}),
+			NewSortQuery([]string{"asc", "INVALID_PROPERTY", "dsc", "creationTimestamp"}),
 			[]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
 		},
 		{
 			"sort by few properties where at least one order option is invalid - no sort",
-			NewSortQuery([]string{"d", "name", "INVALID_ORDER", "creationTimestamp"}),
+			NewSortQuery([]string{"dsc", "name", "INVALID_ORDER", "creationTimestamp"}),
 			[]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
 		},
 		{
@@ -122,7 +121,7 @@ func TestSort(t *testing.T) {
 		},
 		{
 			"sort by few properties where one order tag is missing property - no sort",
-			NewSortQuery([]string{"d", "name", "a", "creationTimestamp", "a"}),
+			NewSortQuery([]string{"dsc", "name", "asc", "creationTimestamp", "asc"}),
 			[]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
 		},
 	}
