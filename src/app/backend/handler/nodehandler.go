@@ -21,42 +21,38 @@ func (apiHandler *APIHandler) installNode(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/node").
 			To(apiHandler.handleGetNodeList).
-			Writes(node.NodeList{}).
+			Returns(200, "OK", node.NodeList{}).
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Node").
 			Notes("Returns a list of Node").
-			Metadata(restfulspec.KeyOpenAPITags, nodeDocsTag).
-			Returns(200, "OK", node.NodeList{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Metadata(restfulspec.KeyOpenAPITags, nodeDocsTag))
 	ws.Route(
 		ws.GET("/node/{name}").
 			To(apiHandler.handleGetNodeDetail).
-			Writes(node.NodeDetail{}).
-			Doc("Read the specified Node").
-			Notes("Returns the specified Node").
-			Metadata(restfulspec.KeyOpenAPITags, nodeDocsTag).
 			Param(ws.PathParameter("name", "Name of Node").DataType("string").Required(true)).
 			Returns(200, "OK", node.NodeDetail{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
+			Doc("Read the specified Node").
+			Notes("Returns the specified Node").
+			Metadata(restfulspec.KeyOpenAPITags, nodeDocsTag))
 	ws.Route(
 		ws.GET("/node/{name}/event").
 			To(apiHandler.handleGetNodeEventList).
-			Writes(common.EventList{}).
-			Doc("List events related to a Node").
-			Notes("Returns a list of event related to Node").
-			Metadata(restfulspec.KeyOpenAPITags, nodeDocsTag).
 			Param(ws.PathParameter("name", "Name of Node").DataType("string").Required(true)).
 			Returns(200, "OK", common.EventList{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
+			Doc("List events related to a Node").
+			Notes("Returns a list of event related to Node").
+			Metadata(restfulspec.KeyOpenAPITags, nodeDocsTag))
 	ws.Route(
 		ws.GET("/node/{name}/pod").
 			To(apiHandler.handleGetNodePods).
-			Writes(pod.PodList{}).
-			Doc("list Pods related to a Node").
-			Notes("Returns a list of Pod related to Node").
-			Metadata(restfulspec.KeyOpenAPITags, nodeDocsTag).
 			Param(ws.PathParameter("name", "Name of Node").DataType("string").Required(true)).
 			Returns(200, "OK", pod.PodList{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
+			Doc("list Pods related to a Node").
+			Notes("Returns a list of Pod related to Node").
+			Metadata(restfulspec.KeyOpenAPITags, nodeDocsTag))
 }
 
 func (apiHandler *APIHandler) handleGetNodeList(request *restful.Request, response *restful.Response) {

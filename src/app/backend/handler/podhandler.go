@@ -21,71 +21,65 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/pod").
 			To(apiHandler.handleGetPodList).
-			Writes(pod.PodList{}).
+			Returns(200, "OK", pod.PodList{}).
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Pod").
 			Notes("Returns a list of Pod").
-			Metadata(restfulspec.KeyOpenAPITags, podDocsTag).
-			Returns(200, "OK", pod.PodList{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Metadata(restfulspec.KeyOpenAPITags, podDocsTag))
 	ws.Route(
 		ws.GET("/pod/{namespace}").
 			To(apiHandler.handleGetPodListNamespace).
-			Writes(pod.PodList{}).
-			Doc("List objects of kind Pod in the Namespace").
-			Notes("Returns a list of Pod in the Namespace").
-			Metadata(restfulspec.KeyOpenAPITags, podDocsTag).
 			Param(ws.PathParameter("namespace",
 				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
 			Returns(200, "OK", pod.PodList{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
+			Doc("List objects of kind Pod in the Namespace").
+			Notes("Returns a list of Pod in the Namespace").
+			Metadata(restfulspec.KeyOpenAPITags, podDocsTag))
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}").
 			To(apiHandler.handleGetPodDetail).
-			Writes(pod.PodDetail{}).
-			Doc("Read the specified Pod").
-			Notes("Returns the specified Pod").
-			Metadata(restfulspec.KeyOpenAPITags, podDocsTag).
 			Param(ws.PathParameter("namespace",
 				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
 			Param(ws.PathParameter("name", "Name of Pod").DataType("string").Required(true)).
 			Returns(200, "OK", pod.PodDetail{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
+			Doc("Read the specified Pod").
+			Notes("Returns the specified Pod").
+			Metadata(restfulspec.KeyOpenAPITags, podDocsTag))
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}/container").
 			To(apiHandler.handleGetPodContainerList).
-			Writes(pod.PodDetail{}).
-			Doc("List containers related to a Pod").
-			Notes("Returns list of container related to a Pod").
-			Metadata(restfulspec.KeyOpenAPITags, podDocsTag).
 			Param(ws.PathParameter("namespace",
 				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
 			Param(ws.PathParameter("name", "Name of Pod").DataType("string").Required(true)).
 			Returns(200, "OK", pod.PodDetail{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
+			Doc("List containers related to a Pod").
+			Notes("Returns list of container related to a Pod").
+			Metadata(restfulspec.KeyOpenAPITags, podDocsTag))
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}/event").
 			To(apiHandler.handleGetPodEventList).
-			Writes(common.EventList{}).
-			Doc("List events related to a Pod").
-			Notes("Returns list of event related to a Pod").
-			Metadata(restfulspec.KeyOpenAPITags, podDocsTag).
 			Param(ws.PathParameter("namespace",
 				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
 			Param(ws.PathParameter("name", "Name of Pod").DataType("string").Required(true)).
 			Returns(200, "OK", common.EventList{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
+			Doc("List events related to a Pod").
+			Notes("Returns list of event related to a Pod").
+			Metadata(restfulspec.KeyOpenAPITags, podDocsTag))
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}/persistentvolumeclaim").
 			To(apiHandler.handleGetPodPersistentVolumeClaimList).
-			Writes(persistentvolumeclaim.PersistentVolumeClaimList{}).
-			Doc("List PersistentVolumeClaims related to a Pod").
-			Notes("Returns list of PersistentVolumeClaim related to a Pod").
-			Metadata(restfulspec.KeyOpenAPITags, podDocsTag).
 			Param(ws.PathParameter("namespace",
 				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
 			Param(ws.PathParameter("name", "Name of Pod").DataType("string").Required(true)).
 			Returns(200, "OK", persistentvolumeclaim.PersistentVolumeClaimList{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
+			Doc("List PersistentVolumeClaims related to a Pod").
+			Notes("Returns list of PersistentVolumeClaim related to a Pod").
+			Metadata(restfulspec.KeyOpenAPITags, podDocsTag))
 }
 
 func (apiHandler *APIHandler) handleGetPodList(request *restful.Request, response *restful.Response) {

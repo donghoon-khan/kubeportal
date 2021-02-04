@@ -18,35 +18,32 @@ func (apiHandler *APIHandler) installPersistentVolumeClaim(ws *restful.WebServic
 	ws.Route(
 		ws.GET("/persistentvolumeclaim").
 			To(apiHandler.handleGetPersistentVolumeClaimList).
-			Writes(persistentvolumeclaim.PersistentVolumeClaimList{}).
+			Returns(200, "OK", persistentvolumeclaim.PersistentVolumeClaimList{}).
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind PersistentVolumeClaim").
 			Notes("Returns a list of PersistentVolumeClaim").
-			Metadata(restfulspec.KeyOpenAPITags, persistentVolumeClaimDocsTag).
-			Returns(200, "OK", persistentvolumeclaim.PersistentVolumeClaimList{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Metadata(restfulspec.KeyOpenAPITags, persistentVolumeClaimDocsTag))
 	ws.Route(
 		ws.GET("/persistentvolumeclaim/{namespace}").
 			To(apiHandler.handleGetPersistentVolumeClaimListNamespace).
-			Writes(persistentvolumeclaim.PersistentVolumeClaimList{}).
-			Doc("List objects of kind PersistentVolumeClaim in the Namespace").
-			Notes("Returns a list of PersistentVolumeClaim in the Namespace").
-			Metadata(restfulspec.KeyOpenAPITags, persistentVolumeClaimDocsTag).
 			Param(ws.PathParameter("namespace",
 				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
 			Returns(200, "OK", persistentvolumeclaim.PersistentVolumeClaimList{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
+			Doc("List objects of kind PersistentVolumeClaim in the Namespace").
+			Notes("Returns a list of PersistentVolumeClaim in the Namespace").
+			Metadata(restfulspec.KeyOpenAPITags, persistentVolumeClaimDocsTag))
 	ws.Route(
 		ws.GET("/persistentvolumeclaim/{namespace}/{name}").
 			To(apiHandler.handleGetPersistentVolumeClaimDetail).
-			Writes(persistentvolumeclaim.PersistentVolumeClaimDetail{}).
-			Doc("Read the specified PersistentVolumeClaim").
-			Notes("Returns the specified PersistentVolumeClaim").
-			Metadata(restfulspec.KeyOpenAPITags, persistentVolumeClaimDocsTag).
 			Param(ws.PathParameter("namespace",
 				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
 			Param(ws.PathParameter("name", "Name of PersistentVolumeClaim").DataType("string").Required(true)).
 			Returns(200, "OK", persistentvolumeclaim.PersistentVolumeClaimDetail{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
+			Doc("Read the specified PersistentVolumeClaim").
+			Notes("Returns the specified PersistentVolumeClaim").
+			Metadata(restfulspec.KeyOpenAPITags, persistentVolumeClaimDocsTag))
 }
 
 func (apiHandler *APIHandler) handleGetPersistentVolumeClaimList(request *restful.Request, response *restful.Response) {

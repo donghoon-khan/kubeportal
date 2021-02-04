@@ -18,35 +18,32 @@ func (apiHandler *APIHandler) installConfigMap(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/configmap").
 			To(apiHandler.handleGetConfigMapList).
-			Writes(configmap.ConfigMapList{}).
+			Returns(200, "OK", configmap.ConfigMapList{}).
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind ConfigMap").
 			Notes("Returns a list of ConfigMap").
-			Metadata(restfulspec.KeyOpenAPITags, configMapDocsTag).
-			Returns(200, "OK", configmap.ConfigMapList{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Metadata(restfulspec.KeyOpenAPITags, configMapDocsTag))
 	ws.Route(
 		ws.GET("/configmap/{namespace}").
 			To(apiHandler.handleGetConfigMapListNamespace).
-			Writes(configmap.ConfigMapList{}).
-			Doc("List objects of kind ConfigMap in the Namespace").
-			Notes("Returns a list of ConfigMap in the Namespace").
-			Metadata(restfulspec.KeyOpenAPITags, configMapDocsTag).
 			Param(ws.PathParameter("namespace",
 				"object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
 			Returns(200, "OK", configmap.ConfigMapList{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
+			Doc("List objects of kind ConfigMap in the Namespace").
+			Notes("Returns a list of ConfigMap in the Namespace").
+			Metadata(restfulspec.KeyOpenAPITags, configMapDocsTag))
 	ws.Route(
 		ws.GET("/configmap/{namespace}/{name}").
 			To(apiHandler.handleGetConfigMapDetail).
-			Writes(configmap.ConfigMapDetail{}).
-			Doc("Read the specified ConfigMap").
-			Notes("Returns the specified ConfigMap").
-			Metadata(restfulspec.KeyOpenAPITags, configMapDocsTag).
 			Param(ws.PathParameter("namespace",
 				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
 			Param(ws.PathParameter("name", "Name of ConfigMap").DataType("string").Required(true)).
 			Returns(200, "OK", configmap.ConfigMapDetail{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
+			Doc("Read the specified ConfigMap").
+			Notes("Returns the specified ConfigMap").
+			Metadata(restfulspec.KeyOpenAPITags, configMapDocsTag))
 }
 
 func (apiHandler *APIHandler) handleGetConfigMapList(request *restful.Request, response *restful.Response) {

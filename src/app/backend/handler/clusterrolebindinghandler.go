@@ -17,22 +17,20 @@ func (apiHandler *APIHandler) installClusterRoleBinding(ws *restful.WebService) 
 	ws.Route(
 		ws.GET("/clusterrolebinding").
 			To(apiHandler.handleGetClusterRoleBindingList).
-			Writes(clusterrolebinding.ClusterRoleBindingList{}).
+			Returns(200, "OK", clusterrolebinding.ClusterRoleBindingList{}).
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind ClusterRoleBinding").
 			Notes("Returns a list of ClusterRoleBinding").
-			Metadata(restfulspec.KeyOpenAPITags, clusterRoleBindingDocsTag).
-			Returns(200, "OK", clusterrolebinding.ClusterRoleBindingList{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Metadata(restfulspec.KeyOpenAPITags, clusterRoleBindingDocsTag))
 	ws.Route(
 		ws.GET("/clusterrolebinding/{name}").
 			To(apiHandler.handleGetClusterRoleBindingDetail).
-			Writes(clusterrolebinding.ClusterRoleBindingDetail{}).
-			Doc("Read the specified ClusterRoleBinding").
-			Notes("Returns the specified ClusterRoleBinding").
-			Metadata(restfulspec.KeyOpenAPITags, clusterRoleBindingDocsTag).
 			Param(ws.PathParameter("name", "Name of ClusterRoleBinding").DataType("string").Required(true)).
 			Returns(200, "OK", clusterrolebinding.ClusterRoleBindingDetail{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
+			Doc("Read the specified ClusterRoleBinding").
+			Notes("Returns the specified ClusterRoleBinding").
+			Metadata(restfulspec.KeyOpenAPITags, clusterRoleBindingDocsTag))
 }
 
 func (apiHandler *APIHandler) handleGetClusterRoleBindingList(request *restful.Request, response *restful.Response) {
@@ -58,8 +56,8 @@ func (apiHandler *APIHandler) handleGetClusterRoleBindingDetail(request *restful
 		return
 	}
 
-	crbName := request.PathParameter("clusterrolebinding")
-	result, err := clusterrolebinding.GetClusterRoleBindingDetail(k8s, crbName)
+	name := request.PathParameter("name")
+	result, err := clusterrolebinding.GetClusterRoleBindingDetail(k8s, name)
 	if err != nil {
 		errors.HandleInternalError(response, err)
 		return

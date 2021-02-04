@@ -18,35 +18,32 @@ func (apiHandler *APIHandler) installSecret(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/secret").
 			To(apiHandler.handleGetSecretList).
-			Writes(secret.SecretList{}).
+			Returns(200, "OK", secret.SecretList{}).
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Secret").
 			Notes("Returns a list of Secret").
-			Metadata(restfulspec.KeyOpenAPITags, secretDocsTag).
-			Returns(200, "OK", secret.SecretList{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Metadata(restfulspec.KeyOpenAPITags, secretDocsTag))
 	ws.Route(
 		ws.GET("/secret/{namespace}").
 			To(apiHandler.handleGetSecretList).
-			Writes(secret.SecretList{}).
-			Doc("List objects of kind Secret in the Namespace").
-			Notes("Returns a list of Secret in the Namespace").
-			Metadata(restfulspec.KeyOpenAPITags, secretDocsTag).
 			Param(ws.PathParameter("namespace",
 				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
 			Returns(200, "OK", secret.SecretList{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
+			Doc("List objects of kind Secret in the Namespace").
+			Notes("Returns a list of Secret in the Namespace").
+			Metadata(restfulspec.KeyOpenAPITags, secretDocsTag))
 	ws.Route(
 		ws.GET("/secret/{namespace}/{name}").
 			To(apiHandler.handleGetSecretDetail).
-			Writes(secret.SecretDetail{}).
-			Doc("Read the specified Secret").
-			Notes("Returns the specified Secret").
-			Metadata(restfulspec.KeyOpenAPITags, secretDocsTag).
 			Param(ws.PathParameter("namespace",
 				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
 			Param(ws.PathParameter("name", "Name of Secret").DataType("string").Required(true)).
 			Returns(200, "OK", secret.SecretDetail{}).
-			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
+			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
+			Doc("Read the specified Secret").
+			Notes("Returns the specified Secret").
+			Metadata(restfulspec.KeyOpenAPITags, secretDocsTag))
 }
 
 func (apiHandler *APIHandler) handleGetSecretList(request *restful.Request, response *restful.Response) {
