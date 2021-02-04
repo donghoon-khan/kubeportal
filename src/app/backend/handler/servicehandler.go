@@ -17,7 +17,7 @@ import (
 func (apiHandler *APIHandler) installService(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/service").
-			To(apiHandler.handleGetPodList).
+			To(apiHandler.handleGetServiceList).
 			Returns(200, "OK", service.ServiceList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Service").
