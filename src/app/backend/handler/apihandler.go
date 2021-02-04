@@ -63,11 +63,12 @@ func CreateHttpApiHandler(
 	apiHandler.installConfigMap(k8sWs)
 	apiHandler.installCronJob(k8sWs)
 	apiHandler.installIngress(k8sWs)
-	apiHandler.installSecret(k8sWs)
 	apiHandler.installPersistentVolumeClaim(k8sWs)
 	apiHandler.installPod(k8sWs)
 	apiHandler.installNode(k8sWs)
+	apiHandler.installSecret(k8sWs)
 	apiHandler.installService(k8sWs)
+	apiHandler.installServiceAccount(k8sWs)
 	wsContainer.Add(k8sWs)
 
 	integrationHandler := integration.NewIntegrationHandler(iManager)

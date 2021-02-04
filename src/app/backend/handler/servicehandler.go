@@ -117,7 +117,7 @@ func (apiHandler *APIHandler) handleGetServiceEvents(request *restful.Request, r
 	}
 
 	namespace := request.PathParameter("namespace")
-	name := request.PathParameter("service")
+	name := request.PathParameter("name")
 	dataSelect := parser.ParseDataSelectPathParameter(request)
 	dataSelect.MetricQuery = dataselect.StandardMetrics
 	result, err := service.GetServiceEvents(k8s, dataSelect, namespace, name)
@@ -136,7 +136,7 @@ func (apiHandler *APIHandler) handleGetServicePods(request *restful.Request, res
 	}
 
 	namespace := request.PathParameter("namespace")
-	name := request.PathParameter("service")
+	name := request.PathParameter("name")
 	dataSelect := parser.ParseDataSelectPathParameter(request)
 	dataSelect.MetricQuery = dataselect.StandardMetrics
 	result, err := service.GetServicePods(k8s, apiHandler.iManager.Metric().Client(), namespace, name, dataSelect)

@@ -20,8 +20,9 @@ const (
 	nodeDocsTag                  = "Node"
 	persistentVolumeClaimDocsTag = "PersistentVolumeClaim"
 	podDocsTag                   = "Pod"
-	serviceDocsTag               = "Service"
 	secretDocsTag                = "Sceret"
+	serviceDocsTag               = "Service"
+	serviceAccountDocsTag        = "ServiceAccount"
 )
 
 func CreateApiDocsHTTPHandler(wsContainer *restful.Container, specURL string, next http.Handler) http.Handler {
@@ -124,6 +125,13 @@ func enrichSwaggerObject(swo *spec.Swagger) {
 		},
 		{
 			TagProps: spec.TagProps{
+				Name: secretDocsTag,
+				Description: "Secret holds secret data of a certain type. The total bytes of the values in the Data field must be less than MaxSecretSize bytes." +
+					"<br/>Ref: https://kubernetes.io/docs/concepts/configuration/secret/",
+			},
+		},
+		{
+			TagProps: spec.TagProps{
 				Name: serviceDocsTag,
 				Description: "Service is a named abstraction of software service (for example, mysql) consisting of local port (for example 3306) that the proxy listens on, and the selector that determines which pods will answer requests sent through the proxy." +
 					"<br/>Ref: https://kubernetes.io/docs/concepts/services-networking/service/",
@@ -131,9 +139,10 @@ func enrichSwaggerObject(swo *spec.Swagger) {
 		},
 		{
 			TagProps: spec.TagProps{
-				Name: secretDocsTag,
-				Description: "Secret holds secret data of a certain type. The total bytes of the values in the Data field must be less than MaxSecretSize bytes." +
-					"<br/>Ref: https://kubernetes.io/docs/concepts/configuration/secret/",
+				Name: serviceAccountDocsTag,
+				Description: "ServiceAccount binds together: * a name, understood by users, and perhaps by peripheral systems, for an identity * a principal that can be authenticated and authorized * a set of secrets" +
+					"<br/>Ref: https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/",
 			},
-		}}
+		},
+	}
 }
