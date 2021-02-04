@@ -67,6 +67,7 @@ func CreateHttpApiHandler(
 	apiHandler.installPersistentVolumeClaim(k8sWs)
 	apiHandler.installPod(k8sWs)
 	apiHandler.installNode(k8sWs)
+	apiHandler.installService(k8sWs)
 	wsContainer.Add(k8sWs)
 
 	integrationHandler := integration.NewIntegrationHandler(iManager)

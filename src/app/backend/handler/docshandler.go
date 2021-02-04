@@ -20,6 +20,7 @@ const (
 	nodeDocsTag                  = "Node"
 	persistentVolumeClaimDocsTag = "PersistentVolumeClaim"
 	podDocsTag                   = "Pod"
+	serviceDocsTag               = "Service"
 	secretDocsTag                = "Sceret"
 )
 
@@ -119,6 +120,13 @@ func enrichSwaggerObject(swo *spec.Swagger) {
 				Name: podDocsTag,
 				Description: "Pod is a collection of containers that can run on a host. This resource is created by clients and scheduled onto hosts." +
 					"<br/>Ref: https://kubernetes.io/docs/concepts/workloads/pods/",
+			},
+		},
+		{
+			TagProps: spec.TagProps{
+				Name: serviceDocsTag,
+				Description: "Service is a named abstraction of software service (for example, mysql) consisting of local port (for example 3306) that the proxy listens on, and the selector that determines which pods will answer requests sent through the proxy." +
+					"<br/>Ref: https://kubernetes.io/docs/concepts/services-networking/service/",
 			},
 		},
 		{

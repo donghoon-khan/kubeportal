@@ -32,4 +32,5 @@ build: build/backend build/frontend
 all: mod test build
 
 clean:
+	$(GOCLEAN) ./...
 	rm -rf $(BUILD_DIST)
