@@ -12,8 +12,6 @@ import (
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/persistentvolumeclaim"
 )
 
-var persistentVolumeClaimDocsTag = []string{"PersistentVolumeClaim"}
-
 func (apiHandler *APIHandler) installPersistentVolumeClaim(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/persistentvolumeclaim").
@@ -22,7 +20,7 @@ func (apiHandler *APIHandler) installPersistentVolumeClaim(ws *restful.WebServic
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind PersistentVolumeClaim").
 			Notes("Returns a list of PersistentVolumeClaim").
-			Metadata(restfulspec.KeyOpenAPITags, persistentVolumeClaimDocsTag))
+			Metadata(restfulspec.KeyOpenAPITags, []string{persistentVolumeClaimDocsTag}))
 	ws.Route(
 		ws.GET("/persistentvolumeclaim/{namespace}").
 			To(apiHandler.handleGetPersistentVolumeClaimListNamespace).
@@ -32,7 +30,7 @@ func (apiHandler *APIHandler) installPersistentVolumeClaim(ws *restful.WebServic
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind PersistentVolumeClaim in the Namespace").
 			Notes("Returns a list of PersistentVolumeClaim in the Namespace").
-			Metadata(restfulspec.KeyOpenAPITags, persistentVolumeClaimDocsTag))
+			Metadata(restfulspec.KeyOpenAPITags, []string{persistentVolumeClaimDocsTag}))
 	ws.Route(
 		ws.GET("/persistentvolumeclaim/{namespace}/{name}").
 			To(apiHandler.handleGetPersistentVolumeClaimDetail).
@@ -43,7 +41,7 @@ func (apiHandler *APIHandler) installPersistentVolumeClaim(ws *restful.WebServic
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified PersistentVolumeClaim").
 			Notes("Returns the specified PersistentVolumeClaim").
-			Metadata(restfulspec.KeyOpenAPITags, persistentVolumeClaimDocsTag))
+			Metadata(restfulspec.KeyOpenAPITags, []string{persistentVolumeClaimDocsTag}))
 }
 
 func (apiHandler *APIHandler) handleGetPersistentVolumeClaimList(request *restful.Request, response *restful.Response) {
