@@ -14,6 +14,8 @@ const (
 	integrationDocsTag           = "Integration"
 	clusterRoleBindingDocsTag    = "ClusterRoleBinding"
 	clusterRoleDocsTag           = "ClusterRole"
+	configMapDocsTag             = "ConfigMap"
+	cronJobDocsTag               = "CronJob"
 	nodeDocsTag                  = "Node"
 	persistentVolumeClaimDocsTag = "PersistentVolumeClaim"
 	podDocsTag                   = "Pod"
@@ -74,6 +76,20 @@ func enrichSwaggerObject(swo *spec.Swagger) {
 				Name: clusterRoleDocsTag,
 				Description: "ClusterRole is a logical grouping of PolicyRules that can be referenced as a unit by ClusterRoleBindings." +
 					"<br/>Ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/#role-and-clusterrole",
+			},
+		},
+		{
+			TagProps: spec.TagProps{
+				Name: configMapDocsTag,
+				Description: "A ConfigMap is an API object used to store non-confidential data in key-value pairs. Pods can consume ConfigMaps as environment variables, command-line arguments, or as configuration files in a volume." +
+					"<br/>Ref: https://kubernetes.io/docs/concepts/configuration/configmap/",
+			},
+		},
+		{
+			TagProps: spec.TagProps{
+				Name: cronJobDocsTag,
+				Description: "One CronJob object is like one line of a crontab (cron table) file. It runs a job periodically on a given schedule, written in [Cron](https://en.wikipedia.org/wiki/Cron) format." +
+					"<br/>Ref: https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/",
 			},
 		},
 		{

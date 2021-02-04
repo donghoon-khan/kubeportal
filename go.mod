@@ -7,7 +7,6 @@ require (
 	github.com/emicklei/go-restful/v3 v3.4.0
 	github.com/go-openapi/runtime v0.19.26
 	github.com/go-openapi/spec v0.20.2
-	github.com/kubernetes/dashboard v1.10.1
 	github.com/stretchr/testify v1.7.0 // indirect
 	golang.org/x/crypto v0.0.0-20201124201722-c8d3bf9c5392 // indirect
 	golang.org/x/oauth2 v0.0.0-20201109201403-9fd604954f58
