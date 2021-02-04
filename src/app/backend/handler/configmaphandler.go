@@ -23,8 +23,7 @@ func (apiHandler *APIHandler) installConfigMap(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/configmap/{namespace}").
 			To(apiHandler.handleGetConfigMapListNamespace).
-			Param(ws.PathParameter("namespace",
-				"object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
+			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
 			Returns(200, "OK", configmap.ConfigMapList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind ConfigMap in the Namespace").
@@ -32,9 +31,8 @@ func (apiHandler *APIHandler) installConfigMap(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/configmap/{namespace}/{name}").
 			To(apiHandler.handleGetConfigMapDetail).
-			Param(ws.PathParameter("namespace",
-				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
-			Param(ws.PathParameter("name", "Name of ConfigMap").DataType("string").Required(true)).
+			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
+			Param(ws.PathParameter("name", "Name of ConfigMap").Required(true)).
 			Returns(200, "OK", configmap.ConfigMapDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified ConfigMap").

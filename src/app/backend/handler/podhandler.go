@@ -26,8 +26,7 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/pod/{namespace}").
 			To(apiHandler.handleGetPodListNamespace).
-			Param(ws.PathParameter("namespace",
-				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
+			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
 			Returns(200, "OK", pod.PodList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Pod in the Namespace").
@@ -35,9 +34,8 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}").
 			To(apiHandler.handleGetPodDetail).
-			Param(ws.PathParameter("namespace",
-				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
-			Param(ws.PathParameter("name", "Name of Pod").DataType("string").Required(true)).
+			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
+			Param(ws.PathParameter("name", "Name of Pod").Required(true)).
 			Returns(200, "OK", pod.PodDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified Pod").
@@ -45,9 +43,8 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}/container").
 			To(apiHandler.handleGetPodContainerList).
-			Param(ws.PathParameter("namespace",
-				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
-			Param(ws.PathParameter("name", "Name of Pod").DataType("string").Required(true)).
+			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
+			Param(ws.PathParameter("name", "Name of Pod").Required(true)).
 			Returns(200, "OK", pod.PodDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List containers related to a Pod").
@@ -55,9 +52,8 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}/event").
 			To(apiHandler.handleGetPodEventList).
-			Param(ws.PathParameter("namespace",
-				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
-			Param(ws.PathParameter("name", "Name of Pod").DataType("string").Required(true)).
+			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
+			Param(ws.PathParameter("name", "Name of Pod").Required(true)).
 			Returns(200, "OK", common.EventList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List events related to a Pod").
@@ -65,9 +61,8 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}/persistentvolumeclaim").
 			To(apiHandler.handleGetPodPersistentVolumeClaimList).
-			Param(ws.PathParameter("namespace",
-				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
-			Param(ws.PathParameter("name", "Name of Pod").DataType("string").Required(true)).
+			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
+			Param(ws.PathParameter("name", "Name of Pod").Required(true)).
 			Returns(200, "OK", persistentvolumeclaim.PersistentVolumeClaimList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List PersistentVolumeClaims related to a Pod").

@@ -25,8 +25,7 @@ func (apiHandler *APIHandler) installCronJob(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/cronjob/{namespace}").
 			To(apiHandler.handleGetCronJobListNamespace).
-			Param(ws.PathParameter("namespace",
-				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
+			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
 			Returns(200, "OK", cronjob.CronJobList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind CronJob in the Namespace").
@@ -34,8 +33,7 @@ func (apiHandler *APIHandler) installCronJob(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/cronjob/{namespace}/{name}").
 			To(apiHandler.handleGetCronJobDetail).
-			Param(ws.PathParameter("namespace",
-				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
+			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
 			Param(ws.PathParameter("name", "Name of CronJob").DataType("string").Required(true)).
 			Returns(200, "OK", cronjob.CronJobDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
@@ -44,8 +42,7 @@ func (apiHandler *APIHandler) installCronJob(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/cronjob/{namespace}/{name}/job").
 			To(apiHandler.handleGetCronJobJobs).
-			Param(ws.PathParameter("namespace",
-				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
+			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
 			Param(ws.PathParameter("name", "Name of CronJob").DataType("string").Required(true)).
 			Returns(200, "OK", job.JobList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
@@ -54,8 +51,7 @@ func (apiHandler *APIHandler) installCronJob(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/cronjob/{namespace}/{name}/event").
 			To(apiHandler.handleGetCronJobEvents).
-			Param(ws.PathParameter("namespace",
-				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
+			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
 			Param(ws.PathParameter("name", "Name of CronJob").DataType("string").Required(true)).
 			Returns(200, "OK", common.EventList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
@@ -64,8 +60,7 @@ func (apiHandler *APIHandler) installCronJob(ws *restful.WebService) {
 	ws.Route(
 		ws.PUT("/cronjob/{namespace}/{name}/trigger").
 			To(apiHandler.handleTriggerCronJob).
-			Param(ws.PathParameter("namespace",
-				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
+			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
 			Param(ws.PathParameter("name", "Name of CronJob").DataType("string").Required(true)).
 			Returns(200, "OK", nil).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).

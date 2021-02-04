@@ -22,7 +22,7 @@ func (apiHandler *APIHandler) installIngress(ws *restful.WebService) {
 			Metadata(restfulspec.KeyOpenAPITags, []string{ingressDocsTag}))
 	ws.Route(
 		ws.GET("/ingress/{namespace}").
-			To(apiHandler.handleGetIngressListNamespace).
+			To(apiHandler.handleGetIngressListNs).
 			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
 			Returns(200, "OK", ingress.IngressList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
@@ -32,62 +32,59 @@ func (apiHandler *APIHandler) installIngress(ws *restful.WebService) {
 		ws.GET("/ingress/{namespace}/{name}").
 			To(apiHandler.handleGetIngressDetail).
 			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
-			Param(ws.PathParameter("name", "Name of Ingress").DataType("string").Required(true)).
+			Param(ws.PathParameter("name", "Name of Ingress").Required(true)).
 			Returns(200, "OK", ingress.IngressDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified Ingress").
 			Metadata(restfulspec.KeyOpenAPITags, []string{ingressDocsTag}))
 }
 
-func (apiHandler *APIHandler) handleGetIngressList(
-	request *restful.Request, response *restful.Response) {
-	k8s, err := apiHandler.kManager.Kubernetes(request)
+func (apiHandler *APIHandler) handleGetIngressList(req *restful.Request, res *restful.Response) {
+	k8s, err := apiHandler.kManager.Kubernetes(req)
 	if err != nil {
-		errors.HandleInternalError(response, err)
+		errors.HandleInternalError(res, err)
 		return
 	}
 
-	dataSelect := parser.ParseDataSelectPathParameter(request)
+	dataSelect := parser.ParseDataSelectPathParameter(req)
 	result, err := ingress.GetIngressList(k8s, common.NewNamespaceQuery(nil), dataSelect)
 	if err != nil {
-		errors.HandleInternalError(response, err)
+		errors.HandleInternalError(res, err)
 		return
 	}
-	response.WriteHeaderAndEntity(http.StatusOK, result)
+	res.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-func (apiHandler *APIHandler) handleGetIngressListNamespace(
-	request *restful.Request, response *restful.Response) {
-	k8s, err := apiHandler.kManager.Kubernetes(request)
+func (apiHandler *APIHandler) handleGetIngressListNs(req *restful.Request, res *restful.Response) {
+	k8s, err := apiHandler.kManager.Kubernetes(req)
 	if err != nil {
-		errors.HandleInternalError(response, err)
+		errors.HandleInternalError(res, err)
 		return
 	}
 
-	dataSelect := parser.ParseDataSelectPathParameter(request)
-	namespace := parseNamespacePathParameter(request)
+	dataSelect := parser.ParseDataSelectPathParameter(req)
+	namespace := parseNamespacePathParameter(req)
 	result, err := ingress.GetIngressList(k8s, namespace, dataSelect)
 	if err != nil {
-		errors.HandleInternalError(response, err)
+		errors.HandleInternalError(res, err)
 		return
 	}
-	response.WriteHeaderAndEntity(http.StatusOK, result)
+	res.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
-func (apiHandler *APIHandler) handleGetIngressDetail(
-	request *restful.Request, response *restful.Response) {
-	k8s, err := apiHandler.kManager.Kubernetes(request)
+func (apiHandler *APIHandler) handleGetIngressDetail(req *restful.Request, res *restful.Response) {
+	k8s, err := apiHandler.kManager.Kubernetes(req)
 	if err != nil {
-		errors.HandleInternalError(response, err)
+		errors.HandleInternalError(res, err)
 		return
 	}
 
-	namespace := request.PathParameter("namespace")
-	name := request.PathParameter("name")
+	namespace := req.PathParameter("namespace")
+	name := req.PathParameter("name")
 	result, err := ingress.GetIngressDetail(k8s, namespace, name)
 	if err != nil {
-		errors.HandleInternalError(response, err)
+		errors.HandleInternalError(res, err)
 		return
 	}
-	response.WriteHeaderAndEntity(http.StatusOK, result)
+	res.WriteHeaderAndEntity(http.StatusOK, result)
 }

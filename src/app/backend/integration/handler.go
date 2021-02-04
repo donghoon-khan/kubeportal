@@ -23,7 +23,7 @@ func (iHandler IntegrationHandler) Install(ws *restful.WebService) {
 			Writes(api.IntegrationState{}).
 			Doc("Get state of integration").
 			Metadata(restfulspec.KeyOpenAPITags, integrationDocsTag).
-			Param(ws.PathParameter("name", "Name of integration").DataType("string").Required(true)).
+			Param(ws.PathParameter("name", "Name of integration").Required(true)).
 			Returns(200, "OK", api.IntegrationState{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
 }

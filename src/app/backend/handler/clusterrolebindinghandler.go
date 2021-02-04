@@ -22,7 +22,7 @@ func (apiHandler *APIHandler) installClusterRoleBinding(ws *restful.WebService) 
 	ws.Route(
 		ws.GET("/clusterrolebinding/{name}").
 			To(apiHandler.handleGetClusterRoleBindingDetail).
-			Param(ws.PathParameter("name", "Name of ClusterRoleBinding").DataType("string").Required(true)).
+			Param(ws.PathParameter("name", "Name of ClusterRoleBinding").Required(true)).
 			Returns(200, "OK", clusterrolebinding.ClusterRoleBindingDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified ClusterRoleBinding").

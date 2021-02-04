@@ -22,7 +22,7 @@ func (apiHandler *APIHandler) installClusterRole(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/clusterrole/{name}").
 			To(apiHandler.handleGetClusterRoleDetail).
-			Param(ws.PathParameter("name", "Name of ClusterRole").DataType("string").Required(true)).
+			Param(ws.PathParameter("name", "Name of ClusterRole").Required(true)).
 			Returns(200, "OK", clusterrole.ClusterRoleDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified ClusterRole").

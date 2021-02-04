@@ -26,7 +26,7 @@ func (apiHandler *APIHandler) installNode(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/node/{name}").
 			To(apiHandler.handleGetNodeDetail).
-			Param(ws.PathParameter("name", "Name of Node").DataType("string").Required(true)).
+			Param(ws.PathParameter("name", "Name of Node").Required(true)).
 			Returns(200, "OK", node.NodeDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified Node").
@@ -34,7 +34,7 @@ func (apiHandler *APIHandler) installNode(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/node/{name}/event").
 			To(apiHandler.handleGetNodeEventList).
-			Param(ws.PathParameter("name", "Name of Node").DataType("string").Required(true)).
+			Param(ws.PathParameter("name", "Name of Node").Required(true)).
 			Returns(200, "OK", common.EventList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List events related to a Node").
@@ -42,7 +42,7 @@ func (apiHandler *APIHandler) installNode(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/node/{name}/pod").
 			To(apiHandler.handleGetNodePods).
-			Param(ws.PathParameter("name", "Name of Node").DataType("string").Required(true)).
+			Param(ws.PathParameter("name", "Name of Node").Required(true)).
 			Returns(200, "OK", pod.PodList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("list Pods related to a Node").

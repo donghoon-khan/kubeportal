@@ -23,8 +23,7 @@ func (apiHandler *APIHandler) installSecret(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/secret/{namespace}").
 			To(apiHandler.handleGetSecretListNamespace).
-			Param(ws.PathParameter("namespace",
-				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
+			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
 			Returns(200, "OK", secret.SecretList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Secret in the Namespace").
@@ -32,9 +31,8 @@ func (apiHandler *APIHandler) installSecret(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/secret/{namespace}/{name}").
 			To(apiHandler.handleGetSecretDetail).
-			Param(ws.PathParameter("namespace",
-				"Object name and auth scope, such as for teams and projects").DataType("string").Required(true)).
-			Param(ws.PathParameter("name", "Name of Secret").DataType("string").Required(true)).
+			Param(ws.PathParameter("namespace", "Query for Namespace").Required(true)).
+			Param(ws.PathParameter("name", "Name of Secret").Required(true)).
 			Returns(200, "OK", secret.SecretDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified Secret").
