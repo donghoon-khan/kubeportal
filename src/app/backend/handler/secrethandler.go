@@ -19,7 +19,6 @@ func (apiHandler *APIHandler) installSecret(ws *restful.WebService) {
 			Returns(200, "OK", secret.SecretList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Secret").
-			Notes("Returns a list of Secret").
 			Metadata(restfulspec.KeyOpenAPITags, []string{secretDocsTag}))
 	ws.Route(
 		ws.GET("/secret/{namespace}").
@@ -29,7 +28,6 @@ func (apiHandler *APIHandler) installSecret(ws *restful.WebService) {
 			Returns(200, "OK", secret.SecretList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Secret in the Namespace").
-			Notes("Returns a list of Secret in the Namespace").
 			Metadata(restfulspec.KeyOpenAPITags, []string{secretDocsTag}))
 	ws.Route(
 		ws.GET("/secret/{namespace}/{name}").
@@ -40,7 +38,6 @@ func (apiHandler *APIHandler) installSecret(ws *restful.WebService) {
 			Returns(200, "OK", secret.SecretDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified Secret").
-			Notes("Returns the specified Secret").
 			Metadata(restfulspec.KeyOpenAPITags, []string{secretDocsTag}))
 }
 

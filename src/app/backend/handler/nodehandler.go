@@ -22,7 +22,6 @@ func (apiHandler *APIHandler) installNode(ws *restful.WebService) {
 			Returns(200, "OK", node.NodeList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Node").
-			Notes("Returns a list of Node").
 			Metadata(restfulspec.KeyOpenAPITags, []string{nodeDocsTag}))
 	ws.Route(
 		ws.GET("/node/{name}").
@@ -31,7 +30,6 @@ func (apiHandler *APIHandler) installNode(ws *restful.WebService) {
 			Returns(200, "OK", node.NodeDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified Node").
-			Notes("Returns the specified Node").
 			Metadata(restfulspec.KeyOpenAPITags, []string{nodeDocsTag}))
 	ws.Route(
 		ws.GET("/node/{name}/event").
@@ -40,7 +38,6 @@ func (apiHandler *APIHandler) installNode(ws *restful.WebService) {
 			Returns(200, "OK", common.EventList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List events related to a Node").
-			Notes("Returns a list of event related to Node").
 			Metadata(restfulspec.KeyOpenAPITags, []string{nodeDocsTag}))
 	ws.Route(
 		ws.GET("/node/{name}/pod").
@@ -49,7 +46,6 @@ func (apiHandler *APIHandler) installNode(ws *restful.WebService) {
 			Returns(200, "OK", pod.PodList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("list Pods related to a Node").
-			Notes("Returns a list of Pod related to Node").
 			Metadata(restfulspec.KeyOpenAPITags, []string{nodeDocsTag}))
 }
 

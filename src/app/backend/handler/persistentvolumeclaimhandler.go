@@ -19,7 +19,6 @@ func (apiHandler *APIHandler) installPersistentVolumeClaim(ws *restful.WebServic
 			Returns(200, "OK", persistentvolumeclaim.PersistentVolumeClaimList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind PersistentVolumeClaim").
-			Notes("Returns a list of PersistentVolumeClaim").
 			Metadata(restfulspec.KeyOpenAPITags, []string{persistentVolumeClaimDocsTag}))
 	ws.Route(
 		ws.GET("/persistentvolumeclaim/{namespace}").
@@ -29,7 +28,6 @@ func (apiHandler *APIHandler) installPersistentVolumeClaim(ws *restful.WebServic
 			Returns(200, "OK", persistentvolumeclaim.PersistentVolumeClaimList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind PersistentVolumeClaim in the Namespace").
-			Notes("Returns a list of PersistentVolumeClaim in the Namespace").
 			Metadata(restfulspec.KeyOpenAPITags, []string{persistentVolumeClaimDocsTag}))
 	ws.Route(
 		ws.GET("/persistentvolumeclaim/{namespace}/{name}").
@@ -40,7 +38,6 @@ func (apiHandler *APIHandler) installPersistentVolumeClaim(ws *restful.WebServic
 			Returns(200, "OK", persistentvolumeclaim.PersistentVolumeClaimDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified PersistentVolumeClaim").
-			Notes("Returns the specified PersistentVolumeClaim").
 			Metadata(restfulspec.KeyOpenAPITags, []string{persistentVolumeClaimDocsTag}))
 }
 

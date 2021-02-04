@@ -22,7 +22,6 @@ func (iHandler IntegrationHandler) Install(ws *restful.WebService) {
 			To(iHandler.handleGetState).
 			Writes(api.IntegrationState{}).
 			Doc("Get state of integration").
-			Notes("Returns a state of integration").
 			Metadata(restfulspec.KeyOpenAPITags, integrationDocsTag).
 			Param(ws.PathParameter("name", "Name of integration").DataType("string").Required(true)).
 			Returns(200, "OK", api.IntegrationState{}).

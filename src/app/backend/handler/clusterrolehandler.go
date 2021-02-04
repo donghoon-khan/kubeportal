@@ -18,7 +18,6 @@ func (apiHandler *APIHandler) installClusterRole(ws *restful.WebService) {
 			Returns(200, "OK", clusterrole.ClusterRoleList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind ClusterRole").
-			Notes("Returns a list of ClusterRole").
 			Metadata(restfulspec.KeyOpenAPITags, []string{clusterRoleDocsTag}))
 	ws.Route(
 		ws.GET("/clusterrole/{name}").
@@ -27,7 +26,6 @@ func (apiHandler *APIHandler) installClusterRole(ws *restful.WebService) {
 			Returns(200, "OK", clusterrole.ClusterRoleDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified ClusterRole").
-			Notes("Returns the specified ClusterRole").
 			Metadata(restfulspec.KeyOpenAPITags, []string{clusterRoleDocsTag}))
 }
 

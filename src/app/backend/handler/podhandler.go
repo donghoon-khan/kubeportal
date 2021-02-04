@@ -22,7 +22,6 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 			Returns(200, "OK", pod.PodList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Pod").
-			Notes("Returns a list of Pod").
 			Metadata(restfulspec.KeyOpenAPITags, []string{podDocsTag}))
 	ws.Route(
 		ws.GET("/pod/{namespace}").
@@ -32,7 +31,6 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 			Returns(200, "OK", pod.PodList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Pod in the Namespace").
-			Notes("Returns a list of Pod in the Namespace").
 			Metadata(restfulspec.KeyOpenAPITags, []string{podDocsTag}))
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}").
@@ -43,7 +41,6 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 			Returns(200, "OK", pod.PodDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified Pod").
-			Notes("Returns the specified Pod").
 			Metadata(restfulspec.KeyOpenAPITags, []string{podDocsTag}))
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}/container").
@@ -54,7 +51,6 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 			Returns(200, "OK", pod.PodDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List containers related to a Pod").
-			Notes("Returns list of container related to a Pod").
 			Metadata(restfulspec.KeyOpenAPITags, []string{podDocsTag}))
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}/event").
@@ -65,7 +61,6 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 			Returns(200, "OK", common.EventList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List events related to a Pod").
-			Notes("Returns list of event related to a Pod").
 			Metadata(restfulspec.KeyOpenAPITags, []string{podDocsTag}))
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}/persistentvolumeclaim").
@@ -76,7 +71,6 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 			Returns(200, "OK", persistentvolumeclaim.PersistentVolumeClaimList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List PersistentVolumeClaims related to a Pod").
-			Notes("Returns list of PersistentVolumeClaim related to a Pod").
 			Metadata(restfulspec.KeyOpenAPITags, []string{podDocsTag}))
 }
 

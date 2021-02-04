@@ -19,7 +19,6 @@ func (apiHandler *APIHandler) installConfigMap(ws *restful.WebService) {
 			Returns(200, "OK", configmap.ConfigMapList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind ConfigMap").
-			Notes("Returns a list of ConfigMap").
 			Metadata(restfulspec.KeyOpenAPITags, []string{configMapDocsTag}))
 	ws.Route(
 		ws.GET("/configmap/{namespace}").
@@ -29,7 +28,6 @@ func (apiHandler *APIHandler) installConfigMap(ws *restful.WebService) {
 			Returns(200, "OK", configmap.ConfigMapList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind ConfigMap in the Namespace").
-			Notes("Returns a list of ConfigMap in the Namespace").
 			Metadata(restfulspec.KeyOpenAPITags, []string{configMapDocsTag}))
 	ws.Route(
 		ws.GET("/configmap/{namespace}/{name}").
@@ -40,7 +38,6 @@ func (apiHandler *APIHandler) installConfigMap(ws *restful.WebService) {
 			Returns(200, "OK", configmap.ConfigMapDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified ConfigMap").
-			Notes("Returns the specified ConfigMap").
 			Metadata(restfulspec.KeyOpenAPITags, []string{configMapDocsTag}))
 }
 

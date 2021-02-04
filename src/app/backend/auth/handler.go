@@ -23,7 +23,6 @@ func (authHandler AuthHandler) Install(ws *restful.WebService) {
 			Reads(authApi.LoginSpec{}).
 			Writes(authApi.AuthResponse{}).
 			Doc("Get JWEToken by LoginSpec").
-			Notes("Returns the JWEToken").
 			Metadata(restfulspec.KeyOpenAPITags, authenticationDocsTag).
 			Returns(200, "OK", authApi.AuthResponse{}))
 	ws.Route(
@@ -31,7 +30,6 @@ func (authHandler AuthHandler) Install(ws *restful.WebService) {
 			To(authHandler.handleLoginSkippable).
 			Writes(authApi.LoginSkippableResponse{}).
 			Doc("Is enable login skippable").
-			Notes("Returns a authentication skip should be enabled or not").
 			Metadata(restfulspec.KeyOpenAPITags, authenticationDocsTag).
 			Returns(200, "OK", authApi.LoginSkippableResponse{}))
 }

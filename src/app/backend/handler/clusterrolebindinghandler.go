@@ -18,7 +18,6 @@ func (apiHandler *APIHandler) installClusterRoleBinding(ws *restful.WebService) 
 			Returns(200, "OK", clusterrolebinding.ClusterRoleBindingList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind ClusterRoleBinding").
-			Notes("Returns a list of ClusterRoleBinding").
 			Metadata(restfulspec.KeyOpenAPITags, []string{clusterRoleBindingDocsTag}))
 	ws.Route(
 		ws.GET("/clusterrolebinding/{name}").
@@ -27,7 +26,6 @@ func (apiHandler *APIHandler) installClusterRoleBinding(ws *restful.WebService) 
 			Returns(200, "OK", clusterrolebinding.ClusterRoleBindingDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified ClusterRoleBinding").
-			Notes("Returns the specified ClusterRoleBinding").
 			Metadata(restfulspec.KeyOpenAPITags, []string{clusterRoleBindingDocsTag}))
 }
 
