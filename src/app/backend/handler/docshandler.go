@@ -16,6 +16,7 @@ const (
 	clusterRoleDocsTag           = "ClusterRole"
 	configMapDocsTag             = "ConfigMap"
 	cronJobDocsTag               = "CronJob"
+	ingressDocsTag               = "Ingress"
 	nodeDocsTag                  = "Node"
 	persistentVolumeClaimDocsTag = "PersistentVolumeClaim"
 	podDocsTag                   = "Pod"
@@ -90,6 +91,13 @@ func enrichSwaggerObject(swo *spec.Swagger) {
 				Name: cronJobDocsTag,
 				Description: "One CronJob object is like one line of a crontab (cron table) file. It runs a job periodically on a given schedule, written in [Cron](https://en.wikipedia.org/wiki/Cron) format." +
 					"<br/>Ref: https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/",
+			},
+		},
+		{
+			TagProps: spec.TagProps{
+				Name: ingressDocsTag,
+				Description: "Ingress is a collection of rules that allow inbound connections to reach the endpoints defined by a backend. An Ingress can be configured to give services externally-reachable urls, load balance traffic, terminate SSL, offer name based virtual hosting etc." +
+					"<br/>Ref: https://kubernetes.io/docs/concepts/services-networking/ingress/",
 			},
 		},
 		{

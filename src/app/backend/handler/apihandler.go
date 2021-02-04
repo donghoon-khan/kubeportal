@@ -62,6 +62,7 @@ func CreateHttpApiHandler(
 	apiHandler.installClusterRoleBinding(k8sWs)
 	apiHandler.installConfigMap(k8sWs)
 	apiHandler.installCronJob(k8sWs)
+	apiHandler.installIngress(k8sWs)
 	apiHandler.installSecret(k8sWs)
 	apiHandler.installPersistentVolumeClaim(k8sWs)
 	apiHandler.installPod(k8sWs)
