@@ -6,6 +6,7 @@ import (
 	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	"github.com/emicklei/go-restful/v3"
 
+	"github.com/donghoon-khan/kubeportal/src/app/backend/docs"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/handler/parser"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/common"
@@ -19,7 +20,7 @@ func (apiHandler *APIHandler) installIngress(ws *restful.WebService) {
 			Returns(200, "OK", ingress.IngressList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Ingress").
-			Metadata(restfulspec.KeyOpenAPITags, []string{ingressDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.IngressDocsTag}))
 	ws.Route(
 		ws.GET("/ingress/{namespace}").
 			To(apiHandler.handleGetIngressListNamespace).
@@ -27,7 +28,7 @@ func (apiHandler *APIHandler) installIngress(ws *restful.WebService) {
 			Returns(200, "OK", ingress.IngressList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Ingress in the Namespace").
-			Metadata(restfulspec.KeyOpenAPITags, []string{ingressDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.IngressDocsTag}))
 	ws.Route(
 		ws.GET("/ingress/{namespace}/{name}").
 			To(apiHandler.handleGetIngressDetail).
@@ -36,7 +37,7 @@ func (apiHandler *APIHandler) installIngress(ws *restful.WebService) {
 			Returns(200, "OK", ingress.IngressDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified Ingress").
-			Metadata(restfulspec.KeyOpenAPITags, []string{ingressDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.IngressDocsTag}))
 }
 
 func (apiHandler *APIHandler) handleGetIngressList(req *restful.Request, res *restful.Response) {

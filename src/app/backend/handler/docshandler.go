@@ -10,22 +10,6 @@ import (
 	"github.com/go-openapi/spec"
 )
 
-const (
-	authenticationDocsTag        = "Authentication"
-	integrationDocsTag           = "Integration"
-	clusterRoleBindingDocsTag    = "ClusterRoleBinding"
-	clusterRoleDocsTag           = "ClusterRole"
-	configMapDocsTag             = "ConfigMap"
-	cronJobDocsTag               = "CronJob"
-	ingressDocsTag               = "Ingress"
-	nodeDocsTag                  = "Node"
-	persistentVolumeClaimDocsTag = "PersistentVolumeClaim"
-	podDocsTag                   = "Pod"
-	secretDocsTag                = "Sceret"
-	serviceDocsTag               = "Service"
-	serviceAccountDocsTag        = "ServiceAccount"
-)
-
 func CreateApiDocsHTTPHandler(wsContainer *restful.Container, specURL string, next http.Handler) http.Handler {
 
 	config := restfulspec.Config{

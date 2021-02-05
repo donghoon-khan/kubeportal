@@ -6,6 +6,7 @@ import (
 	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	"github.com/emicklei/go-restful/v3"
 
+	"github.com/donghoon-khan/kubeportal/src/app/backend/docs"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/handler/parser"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/common"
@@ -20,7 +21,7 @@ func (apiHandler *APIHandler) installServiceAccount(ws *restful.WebService) {
 			Returns(200, "OK", serviceaccount.ServiceAccountList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind ServiceAccount").
-			Metadata(restfulspec.KeyOpenAPITags, []string{serviceAccountDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.ServiceAccountDocsTag}))
 	ws.Route(
 		ws.GET("/serviceaccount/{namespace}").
 			To(apiHandler.handleGetServiceAccountListNamespace).
@@ -28,7 +29,7 @@ func (apiHandler *APIHandler) installServiceAccount(ws *restful.WebService) {
 			Returns(200, "OK", serviceaccount.ServiceAccountList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind ServiceAccount in the Namespace").
-			Metadata(restfulspec.KeyOpenAPITags, []string{serviceAccountDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.ServiceAccountDocsTag}))
 	ws.Route(
 		ws.GET("/serviceaccount/{namespace}/{name}").
 			To(apiHandler.handleGetServiceAccountDetail).
@@ -37,7 +38,7 @@ func (apiHandler *APIHandler) installServiceAccount(ws *restful.WebService) {
 			Returns(200, "OK", serviceaccount.ServiceAccountDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified ServiceAccount").
-			Metadata(restfulspec.KeyOpenAPITags, []string{serviceAccountDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.ServiceAccountDocsTag}))
 	ws.Route(
 		ws.GET("/serviceaccount/{namespace}/{name}/secret").
 			To(apiHandler.handleGetServiceAccountSecrets).
@@ -46,7 +47,7 @@ func (apiHandler *APIHandler) installServiceAccount(ws *restful.WebService) {
 			Returns(200, "OK", secret.SecretList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List Secrets related to a ServiceAccount").
-			Metadata(restfulspec.KeyOpenAPITags, []string{serviceAccountDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.ServiceAccountDocsTag}))
 	ws.Route(
 		ws.GET("/serviceaccount/{namespace}/{name}/imagepullsecret").
 			To(apiHandler.handleGetServiceAccountImagePullSecrets).
@@ -55,7 +56,7 @@ func (apiHandler *APIHandler) installServiceAccount(ws *restful.WebService) {
 			Returns(200, "OK", secret.SecretList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List imagePullSecrets related to a ServiceAccount").
-			Metadata(restfulspec.KeyOpenAPITags, []string{serviceAccountDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.ServiceAccountDocsTag}))
 }
 
 func (apiHandler *APIHandler) handleGetServiceAccountList(request *restful.Request, response *restful.Response) {

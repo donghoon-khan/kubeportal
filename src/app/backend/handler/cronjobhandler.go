@@ -6,6 +6,7 @@ import (
 	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	"github.com/emicklei/go-restful/v3"
 
+	"github.com/donghoon-khan/kubeportal/src/app/backend/docs"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/handler/parser"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/common"
@@ -21,7 +22,7 @@ func (apiHandler *APIHandler) installCronJob(ws *restful.WebService) {
 			Returns(200, "OK", cronjob.CronJobList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind CronJob").
-			Metadata(restfulspec.KeyOpenAPITags, []string{cronJobDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.CronJobDocsTag}))
 	ws.Route(
 		ws.GET("/cronjob/{namespace}").
 			To(apiHandler.handleGetCronJobListNamespace).
@@ -29,7 +30,7 @@ func (apiHandler *APIHandler) installCronJob(ws *restful.WebService) {
 			Returns(200, "OK", cronjob.CronJobList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind CronJob in the Namespace").
-			Metadata(restfulspec.KeyOpenAPITags, []string{cronJobDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.CronJobDocsTag}))
 	ws.Route(
 		ws.GET("/cronjob/{namespace}/{name}").
 			To(apiHandler.handleGetCronJobDetail).
@@ -38,7 +39,7 @@ func (apiHandler *APIHandler) installCronJob(ws *restful.WebService) {
 			Returns(200, "OK", cronjob.CronJobDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified CronJob").
-			Metadata(restfulspec.KeyOpenAPITags, []string{cronJobDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.CronJobDocsTag}))
 	ws.Route(
 		ws.GET("/cronjob/{namespace}/{name}/job").
 			To(apiHandler.handleGetCronJobJobs).
@@ -47,7 +48,7 @@ func (apiHandler *APIHandler) installCronJob(ws *restful.WebService) {
 			Returns(200, "OK", job.JobList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List Jobs related to a CronJob").
-			Metadata(restfulspec.KeyOpenAPITags, []string{cronJobDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.CronJobDocsTag}))
 	ws.Route(
 		ws.GET("/cronjob/{namespace}/{name}/event").
 			To(apiHandler.handleGetCronJobEvents).
@@ -56,7 +57,7 @@ func (apiHandler *APIHandler) installCronJob(ws *restful.WebService) {
 			Returns(200, "OK", common.EventList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List events related to a CronJob").
-			Metadata(restfulspec.KeyOpenAPITags, []string{cronJobDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.CronJobDocsTag}))
 	ws.Route(
 		ws.PUT("/cronjob/{namespace}/{name}/trigger").
 			To(apiHandler.handleTriggerCronJob).
@@ -65,7 +66,7 @@ func (apiHandler *APIHandler) installCronJob(ws *restful.WebService) {
 			Returns(200, "OK", nil).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Replace trigger related to a CronJob").
-			Metadata(restfulspec.KeyOpenAPITags, []string{cronJobDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.CronJobDocsTag}))
 }
 
 func (apiHandler *APIHandler) handleGetCronJobList(request *restful.Request, response *restful.Response) {

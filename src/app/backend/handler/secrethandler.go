@@ -6,6 +6,7 @@ import (
 	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	"github.com/emicklei/go-restful/v3"
 
+	"github.com/donghoon-khan/kubeportal/src/app/backend/docs"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/handler/parser"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/common"
@@ -19,7 +20,7 @@ func (apiHandler *APIHandler) installSecret(ws *restful.WebService) {
 			Returns(200, "OK", secret.SecretList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Secret").
-			Metadata(restfulspec.KeyOpenAPITags, []string{secretDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.SecretDocsTag}))
 	ws.Route(
 		ws.GET("/secret/{namespace}").
 			To(apiHandler.handleGetSecretListNamespace).
@@ -27,7 +28,7 @@ func (apiHandler *APIHandler) installSecret(ws *restful.WebService) {
 			Returns(200, "OK", secret.SecretList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Secret in the Namespace").
-			Metadata(restfulspec.KeyOpenAPITags, []string{secretDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.SecretDocsTag}))
 	ws.Route(
 		ws.GET("/secret/{namespace}/{name}").
 			To(apiHandler.handleGetSecretDetail).
@@ -36,7 +37,7 @@ func (apiHandler *APIHandler) installSecret(ws *restful.WebService) {
 			Returns(200, "OK", secret.SecretDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified Secret").
-			Metadata(restfulspec.KeyOpenAPITags, []string{secretDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.SecretDocsTag}))
 }
 
 func (apiHandler *APIHandler) handleGetSecretList(request *restful.Request, response *restful.Response) {

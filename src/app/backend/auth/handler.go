@@ -8,13 +8,12 @@ import (
 	"github.com/emicklei/go-restful/v3"
 
 	authApi "github.com/donghoon-khan/kubeportal/src/app/backend/auth/api"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/docs"
 )
 
 type AuthHandler struct {
 	manager authApi.AuthManager
 }
-
-var authenticationDocsTag = []string{"Authentication"}
 
 func (authHandler AuthHandler) Install(ws *restful.WebService) {
 	ws.Route(
@@ -23,14 +22,14 @@ func (authHandler AuthHandler) Install(ws *restful.WebService) {
 			Reads(authApi.LoginSpec{}).
 			Writes(authApi.AuthResponse{}).
 			Doc("Get JWEToken by LoginSpec").
-			Metadata(restfulspec.KeyOpenAPITags, authenticationDocsTag).
+			Metadata(restfulspec.KeyOpenAPITags, docs.AuthenticationDocsTag).
 			Returns(200, "OK", authApi.AuthResponse{}))
 	ws.Route(
 		ws.GET("/login/skippable").
 			To(authHandler.handleLoginSkippable).
 			Writes(authApi.LoginSkippableResponse{}).
 			Doc("Is enable login skippable").
-			Metadata(restfulspec.KeyOpenAPITags, authenticationDocsTag).
+			Metadata(restfulspec.KeyOpenAPITags, docs.AuthenticationDocsTag).
 			Returns(200, "OK", authApi.LoginSkippableResponse{}))
 }
 

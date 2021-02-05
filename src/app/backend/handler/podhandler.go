@@ -6,6 +6,7 @@ import (
 	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	"github.com/emicklei/go-restful/v3"
 
+	"github.com/donghoon-khan/kubeportal/src/app/backend/docs"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/handler/parser"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/common"
@@ -22,7 +23,7 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 			Returns(200, "OK", pod.PodList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Pod").
-			Metadata(restfulspec.KeyOpenAPITags, []string{podDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.PodDocsTag}))
 	ws.Route(
 		ws.GET("/pod/{namespace}").
 			To(apiHandler.handleGetPodListNamespace).
@@ -30,7 +31,7 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 			Returns(200, "OK", pod.PodList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Pod in the Namespace").
-			Metadata(restfulspec.KeyOpenAPITags, []string{podDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.PodDocsTag}))
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}").
 			To(apiHandler.handleGetPodDetail).
@@ -39,7 +40,7 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 			Returns(200, "OK", pod.PodDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified Pod").
-			Metadata(restfulspec.KeyOpenAPITags, []string{podDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.PodDocsTag}))
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}/container").
 			To(apiHandler.handleGetPodContainerList).
@@ -48,7 +49,7 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 			Returns(200, "OK", pod.PodDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List containers related to a Pod").
-			Metadata(restfulspec.KeyOpenAPITags, []string{podDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.PodDocsTag}))
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}/event").
 			To(apiHandler.handleGetPodEvents).
@@ -57,7 +58,7 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 			Returns(200, "OK", common.EventList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List events related to a Pod").
-			Metadata(restfulspec.KeyOpenAPITags, []string{podDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.PodDocsTag}))
 	ws.Route(
 		ws.GET("/pod/{namespace}/{name}/persistentvolumeclaim").
 			To(apiHandler.handleGetPodPersistentVolumeClaims).
@@ -66,7 +67,7 @@ func (apiHandler *APIHandler) installPod(ws *restful.WebService) {
 			Returns(200, "OK", persistentvolumeclaim.PersistentVolumeClaimList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List PersistentVolumeClaims related to a Pod").
-			Metadata(restfulspec.KeyOpenAPITags, []string{podDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.PodDocsTag}))
 }
 
 func (apiHandler *APIHandler) handleGetPodList(request *restful.Request, response *restful.Response) {

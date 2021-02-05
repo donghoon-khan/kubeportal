@@ -6,6 +6,7 @@ import (
 	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	"github.com/emicklei/go-restful/v3"
 
+	"github.com/donghoon-khan/kubeportal/src/app/backend/docs"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/handler/parser"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/common"
@@ -22,7 +23,7 @@ func (apiHandler *APIHandler) installNode(ws *restful.WebService) {
 			Returns(200, "OK", node.NodeList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Node").
-			Metadata(restfulspec.KeyOpenAPITags, []string{nodeDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.NodeDocsTag}))
 	ws.Route(
 		ws.GET("/node/{name}").
 			To(apiHandler.handleGetNodeDetail).
@@ -30,7 +31,7 @@ func (apiHandler *APIHandler) installNode(ws *restful.WebService) {
 			Returns(200, "OK", node.NodeDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified Node").
-			Metadata(restfulspec.KeyOpenAPITags, []string{nodeDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.NodeDocsTag}))
 	ws.Route(
 		ws.GET("/node/{name}/event").
 			To(apiHandler.handleGetNodeEvents).
@@ -38,7 +39,7 @@ func (apiHandler *APIHandler) installNode(ws *restful.WebService) {
 			Returns(200, "OK", common.EventList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List events related to a Node").
-			Metadata(restfulspec.KeyOpenAPITags, []string{nodeDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.NodeDocsTag}))
 	ws.Route(
 		ws.GET("/node/{name}/pod").
 			To(apiHandler.handleGetNodePods).
@@ -46,7 +47,7 @@ func (apiHandler *APIHandler) installNode(ws *restful.WebService) {
 			Returns(200, "OK", pod.PodList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("list Pods related to a Node").
-			Metadata(restfulspec.KeyOpenAPITags, []string{nodeDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.NodeDocsTag}))
 }
 
 func (apiHandler *APIHandler) handleGetNodeList(request *restful.Request, response *restful.Response) {

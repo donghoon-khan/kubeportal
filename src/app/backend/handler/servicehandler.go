@@ -6,6 +6,7 @@ import (
 	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	"github.com/emicklei/go-restful/v3"
 
+	"github.com/donghoon-khan/kubeportal/src/app/backend/docs"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/handler/parser"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/common"
@@ -21,7 +22,7 @@ func (apiHandler *APIHandler) installService(ws *restful.WebService) {
 			Returns(200, "OK", service.ServiceList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Service").
-			Metadata(restfulspec.KeyOpenAPITags, []string{serviceDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.ServiceDocsTag}))
 	ws.Route(
 		ws.GET("/service/{namespace}").
 			To(apiHandler.handleGetServiceListNamespace).
@@ -29,7 +30,7 @@ func (apiHandler *APIHandler) installService(ws *restful.WebService) {
 			Returns(200, "OK", service.ServiceList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind Service in the Namespace").
-			Metadata(restfulspec.KeyOpenAPITags, []string{serviceDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.ServiceDocsTag}))
 	ws.Route(
 		ws.GET("/service/{namespace}/{name}").
 			To(apiHandler.handleGetServiceDetail).
@@ -38,7 +39,7 @@ func (apiHandler *APIHandler) installService(ws *restful.WebService) {
 			Returns(200, "OK", service.ServiceDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified Service").
-			Metadata(restfulspec.KeyOpenAPITags, []string{serviceDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.ServiceDocsTag}))
 	ws.Route(
 		ws.GET("/service/{namespace}/{name}/event").
 			To(apiHandler.handleGetServiceEvents).
@@ -47,7 +48,7 @@ func (apiHandler *APIHandler) installService(ws *restful.WebService) {
 			Returns(200, "OK", common.EventList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List events related to a Service").
-			Metadata(restfulspec.KeyOpenAPITags, []string{serviceDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.ServiceDocsTag}))
 	ws.Route(
 		ws.GET("/service/{namespace}/{name}/pod").
 			To(apiHandler.handleGetServicePods).
@@ -56,7 +57,7 @@ func (apiHandler *APIHandler) installService(ws *restful.WebService) {
 			Returns(200, "OK", pod.PodList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List Pods related to a Service").
-			Metadata(restfulspec.KeyOpenAPITags, []string{serviceDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.ServiceDocsTag}))
 }
 
 func (apiHandler *APIHandler) handleGetServiceList(request *restful.Request, response *restful.Response) {

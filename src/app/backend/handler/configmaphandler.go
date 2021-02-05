@@ -6,6 +6,7 @@ import (
 	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	"github.com/emicklei/go-restful/v3"
 
+	"github.com/donghoon-khan/kubeportal/src/app/backend/docs"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/handler/parser"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/common"
@@ -19,7 +20,7 @@ func (apiHandler *APIHandler) installConfigMap(ws *restful.WebService) {
 			Returns(200, "OK", configmap.ConfigMapList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind ConfigMap").
-			Metadata(restfulspec.KeyOpenAPITags, []string{configMapDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.ConfigMapDocsTag}))
 	ws.Route(
 		ws.GET("/configmap/{namespace}").
 			To(apiHandler.handleGetConfigMapListNamespace).
@@ -27,7 +28,7 @@ func (apiHandler *APIHandler) installConfigMap(ws *restful.WebService) {
 			Returns(200, "OK", configmap.ConfigMapList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind ConfigMap in the Namespace").
-			Metadata(restfulspec.KeyOpenAPITags, []string{configMapDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.ConfigMapDocsTag}))
 	ws.Route(
 		ws.GET("/configmap/{namespace}/{name}").
 			To(apiHandler.handleGetConfigMapDetail).
@@ -36,7 +37,7 @@ func (apiHandler *APIHandler) installConfigMap(ws *restful.WebService) {
 			Returns(200, "OK", configmap.ConfigMapDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified ConfigMap").
-			Metadata(restfulspec.KeyOpenAPITags, []string{configMapDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.ConfigMapDocsTag}))
 }
 
 func (apiHandler *APIHandler) handleGetConfigMapList(request *restful.Request, response *restful.Response) {

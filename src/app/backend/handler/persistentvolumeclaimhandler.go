@@ -6,6 +6,7 @@ import (
 	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	"github.com/emicklei/go-restful/v3"
 
+	"github.com/donghoon-khan/kubeportal/src/app/backend/docs"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/handler/parser"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/resource/common"
@@ -19,7 +20,7 @@ func (apiHandler *APIHandler) installPersistentVolumeClaim(ws *restful.WebServic
 			Returns(200, "OK", persistentvolumeclaim.PersistentVolumeClaimList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind PersistentVolumeClaim").
-			Metadata(restfulspec.KeyOpenAPITags, []string{persistentVolumeClaimDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.PersistentVolumeClaimDocsTag}))
 	ws.Route(
 		ws.GET("/persistentvolumeclaim/{namespace}").
 			To(apiHandler.handleGetPersistentVolumeClaimListNamespace).
@@ -27,7 +28,7 @@ func (apiHandler *APIHandler) installPersistentVolumeClaim(ws *restful.WebServic
 			Returns(200, "OK", persistentvolumeclaim.PersistentVolumeClaimList{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("List objects of kind PersistentVolumeClaim in the Namespace").
-			Metadata(restfulspec.KeyOpenAPITags, []string{persistentVolumeClaimDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.PersistentVolumeClaimDocsTag}))
 	ws.Route(
 		ws.GET("/persistentvolumeclaim/{namespace}/{name}").
 			To(apiHandler.handleGetPersistentVolumeClaimDetail).
@@ -36,7 +37,7 @@ func (apiHandler *APIHandler) installPersistentVolumeClaim(ws *restful.WebServic
 			Returns(200, "OK", persistentvolumeclaim.PersistentVolumeClaimDetail{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}).
 			Doc("Read the specified PersistentVolumeClaim").
-			Metadata(restfulspec.KeyOpenAPITags, []string{persistentVolumeClaimDocsTag}))
+			Metadata(restfulspec.KeyOpenAPITags, []string{docs.PersistentVolumeClaimDocsTag}))
 }
 
 func (apiHandler *APIHandler) handleGetPersistentVolumeClaimList(request *restful.Request, response *restful.Response) {

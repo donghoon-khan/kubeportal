@@ -6,6 +6,7 @@ import (
 	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	restful "github.com/emicklei/go-restful/v3"
 
+	"github.com/donghoon-khan/kubeportal/src/app/backend/docs"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/errors"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/integration/api"
 )
@@ -14,15 +15,13 @@ type IntegrationHandler struct {
 	iManager IntegrationManager
 }
 
-var integrationDocsTag = []string{"Integration"}
-
 func (iHandler IntegrationHandler) Install(ws *restful.WebService) {
 	ws.Route(
 		ws.GET("/integration/{name}/state").
 			To(iHandler.handleGetState).
 			Writes(api.IntegrationState{}).
 			Doc("Get state of integration").
-			Metadata(restfulspec.KeyOpenAPITags, integrationDocsTag).
+			Metadata(restfulspec.KeyOpenAPITags, docs.IntegrationDocsTag).
 			Param(ws.PathParameter("name", "Name of integration").Required(true)).
 			Returns(200, "OK", api.IntegrationState{}).
 			Returns(401, "Unauthorized", errors.StatusErrorResponse{}))
