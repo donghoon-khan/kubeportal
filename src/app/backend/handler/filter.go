@@ -62,11 +62,7 @@ func formatRequestLog(request *restful.Request) string {
 		content = string(byteArr)
 	}
 
-	// Restore request body so we can read it again in regular request handlers
 	request.Request.Body = ioutil.NopCloser(bytes.NewReader(byteArr))
-
-	// Is DEBUG level logging enabled? Yes?
-	// Great now let's filter out any content from sensitive URLs
 	if args.Holder.GetApiLogLevel() != "DEBUG" && checkSensitiveURL(&uri) {
 		content = "{ contents hidden }"
 	}
