@@ -7,6 +7,7 @@ import (
 
 	"github.com/donghoon-khan/kubeportal/src/app/backend/args"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/auth"
+	"github.com/donghoon-khan/kubeportal/src/app/backend/docs"
 	"github.com/donghoon-khan/kubeportal/src/app/backend/integration"
 
 	authApi "github.com/donghoon-khan/kubeportal/src/app/backend/auth/api"
@@ -44,7 +45,7 @@ func main() {
 	}
 
 	http.Handle("/api/", apiHandler)
-	http.Handle("/docs", handler.CreateApiDocsHTTPHandler(apiHandler, "/apidocs.json", nil))
+	http.Handle("/docs", docs.CreateApiDocsHTTPHandler(apiHandler, "/apidocs.json", nil))
 
 	go func() { log.Fatal(http.ListenAndServe(":9090", nil)) }()
 	select {}
